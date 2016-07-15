@@ -16,8 +16,6 @@ namespace TestApp
     {
         static void Main(string[] AArguments)
         {
-            RealArithmeticProvider<float> rapProvider = (RealArithmeticProvider<float>)ArithmeticProvider<float>.Instance;
-
             IVector<int> ivTest = new ArrayVector<int>(new int[]{1, 3, 9});
             
             Console.WriteLine("Vector");
@@ -33,6 +31,11 @@ namespace TestApp
             Console.WriteLine(Matrix.Format(imTest, "T"));
             Console.WriteLine(Matrix.Format(imTest, "e"));
             Console.WriteLine(Matrix.Format(imTest, "33"));
+
+            Console.WriteLine();
+            Console.WriteLine("Arithmetics");
+            Console.WriteLine(GenericArithmetics.IsNumeric<float>());
+            Console.WriteLine(GenericArithmetics.Add(1.0f, 2.0f));
 
             Console.ReadLine();
         }
