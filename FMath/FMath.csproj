@@ -41,11 +41,20 @@
   <ItemGroup>
     <Compile Include="IStructure.cs" />
     <Compile Include="IAssignable.cs" />
+    <Compile Include="Linear\Generic\IMatrix.cs" />
+    <Compile Include="Linear\Generic\IMutableMatrix.cs" />
+    <Compile Include="Linear\Generic\IMutableVector.cs" />
+    <Compile Include="Linear\Generic\IVector.cs" />
+    <Compile Include="Linear\IMatrix.cs" />
+    <Compile Include="Linear\IMutableMatrix.cs" />
+    <Compile Include="Linear\IMutableVector.cs" />
+    <Compile Include="Linear\IVector.cs" />
+    <Compile Include="Linear\MatrixIndices.cs" />
+    <Compile Include="Linear\Static\Matrix.cs" />
+    <Compile Include="Linear\Static\Vector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Linear\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
