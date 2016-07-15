@@ -42,6 +42,7 @@
     <Compile Include="IStructure.cs" />
     <Compile Include="IAssignable.cs" />
     <Compile Include="Linear\Generic\IMatrix.cs" />
+    <Compile Include="Linear\Generic\Immutable\ArrayVector.cs" />
     <Compile Include="Linear\Generic\IMutableMatrix.cs" />
     <Compile Include="Linear\Generic\IMutableVector.cs" />
     <Compile Include="Linear\Generic\IVector.cs" />
