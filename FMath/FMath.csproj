@@ -55,6 +55,7 @@
     <Compile Include="Linear\Static\Matrix.cs" />
     <Compile Include="Linear\Static\Vector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UtilityExtensions.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

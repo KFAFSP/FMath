@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Globalization;
+using System.Text;
 
 using FMath.Linear.Generic;
 
@@ -201,6 +203,60 @@ namespace FMath.Linear.Static
 
         #region String formatting
         /// <summary>
+        /// Formats an element of the vector.
+        /// </summary>
+        /// <param name="AVector">The vector.</param>
+        /// <param name="AIndex">The index of the element.</param>
+        /// <param name="AElementFormat">The element format.</param>
+        /// <param name="AFormatProvider">The format provider.</param>
+        /// <returns>The formatted element.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when AVector is null.</exception>
+        [Pure]
+        public static string FormatElement(
+            IVector AVector,
+            int AIndex,
+            string AElementFormat = null,
+            IFormatProvider AFormatProvider = null)
+        {
+            if (AVector == null)
+                throw new ArgumentNullException("AVector");
+
+            return AVector.Get(AIndex).SafeFormat(AElementFormat, AFormatProvider);
+        }
+        /// <summary>
+        /// Linearizes the specified vector.
+        /// </summary>
+        /// <param name="AVector">The vector.</param>
+        /// <param name="AElementFormat">The element format.</param>
+        /// <param name="AFormatProvider">The format provider.</param>
+        /// <returns>A linear representation of the vector.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when AVector is null.</exception>
+        [Pure]
+        public static string FormatLinear(
+            IVector AVector,
+            string AElementFormat = null,
+            IFormatProvider AFormatProvider = null)
+        {
+            if (AVector == null)
+                throw new ArgumentNullException("AVector");
+
+            StringBuilder sbResult = new StringBuilder();
+
+            sbResult.Append("[");
+
+            for (int I = 0; I < AVector.Size; I++)
+            {
+                if (I != 0)
+                    sbResult.Append(", ");
+
+                sbResult.Append(Vector.FormatElement(AVector, I, AElementFormat, AFormatProvider));
+            }
+
+            sbResult.Append("]");
+
+            return sbResult.ToString();
+        }
+        /// <summary>
         /// Formats the specified vector.
         /// </summary>
         /// <param name="AVector">The vector.</param>
@@ -208,6 +264,31 @@ namespace FMath.Linear.Static
         /// <param name="AElementFormat">The element format.</param>
         /// <param name="AFormatProvider">The format provider.</param>
         /// <returns>The resulting string.</returns>
+        /// <remarks>
+        /// The following format options are supported:
+        /// <list type="table">
+        ///     <listheader>
+        ///         <term>AFormatMode</term>
+        ///         <description>Description</description>
+        ///     </listheader>
+        ///     <item>
+        ///         <term>null, "G"(CD), "L"(CD), "linear"(ci)</term>
+        ///         <description>Linearizes the vector.</description>
+        ///     </item>
+        ///     <item>
+        ///         <term>"T"(CD), "type"(ci)</term>
+        ///         <description>Outputs the element type and the size of the vector.</description>
+        ///     </item>
+        ///     <item>
+        ///         <term>'a'-'z'(CD)</term>
+        ///         <description>Outputs the specified named element (converted to zero-based index starting with a=0).</description>
+        ///     </item> 
+        ///     <item>
+        ///         <term>&lt;number&gt;</term>
+        ///         <description>Outputs the specified indexed element.</description>
+        ///     </item>   
+        /// </list>
+        /// </remarks>
         [Pure]
         public static string Format(
             IVector AVector,
@@ -215,8 +296,48 @@ namespace FMath.Linear.Static
             string AElementFormat = null,
             IFormatProvider AFormatProvider = null)
         {
-            // TODO : Implement.
-            return "";
+            if (AVector == null)
+                throw new ArgumentNullException("AVector");
+            if (AFormatMode == null)
+                AFormatMode = "G";
+            if (AElementFormat == null)
+                AElementFormat = "G";
+            if (AFormatProvider == null)
+                AFormatProvider = CultureInfo.CurrentCulture;
+
+            if (AFormatMode.Equals("G", StringComparison.Ordinal) ||
+                AFormatMode.Equals("L", StringComparison.Ordinal) ||
+                AFormatMode.Equals("linear", StringComparison.OrdinalIgnoreCase))
+            {
+                return String.Format(
+                    "{0}{{{1}}}",
+                    AVector.GetType().GetNeatName(),
+                    Vector.FormatLinear(AVector, AElementFormat, AFormatProvider));
+            }
+
+            if (AFormatMode.Equals("T", StringComparison.Ordinal) ||
+                AFormatMode.Equals("type", StringComparison.OrdinalIgnoreCase))
+            {
+                return String.Format(
+                    "{0}{{{1} x <{2}>}}",
+                    AVector.GetType().GetNeatName(),
+                    AVector.Size,
+                    AVector.ElementType.GetNeatName());
+            }
+
+            int iIndex;
+            if (AFormatMode.Length == 1 && Char.IsLower(AFormatMode[0]))
+            {
+                iIndex = Convert.ToInt32(AFormatMode[0]) - Convert.ToInt32('a');
+                return Vector.FormatElement(AVector, iIndex, AElementFormat, AFormatProvider);
+            }
+
+            if (int.TryParse(AFormatMode, out iIndex))
+            {
+                return Vector.FormatElement(AVector, iIndex, AElementFormat, AFormatProvider);
+            }
+
+            throw new FormatException("Unknown vector format string \"" + AFormatMode + "\"");
         }
         #endregion
     }
