@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Text;
 
 using FMath.Linear.Generic;
+using FMath.Linear.Generic.Immutable;
 
 namespace FMath.Linear.Static
 {
@@ -248,6 +249,63 @@ namespace FMath.Linear.Static
                 AComparer = EqualityComparer<TData>.Default;
 
             return Matrix.Hash(AMatrix, AComparer.GetHashCode);
+        }
+        #endregion
+
+        #region Copying
+        /// <summary>
+        /// Copies data from one matrix into another.
+        /// </summary>
+        /// <param name="ASource">The source matrix.</param>
+        /// <param name="ASourceOffset">The source offset indices.</param>
+        /// <param name="ATarget">The target matrix.</param>
+        /// <param name="ATargetOffset">The target offset indices.</param>
+        /// <param name="ACount">The number of elements to copy.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when one of the matrices is null.</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the operation would exceed the matrix bounds.</exception>
+        public static void Copy(
+            IMatrix ASource,
+            MatrixIndices ASourceOffset,
+            IMutableMatrix ATarget,
+            MatrixIndices ATargetOffset,
+            MatrixIndices ACount)
+        {
+            if (ASource == null)
+                throw new ArgumentNullException("ASource");
+            if (!ASource.AreDefined(ASourceOffset))
+                throw new ArgumentOutOfRangeException("ASourceOffset");
+
+            if (ATarget == null)
+                throw new ArgumentNullException("ATarget");
+            if (!ATarget.AreDefined(ATargetOffset))
+                throw new ArgumentOutOfRangeException("ATargetOffset");
+
+            if (ACount.M == 0 || ACount.N == 0)
+                return;
+            if (ACount.M < 0 || ACount.N < 0)
+                throw new ArgumentOutOfRangeException("ACount");
+            if (!ASource.AreDefined(ASourceOffset + ACount - MatrixIndices.One))
+                throw new ArgumentOutOfRangeException("ACount");
+            if (!ATarget.AreDefined(ATargetOffset + ACount - MatrixIndices.One))
+                throw new ArgumentOutOfRangeException("ACount");
+
+            for (int M = 0; M < ACount.M; M++)
+                for (int N = 0; N < ACount.N; N++)
+                {
+                    MatrixIndices miLocal = new MatrixIndices(M, N);
+                    ATarget.Set(ATargetOffset + miLocal, ASource.Get(ASourceOffset + miLocal));
+                }
+        }
+        /// <summary>
+        /// Copies all data from one matrix into another.
+        /// </summary>
+        /// <param name="ASource">The source matrix.</param>
+        /// <param name="ATarget">The target matrix.</param>
+        public static void Copy(
+            IMatrix ASource,
+            IMutableMatrix ATarget)
+        {
+            Matrix.Copy(ASource, MatrixIndices.Zero, ATarget, MatrixIndices.Zero, ASource.Size);
         }
         #endregion
 

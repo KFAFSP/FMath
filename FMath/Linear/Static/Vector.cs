@@ -201,6 +201,59 @@ namespace FMath.Linear.Static
         }
         #endregion
 
+        #region Copying
+        /// <summary>
+        /// Copies data from one vector into another.
+        /// </summary>
+        /// <param name="ASource">The source vector.</param>
+        /// <param name="ASourceOffset">The source offset index.</param>
+        /// <param name="ATarget">The target vector.</param>
+        /// <param name="ATargetOffset">The target offset index.</param>
+        /// <param name="ACount">The number of elements to copy.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when one of the vectors is null.</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the operation would exceed the vector bounds.</exception>
+        public static void Copy(
+            IVector ASource,
+            int ASourceOffset,
+            IMutableVector ATarget,
+            int ATargetOffset,
+            int ACount)
+        {
+            if (ASource == null)
+                throw new ArgumentNullException("ASource");
+            if (!ASource.IsDefined(ASourceOffset))
+                throw new ArgumentOutOfRangeException("ASourceOffset");
+
+            if (ATarget == null)
+                throw new ArgumentNullException("ATarget");
+            if (!ATarget.IsDefined(ATargetOffset))
+                throw new ArgumentOutOfRangeException("ATargetOffset");
+
+            if (ACount == 0)
+                return;
+            if (ACount < 0)
+                throw new ArgumentOutOfRangeException("ACount");
+            if (!ASource.IsDefined(ASourceOffset + ACount - 1))
+                throw new ArgumentOutOfRangeException("ACount");
+            if (!ATarget.IsDefined(ATargetOffset + ACount - 1))
+                throw new ArgumentOutOfRangeException("ACount");
+
+            for (int I = 0; I < ACount; I++)
+                ATarget.Set(ATargetOffset + I, ASource.Get(ASourceOffset + I));
+        }
+        /// <summary>
+        /// Copies all data from one vector into another.
+        /// </summary>
+        /// <param name="ASource">The source vector.</param>
+        /// <param name="ATarget">The target vector.</param>
+        public static void Copy(
+            IVector ASource,
+            IMutableVector ATarget)
+        {
+            Vector.Copy(ASource, 0, ATarget, 0, ASource.Size);
+        }
+        #endregion
+
         #region String formatting
         /// <summary>
         /// Formats an element of the vector.
