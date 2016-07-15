@@ -166,10 +166,8 @@ namespace FMath.Linear.Generic.Immutable
                 return false;
             if (AOther is ArrayVector<TData>)
                 return this.Equals((ArrayVector<TData>)AOther);
-            if (AOther is IVector<TData>)
-                return Vector.Equals(this, (IVector<TData>)AOther);
             if (AOther is IVector)
-                return Vector.Equals(this, (IVector)AOther);
+                return Vector.AreEqual(this, (IVector)AOther);
 
             return false;
         }
