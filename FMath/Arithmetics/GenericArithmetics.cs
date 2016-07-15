@@ -4,6 +4,11 @@ namespace FMath.Arithmetics
 {
     public static class GenericArithmetics
     {
+        public static bool IsNumeric<TType>()
+        {
+            return ArithmeticProvider<TType>.Exists;
+        }
+
         public static TType Add<TType>(TType ALeft, TType ARight)
         {
             ArithmeticProvider<TType> apProvider = ArithmeticProvider<TType>.Instance;
