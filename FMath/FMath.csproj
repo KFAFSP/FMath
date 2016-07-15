@@ -42,6 +42,10 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="IStructure.cs" />
     <Compile Include="IAssignable.cs" />
+    <Compile Include="Linear\Generic\Base\MatrixBase.cs" />
+    <Compile Include="Linear\Generic\Base\MutableMatrixBase.cs" />
+    <Compile Include="Linear\Generic\Base\MutableVectorBase.cs" />
+    <Compile Include="Linear\Generic\Base\VectorBase.cs" />
     <Compile Include="Linear\Generic\IMatrix.cs" />
     <Compile Include="Linear\Generic\Immutable\ArrayMatrix.cs" />
     <Compile Include="Linear\Generic\Immutable\ArrayVector.cs" />
