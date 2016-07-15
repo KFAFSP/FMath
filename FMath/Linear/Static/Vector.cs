@@ -264,6 +264,7 @@ namespace FMath.Linear.Static
         /// <param name="AElementFormat">The element format.</param>
         /// <param name="AFormatProvider">The format provider.</param>
         /// <returns>The resulting string.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when AVector is null.</exception>
         /// <remarks>
         /// The following format options are supported:
         /// <list type="table">
