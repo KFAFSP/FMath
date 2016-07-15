@@ -147,7 +147,7 @@ namespace FMath.Linear.Generic.Base
         }
         #endregion
 
-        #region System.Object overrides        
+        #region System.Object overrides
         /// <inheritDoc />
         public override bool Equals(object AOther)
         {
