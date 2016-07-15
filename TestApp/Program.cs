@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using FMath.Arithmetics;
 using FMath.Linear.Generic;
 using FMath.Linear.Generic.Immutable;
 using FMath.Linear.Static;
@@ -15,6 +16,8 @@ namespace TestApp
     {
         static void Main(string[] AArguments)
         {
+            RealArithmeticProvider<float> rapProvider = (RealArithmeticProvider<float>)ArithmeticProvider<float>.Instance;
+
             IVector<int> ivTest = new ArrayVector<int>(new int[]{1, 3, 9});
             
             Console.WriteLine("Vector");

@@ -39,6 +39,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arithmetics\ArithmeticProvider.cs" />
+    <Compile Include="Arithmetics\GenericArithmetics.cs" />
+    <Compile Include="Arithmetics\Providers\Real\FloatArithmetics.cs" />
+    <Compile Include="Arithmetics\Providers\Real\DecimalArithmetics.cs" />
+    <Compile Include="Arithmetics\Providers\Real\DoubleArithmetics.cs" />
+    <Compile Include="Arithmetics\RealArithmeticProvider.cs" />
+    <Compile Include="Arithmetics\IntegerArithmeticProvider.cs" />
+    <Compile Include="Arithmetics\NaturalArithmeticProvider.cs" />
+    <Compile Include="Arithmetics\Providers\Integer\ShortArithmetics.cs" />
+    <Compile Include="Arithmetics\Providers\Integer\IntArithmetics.cs" />
+    <Compile Include="Arithmetics\Providers\Integer\LongArithmetics.cs" />
+    <Compile Include="Arithmetics\Providers\Integer\SByteArithmetics.cs" />
+    <Compile Include="Arithmetics\Providers\Natural\ByteArithmetics.cs" />
+    <Compile Include="Arithmetics\Providers\Natural\UIntArithmetics.cs" />
+    <Compile Include="Arithmetics\Providers\Natural\ULongArithmetics.cs" />
+    <Compile Include="Arithmetics\Providers\Natural\UShortArithmetics.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="IStructure.cs" />
     <Compile Include="IAssignable.cs" />
@@ -65,9 +81,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UtilityExtensions.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Arithmetics\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
