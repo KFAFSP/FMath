@@ -17,10 +17,13 @@ namespace FMath.Arithmetics
                 .Where(AType => AType != typeof(ArithmeticProvider)
                     && typeof(ArithmeticProvider).IsAssignableFrom(AType)
                     && AType.IsClass
-                    && !AType.IsAbstract))
+                    && !AType.IsAbstract
+                    && AType.BaseType != null
+                    && AType.BaseType.IsConstructedGenericType
+                    && AType.BaseType.GenericTypeArguments.Length == 1))
             {
                 ArithmeticProvider._FProviders.Add(
-                    tProvider.GenericTypeArguments[0],
+                    tProvider.BaseType.GenericTypeArguments[0],
                     (ArithmeticProvider)tProvider.GetConstructor(new Type[]{}).Invoke(new object[]{}));
             }
         }
