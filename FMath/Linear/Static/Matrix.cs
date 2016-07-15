@@ -2,10 +2,23 @@
 
 namespace FMath.Linear.Static
 {
+    /// <summary>
+    /// Static class for handling <see cref="IMatrix"/> instances.
+    /// </summary>
     public static class Matrix
     {
+        /// <summary>
+        /// The salting prime used in the matrix hashing function.
+        /// </summary>
         public const int C_HashSaltPrime = 499;
 
+        /// <summary>
+        /// Checks whether the specified indices are defined in the matrix.
+        /// </summary>
+        /// <param name="AMatrix">The matrix.</param>
+        /// <param name="AIndices">The indices.</param>
+        /// <returns><c>true</c> if the indices are defined, <c>false</c> otherwise.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when AMatrix is null.</exception>
         public static bool AreDefined(
             this IMatrix AMatrix,
             MatrixIndices AIndices)
@@ -17,13 +30,24 @@ namespace FMath.Linear.Static
                    && AIndices.M < AMatrix.Size.M && AIndices.N < AMatrix.Size.N;
         }
 
-        #region Basic operations
+        #region Basic operations        
+        /// <summary>
+        /// Checks whether two matrices are equal by comparing their elements.
+        /// </summary>
+        /// <param name="ALeft">The left matrix.</param>
+        /// <param name="ARight">The right matrix.</param>
+        /// <returns><c>true</c> if they are equal, <c>false</c> otherwise.</returns>
         public static bool AreEqual(IMatrix ALeft, IMatrix ARight)
         {
             // TODO : Implement
             return false;
         }
-        public static int Hash(IMatrix AVector)
+        /// <summary>
+        /// Hashes the specified matrix.
+        /// </summary>
+        /// <param name="AMatrix">A matrix.</param>
+        /// <returns>An element-wise computed hash that also contains the size of the matrix.</returns>
+        public static int Hash(IMatrix AMatrix)
         {
             // TODO : Implement
             return 0;
