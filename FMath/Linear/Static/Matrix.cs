@@ -301,6 +301,7 @@ namespace FMath.Linear.Static
                 if (M != 0)
                     sbResult.Append(", ");
 
+                sbResult.Append("[");
                 for (int N = 0; N < AMatrix.Size.N; N++)
                 {
                     if (N != 0)
@@ -308,6 +309,7 @@ namespace FMath.Linear.Static
 
                     sbResult.Append(Matrix.FormatCell(AMatrix, new MatrixIndices(M, N), ACellFormat, AFormatProvider));
                 }
+                sbResult.Append("]");
             }
 
             sbResult.Append("]");
