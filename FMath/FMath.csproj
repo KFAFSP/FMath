@@ -52,6 +52,7 @@
     <Compile Include="Linear\Generic\IMutableMatrix.cs" />
     <Compile Include="Linear\Generic\IMutableVector.cs" />
     <Compile Include="Linear\Generic\IVector.cs" />
+    <Compile Include="Linear\Generic\Mutable\DenseVector.cs" />
     <Compile Include="Linear\IMatrix.cs" />
     <Compile Include="Linear\IMutableMatrix.cs" />
     <Compile Include="Linear\IMutableVector.cs" />
@@ -64,7 +65,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UtilityExtensions.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Arithmetics\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
