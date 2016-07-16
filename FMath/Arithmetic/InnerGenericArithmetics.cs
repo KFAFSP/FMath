@@ -4,6 +4,15 @@ namespace FMath.Arithmetic
 {
     public static class InnerGenericArithmetics
     {
+        public static bool IsNumeral<TNumeral>()
+        {
+            return ArithmeticProvider<TNumeral>.Exists;
+        }
+        public static bool IsNumeral<TNumeral>(TNumeral AObject)
+        {
+            return InnerGenericArithmetics.IsNumeral<TNumeral>();
+        }
+
         public static NumeralType Type<TNumeral>()
         {
             return ArithmeticProvider<TNumeral>.Instance.Type;
