@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Arithmetics\ArithmeticProvider.cs" />
     <Compile Include="Arithmetics\GenericArithmetics.cs" />
+    <Compile Include="Arithmetics\NumeralType.cs" />
     <Compile Include="Arithmetics\Providers\Real\FloatArithmetics.cs" />
     <Compile Include="Arithmetics\Providers\Real\DecimalArithmetics.cs" />
     <Compile Include="Arithmetics\Providers\Real\DoubleArithmetics.cs" />
