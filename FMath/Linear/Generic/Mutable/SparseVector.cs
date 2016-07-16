@@ -22,7 +22,7 @@ namespace FMath.Linear.Generic.Mutable
         /// <summary>
         /// Initializes a new instance of the <see cref="SparseVector{TData}"/> class.
         /// </summary>
-        /// <param name="ASize">The vector size.</param>
+        /// <param name="ASize">The size of the vector.</param>
         /// <param name="ADefault">The default element.</param>
         /// <param name="AComparer">The element comparer.</param>
         /// <param name="AElements">An optional initializer for the elements.</param>
