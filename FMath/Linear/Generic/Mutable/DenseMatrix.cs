@@ -10,7 +10,7 @@ namespace FMath.Linear.Generic.Mutable
     public class DenseMatrix<TData> :
         MutableMatrixBase<TData>
     {
-        private readonly TData[,] FCells;
+        protected readonly TData[,] FCells;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DenseMatrix{TData}"/> class.

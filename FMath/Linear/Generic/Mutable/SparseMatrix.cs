@@ -17,7 +17,7 @@ namespace FMath.Linear.Generic.Mutable
         private readonly TData FDefault;
         private readonly IEqualityComparer<TData> FComparer;
 
-        private readonly SortedList<MatrixIndices, TData> FCells;
+        protected readonly SortedList<MatrixIndices, TData> FCells;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SparseMatrix{TData}"/> class.

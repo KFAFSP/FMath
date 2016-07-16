@@ -17,7 +17,7 @@ namespace FMath.Linear.Generic.Mutable
         private readonly TData FDefault;
         private readonly IEqualityComparer<TData> FComparer;
 
-        private readonly SortedList<int, TData> FElements;
+        protected readonly SortedList<int, TData> FElements;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SparseVector{TData}"/> class.

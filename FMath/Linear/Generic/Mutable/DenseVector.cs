@@ -10,7 +10,7 @@ namespace FMath.Linear.Generic.Mutable
     public class DenseVector<TData> :
         MutableVectorBase<TData>
     {
-        private readonly TData[] FElements;
+        protected readonly TData[] FElements;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DenseVector{TData}"/> class.
