@@ -79,6 +79,8 @@
     <Compile Include="Linear\Static\ArrayMatrix.cs" />
     <Compile Include="Linear\Static\ArrayVector.cs" />
     <Compile Include="Linear\Static\Matrix.cs" />
+    <Compile Include="Linear\Static\NumericMatrix.cs" />
+    <Compile Include="Linear\Static\NumericVector.cs" />
     <Compile Include="Linear\Static\Vector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UtilityExtensions.cs" />

@@ -12,6 +12,20 @@ namespace FMath.Linear.Generic.Mutable
     {
         private readonly TData[] FElements;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DenseVector{TData}"/> class.
+        /// </summary>
+        /// <param name="ASize">The size of the vector.</param>
+        public DenseVector(int ASize)
+            : base(ASize)
+        {
+            this.FElements = new TData[3];
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DenseVector{TData}"/> class.
+        /// </summary>
+        /// <param name="AElements">The array of elements..</param>
+        /// <param name="ACopy">If set to <c>true</c> a copy of the element array will be created, otherwise the reference will be assigned.</param>
         public DenseVector(TData[] AElements, bool ACopy = true)
             : base(AElements != null ? AElements.Length : 0)
         {

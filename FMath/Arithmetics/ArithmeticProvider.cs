@@ -65,7 +65,10 @@ namespace FMath.Arithmetics
         /// <summary>
         /// Gets the instance of this provider.
         /// </summary>
-        public static readonly ArithmeticProvider<TType> Instance = ArithmeticProvider.Get<TType>();
+        /// <value>
+        /// The instance of this provider.
+        /// </value>
+        public static ArithmeticProvider<TType> Instance { get { return ArithmeticProvider.Get<TType>(); } }
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="ArithmeticProvider{TType}"/> is exists.
