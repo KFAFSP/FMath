@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Text;
 
 using FMath.Linear.Generic;
+using FMath.Linear.Generic.Proxy;
 
 namespace FMath.Linear.Static
 {
@@ -35,6 +36,19 @@ namespace FMath.Linear.Static
 
             return AIndex >= 0 && AIndex < AVector.Size;
         }
+
+        #region Casting        
+        /// <summary>
+        /// Casts the specified vector.
+        /// </summary>
+        /// <typeparam name="TOut">The type to cast to.</typeparam>
+        /// <param name="AVector">The vector.</param>
+        /// <returns>An immutable vector proxy.</returns>
+        public static IVector<TOut> Cast<TOut>(this IVector AVector)
+        {
+            return new VectorCasterProxy<TOut>(AVector);
+        }
+        #endregion
 
         #region Equality
         /// <summary>

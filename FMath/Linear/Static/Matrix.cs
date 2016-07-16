@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Text;
 
 using FMath.Linear.Generic;
+using FMath.Linear.Generic.Proxy;
 
 namespace FMath.Linear.Static
 {
@@ -36,6 +37,19 @@ namespace FMath.Linear.Static
             return AIndices.M >= 0 && AIndices.N >= 0
                    && AIndices.M < AMatrix.Size.M && AIndices.N < AMatrix.Size.N;
         }
+
+        #region Casting
+        /// <summary>
+        /// Casts the specified matrix.
+        /// </summary>
+        /// <typeparam name="TOut">The type to cast to.</typeparam>
+        /// <param name="AMatrix">The matrix.</param>
+        /// <returns>An immutable matrix proxy.</returns>
+        public static IMatrix<TOut> Cast<TOut>(this IMatrix AMatrix)
+        {
+            return new MatrixCasterProxy<TOut>(AMatrix);
+        }
+        #endregion
 
         #region Linear indexing
         /// <summary>
