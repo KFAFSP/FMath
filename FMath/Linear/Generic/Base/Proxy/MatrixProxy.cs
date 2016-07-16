@@ -34,7 +34,7 @@ namespace FMath.Linear.Generic.Base.Proxy
         /// <value>
         /// <c>true</c> if this matrix is mutable, <c>false</c> otherwise.
         /// </value>
-        public bool IsMutable
+        public virtual bool IsMutable
         {
             get { return this.FBaseMatrix is IMutableMatrix; }
         }
