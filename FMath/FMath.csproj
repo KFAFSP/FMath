@@ -73,6 +73,7 @@
     <Compile Include="Linear\IMutableVector.cs" />
     <Compile Include="Linear\IVector.cs" />
     <Compile Include="Linear\MatrixIndices.cs" />
+    <Compile Include="Linear\Numeric\Vec3Flt.cs" />
     <Compile Include="Linear\Numeric\Vec3Int.cs" />
     <Compile Include="Linear\Static\ArrayMatrix.cs" />
     <Compile Include="Linear\Static\ArrayVector.cs" />

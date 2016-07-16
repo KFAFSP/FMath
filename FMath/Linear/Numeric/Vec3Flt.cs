@@ -6,15 +6,15 @@ using FMath.Linear.Generic.Mutable;
 namespace FMath.Linear.Numeric
 {
     /// <summary>
-    /// Optimized vector class for integer vector of size 3.
+    /// Optimized vector class for float vector of size 3.
     /// </summary>
     /// <seealso cref="System.Int32" />
-    /// <seealso cref="Vec3Int" />
-    /// <seealso cref="Vec3Int" />
-    public class Vec3Int :
-        DenseVector<int>,
-        IEquatable<Vec3Int>,
-        IAssignable<Vec3Int>
+    /// <seealso cref="Vec3Flt" />
+    /// <seealso cref="Vec3Flt" />
+    public class Vec3Flt :
+        DenseVector<float>,
+        IEquatable<Vec3Flt>,
+        IAssignable<Vec3Flt>
     {
         #region Static factories
         /// <summary>
@@ -23,14 +23,14 @@ namespace FMath.Linear.Numeric
         /// <value>
         /// A zero vector.
         /// </value>
-        public static Vec3Int Zero { get { return new Vec3Int(0, 0, 0); } }
+        public static Vec3Flt Zero { get { return new Vec3Flt(0.0f, 0.0f, 0.0f); } }
         /// <summary>
         /// Gets a new one vector.
         /// </summary>
         /// <value>
         /// A one vector.
         /// </value>
-        public static Vec3Int One { get { return new Vec3Int(1, 1, 1); } }
+        public static Vec3Flt One { get { return new Vec3Flt(1.0f, 1.0f, 1.0f); } }
         #endregion
 
         #region Pure static operators
@@ -40,7 +40,7 @@ namespace FMath.Linear.Numeric
         /// <param name="ALeft">A vector.</param>
         /// <returns>A negated copy of the vector.</returns>
         [Pure]
-        public static Vec3Int Negate(Vec3Int ALeft)
+        public static Vec3Flt Negate(Vec3Flt ALeft)
         {
             return ALeft.Clone().Negate();
         }
@@ -51,7 +51,7 @@ namespace FMath.Linear.Numeric
         /// <param name="ARight">The right hand side.</param>
         /// <returns>The sum of the two vectors as a new vector.</returns>
         [Pure]
-        public static Vec3Int Add(Vec3Int ALeft, Vec3Int ARight)
+        public static Vec3Flt Add(Vec3Flt ALeft, Vec3Flt ARight)
         {
             return ALeft.Clone().Add(ARight);
         }
@@ -62,7 +62,7 @@ namespace FMath.Linear.Numeric
         /// <param name="ARight">The right hand side.</param>
         /// <returns>The difference of the two vectors as a new vector.</returns>
         [Pure]
-        public static Vec3Int Subtract(Vec3Int ALeft, Vec3Int ARight)
+        public static Vec3Flt Subtract(Vec3Flt ALeft, Vec3Flt ARight)
         {
             return ARight.Clone().Negate().Add(ALeft);
         }
@@ -73,9 +73,20 @@ namespace FMath.Linear.Numeric
         /// <param name="ARight">The right hand side.</param>
         /// <returns>The scaled vector as a new vector.</returns>
         [Pure]
-        public static Vec3Int Scale(Vec3Int ALeft, int ARight)
+        public static Vec3Flt Scale(Vec3Flt ALeft, float ARight)
         {
             return ALeft.Clone().Scale(ARight);
+        }
+        /// <summary>
+        /// Divides a vector by a scalar.
+        /// </summary>
+        /// <param name="ALeft">The left hand side.</param>
+        /// <param name="ARight">The right hand side.</param>
+        /// <returns>The divided vector as a new vector.</returns>
+        [Pure]
+        public static Vec3Flt Divide(Vec3Flt ALeft, float ARight)
+        {
+            return ALeft.Clone().Divide(ARight);
         }
         /// <summary>
         /// Masks the specified vector.
@@ -84,9 +95,20 @@ namespace FMath.Linear.Numeric
         /// <param name="ARight">The right hand side.</param>
         /// <returns>The masked vector as a new vector.</returns>
         [Pure]
-        public static Vec3Int Mask(Vec3Int ALeft, Vec3Int ARight)
+        public static Vec3Flt Mask(Vec3Flt ALeft, Vec3Flt ARight)
         {
             return ALeft.Clone().Mask(ARight);
+        }
+
+        /// <summary>
+        /// Gets a normalized copy of the specified vector.
+        /// </summary>
+        /// <param name="ALeft">A vector.</param>
+        /// <returns>A normalized copy of the vector.</returns>
+        [Pure]
+        public static Vec3Flt Normalize(Vec3Flt ALeft)
+        {
+            return ALeft.Clone().Normalize();
         }
 
         /// <summary>
@@ -96,11 +118,11 @@ namespace FMath.Linear.Numeric
         /// <param name="ARight">The right vector.</param>
         /// <returns>The scalar product of the two vectors.</returns>
         [Pure]
-        public static int ScalarProduct(Vec3Int ALeft, Vec3Int ARight)
+        public static float ScalarProduct(Vec3Flt ALeft, Vec3Flt ARight)
         {
-            return ALeft.FElements[0]*ARight.FElements[0]
-                   + ALeft.FElements[1]*ARight.FElements[1]
-                   + ALeft.FElements[2]*ARight.FElements[2];
+            return ALeft.FElements[0] * ARight.FElements[0]
+                   + ALeft.FElements[1] * ARight.FElements[1]
+                   + ALeft.FElements[2] * ARight.FElements[2];
         }
         /// <summary>
         /// Gets the vector product of two vectors.
@@ -109,29 +131,29 @@ namespace FMath.Linear.Numeric
         /// <param name="ARight">The right vector.</param>
         /// <returns>The vector product of the two vectors as a new vector.</returns>
         [Pure]
-        public static Vec3Int VectorProduct(Vec3Int ALeft, Vec3Int ARight)
+        public static Vec3Flt VectorProduct(Vec3Flt ALeft, Vec3Flt ARight)
         {
-            return new Vec3Int(
-                ALeft.FElements[1]*ARight.FElements[2]-ALeft.FElements[2]*ARight.FElements[1],
-                ALeft.FElements[2]*ARight.FElements[0]-ALeft.FElements[0]*ARight.FElements[2],
-                ALeft.FElements[0]*ARight.FElements[1]-ALeft.FElements[1]*ARight.FElements[0]);
+            return new Vec3Flt(
+                ALeft.FElements[1] * ARight.FElements[2] - ALeft.FElements[2] * ARight.FElements[1],
+                ALeft.FElements[2] * ARight.FElements[0] - ALeft.FElements[0] * ARight.FElements[2],
+                ALeft.FElements[0] * ARight.FElements[1] - ALeft.FElements[1] * ARight.FElements[0]);
         }
         #endregion
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Vec3Int"/> class.
+        /// Initializes a new instance of the <see cref="Vec3Flt"/> class.
         /// </summary>
-        public Vec3Int()
+        public Vec3Flt()
             : base(3)
         { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="Vec3Int"/> class.
+        /// Initializes a new instance of the <see cref="Vec3Flt"/> class.
         /// </summary>
         /// <param name="AX">The X value.</param>
         /// <param name="AY">The Y value.</param>
         /// <param name="AZ">The Z value.</param>
-        public Vec3Int(int AX, int AY, int AZ)
-            : base(new []{AX, AY, AZ}, false)
+        public Vec3Flt(float AX, float AY, float AZ)
+            : base(new[] { AX, AY, AZ }, false)
         { }
 
         /// <summary>
@@ -139,9 +161,9 @@ namespace FMath.Linear.Numeric
         /// </summary>
         /// <returns>A copy of this vector.</returns>
         [Pure]
-        public new Vec3Int Clone()
+        public new Vec3Flt Clone()
         {
-            return new Vec3Int(this.FElements[0], this.FElements[1], this.FElements[2]);
+            return new Vec3Flt(this.FElements[0], this.FElements[1], this.FElements[2]);
         }
 
         #region Mutating chainable operators
@@ -149,7 +171,7 @@ namespace FMath.Linear.Numeric
         /// Negates this vector.
         /// </summary>
         /// <returns>A reference to this vector.</returns>
-        public Vec3Int Negate()
+        public Vec3Flt Negate()
         {
             this.FElements[0] = -this.FElements[0];
             this.FElements[1] = -this.FElements[1];
@@ -162,7 +184,7 @@ namespace FMath.Linear.Numeric
         /// <param name="ARight">The other vector.</param>
         /// <returns>A reference to this vector.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when ARight is null.</exception>
-        public Vec3Int Add(Vec3Int ARight)
+        public Vec3Flt Add(Vec3Flt ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -177,11 +199,23 @@ namespace FMath.Linear.Numeric
         /// </summary>
         /// <param name="ARight">The scalar.</param>
         /// <returns>A reference to this vector.</returns>
-        public Vec3Int Scale(int ARight)
+        public Vec3Flt Scale(float ARight)
         {
             this.FElements[0] *= ARight;
             this.FElements[1] *= ARight;
             this.FElements[2] *= ARight;
+            return this;
+        }
+        /// <summary>
+        /// Divides this vector by a scalar.
+        /// </summary>
+        /// <param name="ARight">The scalar.</param>
+        /// <returns>A reference to this vector.</returns>
+        public Vec3Flt Divide(float ARight)
+        {
+            this.FElements[0] /= ARight;
+            this.FElements[1] /= ARight;
+            this.FElements[2] /= ARight;
             return this;
         }
         /// <summary>
@@ -190,7 +224,7 @@ namespace FMath.Linear.Numeric
         /// <param name="ARight">The mask.</param>
         /// <returns>A reference to this vector.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when ARight is null.</exception>
-        public Vec3Int Mask(Vec3Int ARight)
+        public Vec3Flt Mask(Vec3Flt ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -198,6 +232,15 @@ namespace FMath.Linear.Numeric
             this.FElements[0] *= ARight.FElements[0];
             this.FElements[1] *= ARight.FElements[1];
             this.FElements[2] *= ARight.FElements[2];
+            return this;
+        }
+        /// <summary>
+        /// Normalizes this vector.
+        /// </summary>
+        /// <returns>A reference to this vector.</returns>
+        public Vec3Flt Normalize()
+        {
+            this.Divide(this.Length());
             return this;
         }
         #endregion
@@ -208,7 +251,7 @@ namespace FMath.Linear.Numeric
         /// </summary>
         /// <returns>The sum of all elements.</returns>
         [Pure]
-        public int Sum()
+        public float Sum()
         {
             return this.FElements[0] + this.FElements[1] + this.FElements[2];
         }
@@ -217,15 +260,24 @@ namespace FMath.Linear.Numeric
         /// </summary>
         /// <returns>The product of all elements.</returns>
         [Pure]
-        public int Product()
+        public float Product()
         {
-            return this.FElements[0]*this.FElements[1]*this.FElements[2];
+            return this.FElements[0] * this.FElements[1] * this.FElements[2];
+        }
+        /// <summary>
+        /// Gets the euclidean norm of this vector.
+        /// </summary>
+        /// <returns>The euclidean norm.</returns>
+        [Pure]
+        public float Length()
+        {
+            return (float)Math.Sqrt(Vec3Flt.ScalarProduct(this, this));
         }
         #endregion
 
-        #region IAssignable<Vec3Int>
+        #region IAssignable<Vec3Flt>
         /// <inheritDoc />
-        public void Assign(Vec3Int AFrom)
+        public void Assign(Vec3Flt AFrom)
         {
             if (AFrom == null)
                 throw new ArgumentNullException("AFrom");
@@ -236,10 +288,10 @@ namespace FMath.Linear.Numeric
         }
         #endregion
 
-        #region IEquatable<Vec3Int>
+        #region IEquatable<Vec3Flt>
         /// <inheritDoc />
         [Pure]
-        public bool Equals(Vec3Int AOther)
+        public bool Equals(Vec3Flt AOther)
         {
             if (AOther == null)
                 return false;
@@ -254,26 +306,26 @@ namespace FMath.Linear.Numeric
         /// <inheritDoc />
         public override bool Equals(object AOther)
         {
-            if (AOther is Vec3Int)
-                return this.Equals((Vec3Int)AOther);
+            if (AOther is Vec3Flt)
+                return this.Equals((Vec3Flt)AOther);
 
             return base.Equals(AOther);
         }
         #endregion
 
-        public int X
+        public float X
         {
             [Pure]
             get { return this.FElements[0]; }
             set { this.FElements[0] = value; }
         }
-        public int Y
+        public float Y
         {
             [Pure]
             get { return this.FElements[1]; }
             set { this.FElements[1] = value; }
         }
-        public int Z
+        public float Z
         {
             [Pure]
             get { return this.FElements[2]; }
@@ -281,14 +333,14 @@ namespace FMath.Linear.Numeric
         }
 
         #region Static operator overloads
-        public static bool operator ==(Vec3Int ALeft, Vec3Int ARight)
+        public static bool operator ==(Vec3Flt ALeft, Vec3Flt ARight)
         {
             if (ALeft == null || ARight == null)
                 return false;
 
             return ALeft.Equals(ARight);
         }
-        public static bool operator !=(Vec3Int ALeft, Vec3Int ARight)
+        public static bool operator !=(Vec3Flt ALeft, Vec3Flt ARight)
         {
             if (ALeft == null || ARight == null)
                 return false;
@@ -296,21 +348,25 @@ namespace FMath.Linear.Numeric
             return !ALeft.Equals(ARight);
         }
 
-        public static Vec3Int operator -(Vec3Int ALeft)
+        public static Vec3Flt operator -(Vec3Flt ALeft)
         {
-            return Vec3Int.Negate(ALeft);
+            return Vec3Flt.Negate(ALeft);
         }
-        public static Vec3Int operator +(Vec3Int ALeft, Vec3Int ARight)
+        public static Vec3Flt operator +(Vec3Flt ALeft, Vec3Flt ARight)
         {
-            return Vec3Int.Add(ALeft, ARight);
+            return Vec3Flt.Add(ALeft, ARight);
         }
-        public static Vec3Int operator -(Vec3Int ALeft, Vec3Int ARight)
+        public static Vec3Flt operator -(Vec3Flt ALeft, Vec3Flt ARight)
         {
-            return Vec3Int.Subtract(ALeft, ARight);
+            return Vec3Flt.Subtract(ALeft, ARight);
         }
-        public static Vec3Int operator *(Vec3Int ALeft, int ARight)
+        public static Vec3Flt operator *(Vec3Flt ALeft, float ARight)
         {
-            return Vec3Int.Scale(ALeft, ARight);
+            return Vec3Flt.Scale(ALeft, ARight);
+        }
+        public static Vec3Flt operator /(Vec3Flt ALeft, float ARight)
+        {
+            return Vec3Flt.Divide(ALeft, ARight);
         }
         #endregion
     }
