@@ -74,6 +74,7 @@
     <Compile Include="Linear\Generic\IMutableVector.cs" />
     <Compile Include="Linear\Generic\IVector.cs" />
     <Compile Include="Linear\Generic\Mutable\DenseVector.cs" />
+    <Compile Include="Linear\Generic\Mutable\SparseVector.cs" />
     <Compile Include="Linear\IMatrix.cs" />
     <Compile Include="Linear\IMutableMatrix.cs" />
     <Compile Include="Linear\IMutableVector.cs" />
