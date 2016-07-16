@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Arithmetic\ArithmeticProvider.cs" />
     <Compile Include="Arithmetic\FractionalArithmeticProvider.cs" />
+    <Compile Include="Arithmetic\InnerGenericArithmetics.cs" />
     <Compile Include="Arithmetic\IntegerArithmeticProvider.cs" />
     <Compile Include="Arithmetic\NaturalArithmeticProvider.cs" />
     <Compile Include="Arithmetic\NumeralType.cs" />
