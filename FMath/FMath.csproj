@@ -39,6 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arithmetic\ArithmeticProvider.cs" />
+    <Compile Include="Arithmetic\FractionalArithmeticProvider.cs" />
+    <Compile Include="Arithmetic\IntegerArithmeticProvider.cs" />
+    <Compile Include="Arithmetic\NaturalArithmeticProvider.cs" />
+    <Compile Include="Arithmetic\NumeralType.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="IStructure.cs" />
     <Compile Include="IAssignable.cs" />
