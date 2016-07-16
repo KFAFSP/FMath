@@ -12,6 +12,12 @@
             return unchecked (ALeft * ARight) % uint.MaxValue;
         }
 
+        public override uint IntDivision(uint ALeft, uint ARight, out uint ARest)
+        {
+            ARest = ALeft % ARight;
+            return ALeft / ARight;
+        }
+
         public override uint Zero { get { return 0; } }
         public override uint One { get { return 1; } }
     }

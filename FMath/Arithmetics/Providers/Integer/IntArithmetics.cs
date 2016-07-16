@@ -11,6 +11,13 @@ namespace FMath.Arithmetics.Providers.Integer
         {
             return unchecked(ALeft * ARight) % int.MaxValue;
         }
+
+        public override int IntDivision(int ALeft, int ARight, out int ARest)
+        {
+            ARest = ALeft % ARight;
+            return ALeft / ARight;
+        }
+
         public override int Negate(int ALeft)
         {
             return unchecked(-ALeft) % int.MaxValue;

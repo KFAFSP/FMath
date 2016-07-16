@@ -28,6 +28,16 @@ namespace FMath.Arithmetics
         public abstract TType Multiply(TType ALeft, TType ARight);
 
         /// <summary>
+        /// Performs an integer division of the two specified arguments.
+        /// </summary>
+        /// <param name="ALeft">The left hand side.</param>
+        /// <param name="ARight">The right hand side.</param>
+        /// <param name="ARest">The division rest.</param>
+        /// <returns>The integer part of the quotient.</returns>
+        [Pure]
+        public abstract TType IntDivision(TType ALeft, TType ARight, out TType ARest);
+
+        /// <summary>
         /// Gets the neutral element of the addition.
         /// </summary>
         /// <value>

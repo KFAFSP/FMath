@@ -55,6 +55,7 @@
     <Compile Include="Arithmetics\Providers\Natural\UIntArithmetics.cs" />
     <Compile Include="Arithmetics\Providers\Natural\ULongArithmetics.cs" />
     <Compile Include="Arithmetics\Providers\Natural\UShortArithmetics.cs" />
+    <Compile Include="Arithmetics\RoundingMode.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="IStructure.cs" />
     <Compile Include="IAssignable.cs" />

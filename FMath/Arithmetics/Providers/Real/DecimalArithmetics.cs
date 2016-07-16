@@ -1,4 +1,6 @@
-﻿namespace FMath.Arithmetics.Providers.Real
+﻿using System;
+
+namespace FMath.Arithmetics.Providers.Real
 {
     public sealed class DecimalArithmetics :
         RealArithmeticProvider<decimal>
@@ -11,10 +13,35 @@
         {
             return ALeft * ARight;
         }
+
+        public override decimal IntDivision(decimal ALeft, decimal ARight, out decimal ARest)
+        {
+            ARest = ALeft % ARight;
+            return ALeft / ARight;
+        }
+
         public override decimal Negate(decimal ALeft)
         {
             return -ALeft;
         }
+
+        public override decimal Round(decimal ALeft, RoundingMode AMode = RoundingMode.Down)
+        {
+            switch (AMode)
+            {
+                case RoundingMode.Down:
+                    return Math.Floor(ALeft);
+                case RoundingMode.Up:
+                    return Math.Ceiling(ALeft);
+                case RoundingMode.ClosestUp:
+                    return Math.Round(ALeft, MidpointRounding.AwayFromZero);
+                case RoundingMode.ClosestDown:
+                    return Math.Round(ALeft, MidpointRounding.ToEven);
+                default:
+                    throw new ArgumentException("Unknown rounding mode.");
+            }
+        }
+
         public override decimal Invert(decimal ALeft)
         {
             return 1.0m / ALeft;

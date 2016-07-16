@@ -12,6 +12,12 @@ namespace FMath.Arithmetics.Providers.Natural
             return (ushort)(unchecked (ALeft * ARight) % ushort.MaxValue);
         }
 
+        public override ushort IntDivision(ushort ALeft, ushort ARight, out ushort ARest)
+        {
+            ARest = (ushort)(ALeft % ARight);
+            return (ushort)(ALeft / ARight);
+        }
+
         public override ushort Zero { get { return 0; } }
         public override ushort One { get { return 1; } }
     }

@@ -11,6 +11,13 @@
         {
             return (short)(unchecked(ALeft * ARight) % short.MaxValue);
         }
+
+        public override short IntDivision(short ALeft, short ARight, out short ARest)
+        {
+            ARest = (short)(ALeft % ARight);
+            return (short)(ALeft / ARight);
+        }
+
         public override short Negate(short ALeft)
         {
             return (short)(unchecked(-ALeft) % short.MaxValue);

@@ -11,6 +11,13 @@
         {
             return (sbyte)(unchecked(ALeft * ARight) % sbyte.MaxValue);
         }
+
+        public override sbyte IntDivision(sbyte ALeft, sbyte ARight, out sbyte ARest)
+        {
+            ARest = (sbyte)(ALeft % ARight);
+            return (sbyte)(ALeft / ARight);
+        }
+
         public override sbyte Negate(sbyte ALeft)
         {
             return (sbyte)(unchecked(-ALeft) % sbyte.MaxValue);

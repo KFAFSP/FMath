@@ -11,6 +11,13 @@
         {
             return unchecked(ALeft * ARight) % long.MaxValue;
         }
+
+        public override long IntDivision(long ALeft, long ARight, out long ARest)
+        {
+            ARest = ALeft % ARight;
+            return ALeft / ARight;
+        }
+
         public override long Negate(long ALeft)
         {
             return unchecked(-ALeft) % long.MaxValue;
