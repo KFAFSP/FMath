@@ -401,6 +401,9 @@ namespace FMath.Linear.Static
             if (AAddition == null)
                 throw new ArgumentNullException("AAddition");
 
+            if (object.ReferenceEquals(ALeft, AOutput) || object.ReferenceEquals(ARight, AOutput))
+                throw new ArgumentException("Matrix multiplication cannot be performed in-place.");
+
             if (ALeft.Size.N != ARight.Size.M)
                 throw new ArgumentException("Matrices are not multiplyable.");
             if (AOutput.Size.M != ALeft.Size.M || AOutput.Size.N != ARight.Size.N)
