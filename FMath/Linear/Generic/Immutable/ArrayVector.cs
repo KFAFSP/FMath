@@ -8,25 +8,12 @@ using FMath.Linear.Static;
 
 namespace FMath.Linear.Generic.Immutable
 {
-    /// <summary>
-    /// Immutable vector type.
-    /// </summary>
-    /// <typeparam name="TData">The type of the stored data.</typeparam>
-    /// <seealso cref="IVector{TData}" />
-    /// <seealso cref="System.IFormattable" />
-    /// <seealso cref="System.IEquatable{ArrayVector{TData}}" />
     public struct ArrayVector<TData> :
         IVector<TData>,
         IFormattable,
         IEquatable<ArrayVector<TData>>
     {
         private readonly TData[] FElements;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ArrayVector{TData}"/> struct.
-        /// </summary>
-        /// <param name="AElements">The array of elements.</param>
-        /// <param name="ACopy">If set to <c>true</c> the array will be flat-copied, otherwise the array will be assigned by reference.</param>
         public ArrayVector(
             TData[] AElements,
             bool ACopy = true)
@@ -37,7 +24,6 @@ namespace FMath.Linear.Generic.Immutable
         }
 
         #region IStructure
-        /// <inheritdoc />
         public Type ElementType
         {
             [Pure]
@@ -46,7 +32,6 @@ namespace FMath.Linear.Generic.Immutable
         #endregion
 
         #region ICloneable
-        /// <inheritdoc />
         [Pure]
         public object Clone()
         {
@@ -55,7 +40,6 @@ namespace FMath.Linear.Generic.Immutable
         #endregion
 
         #region IEnumerable
-        /// <inheritdoc />
         [Pure]
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -64,21 +48,16 @@ namespace FMath.Linear.Generic.Immutable
         #endregion
 
         #region IVector
-        /// <inheritdoc />
         [Pure]
         object IVector.Get(int AIndex)
         {
             return this.Get(AIndex);
         }
-
-        /// <inheritdoc />
         public int Size
         {
             [Pure]
             get { return this.FElements == null ? 0 : this.FElements.Length; }
         }
-
-        /// <inheritdoc />
         object IVector.this[int AIndex]
         {
             [Pure]
@@ -87,7 +66,6 @@ namespace FMath.Linear.Generic.Immutable
         #endregion
 
         #region IEnumerable<TData>
-        /// <inheritdoc />
         [Pure]
         public IEnumerator<TData> GetEnumerator()
         {
@@ -98,7 +76,6 @@ namespace FMath.Linear.Generic.Immutable
         #endregion
 
         #region IVector<TData>
-        /// <inheritdoc />
         [Pure]
         public TData Get(int AIndex)
         {
@@ -107,8 +84,6 @@ namespace FMath.Linear.Generic.Immutable
 
             return this.FElements[AIndex];
         }
-
-        /// <inheritdoc />
         public TData this[int AIndex]
         {
             [Pure]
@@ -117,7 +92,6 @@ namespace FMath.Linear.Generic.Immutable
         #endregion
 
         #region IFormattable
-        /// <inheritdoc />
         [Pure]
         public string ToString(string AFormat, IFormatProvider AFormatProvider)
         {
@@ -137,7 +111,6 @@ namespace FMath.Linear.Generic.Immutable
         #endregion
 
         #region IEquatable<ArrayVector<TData>>
-        /// <inheritdoc />
         [Pure]
         public bool Equals(ArrayVector<TData> AOther)
         {
@@ -159,7 +132,6 @@ namespace FMath.Linear.Generic.Immutable
         #endregion
 
         #region System.Object overrides
-        /// <inheritdoc />
         public override bool Equals(object AOther)
         {
             if (AOther == null)
@@ -171,12 +143,10 @@ namespace FMath.Linear.Generic.Immutable
 
             return false;
         }
-        /// <inheritdoc />
         public override int GetHashCode()
         {
             return Vector.Hash(this);
         }
-        /// <inheritdoc />
         public override string ToString()
         {
             return this.ToString(null, null);

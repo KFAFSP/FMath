@@ -6,11 +6,6 @@ using FMath.Linear.Static;
 
 namespace FMath.Linear.Generic.Mutable
 {
-    /// <summary>
-    /// Mutable vector that is implemented using a lookup.
-    /// </summary>
-    /// <typeparam name="TData">The type of the stored data.</typeparam>
-    /// <seealso cref="MutableVectorBase{TData}" />
     public class SparseVector<TData> :
         MutableVectorBase<TData>
     {
@@ -18,14 +13,6 @@ namespace FMath.Linear.Generic.Mutable
         private readonly IEqualityComparer<TData> FComparer;
 
         protected readonly SortedList<int, TData> FElements;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SparseVector{TData}"/> class.
-        /// </summary>
-        /// <param name="ASize">The size of the vector.</param>
-        /// <param name="ADefault">The default element.</param>
-        /// <param name="AComparer">The element comparer.</param>
-        /// <param name="AElements">An optional initializer for the elements.</param>
         public SparseVector(
             int ASize,
             TData ADefault = default(TData),
@@ -62,29 +49,14 @@ namespace FMath.Linear.Generic.Mutable
             else
                 this.FElements[AIndex] = AData;
         }
-
-        /// <inheritDoc />
         public override object Clone()
         {
             return new SparseVector<TData>(this.Size, this.Default, this.Comparer, this.FElements);
         }
-
-        /// <summary>
-        /// Gets the default element.
-        /// </summary>
-        /// <value>
-        /// The default element.
-        /// </value>
         public TData Default
         {
             get { return this.FDefault; }
         }
-        /// <summary>
-        /// Gets the element comparer.
-        /// </summary>
-        /// <value>
-        /// The element comparer.
-        /// </value>
         public IEqualityComparer<TData> Comparer
         {
             get { return this.FComparer; }

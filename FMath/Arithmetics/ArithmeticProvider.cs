@@ -5,9 +5,6 @@ using System.Reflection;
 
 namespace FMath.Arithmetics
 {
-    /// <summary>
-    /// Abstract base class for arithmetic providers.
-    /// </summary>
     public abstract class ArithmeticProvider
     {
         private static Dictionary<Type, ArithmeticProvider> _FProviders;
@@ -32,12 +29,6 @@ namespace FMath.Arithmetics
                     (ArithmeticProvider)tProvider.GetConstructor(new Type[]{}).Invoke(new object[]{}));
             }
         }
-
-        /// <summary>
-        /// Gets the provider for the specified type.
-        /// </summary>
-        /// <param name="AType">The type.</param>
-        /// <returns>The provider instance, or null.</returns>
         public static ArithmeticProvider Get(Type AType)
         {
             ArithmeticProvider apProvider;
@@ -46,11 +37,6 @@ namespace FMath.Arithmetics
 
             return apProvider;
         }
-        /// <summary>
-        /// Gets the strongly typed provider for the specified type.
-        /// </summary>
-        /// <typeparam name="TNumeral">The type.</typeparam>
-        /// <returns>The provider instance, or null.</returns>
         public static ArithmeticProvider<TNumeral> Get<TNumeral>()
         {
             return ArithmeticProvider.Get(typeof(TNumeral)) as ArithmeticProvider<TNumeral>;
@@ -58,20 +44,9 @@ namespace FMath.Arithmetics
 
         public abstract NumeralType NumberType { get; }
     }
-
-    /// <summary>
-    /// Abstract generic base class for arithmetic providers.
-    /// </summary>
-    /// <typeparam name="TNumeral">The type that is provided for.</typeparam>
     public abstract class ArithmeticProvider<TNumeral> :
         ArithmeticProvider
     {
-        /// <summary>
-        /// Gets the instance of this provider.
-        /// </summary>
-        /// <value>
-        /// The instance of this provider.
-        /// </value>
         public static ArithmeticProvider<TNumeral> Instance { get { return ArithmeticProvider.Get<TNumeral>(); } }
 
         public static NaturalArithmeticProvider<TNumeral> AsNatural

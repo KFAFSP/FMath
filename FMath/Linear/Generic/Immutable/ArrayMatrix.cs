@@ -5,25 +5,12 @@ using FMath.Linear.Static;
 
 namespace FMath.Linear.Generic.Immutable
 {
-    /// <summary>
-    /// Immutable matrix type.
-    /// </summary>
-    /// <typeparam name="TData">The type of the stored data.</typeparam>
-    /// <seealso cref="IMatrix{TData}" />
-    /// <seealso cref="System.IFormattable" />
-    /// <seealso cref="System.IEquatable{ArrayMatrix{TData}}" />
     public struct ArrayMatrix<TData> :
         IMatrix<TData>,
         IFormattable,
         IEquatable<ArrayMatrix<TData>>
     {
         private readonly TData[,] FElements;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ArrayMatrix{TData}"/> struct.
-        /// </summary>
-        /// <param name="AElements">The array of elements.</param>
-        /// <param name="ACopy">If set to <c>true</c> the array will be flat-copied, otherwise the array will be assigned by reference.</param>
         public ArrayMatrix(
             TData[,] AElements,
             bool ACopy = true)
@@ -34,7 +21,6 @@ namespace FMath.Linear.Generic.Immutable
         }
 
         #region IStructure
-        /// <inheritdoc />
         public Type ElementType
         {
             [Pure]
@@ -43,7 +29,6 @@ namespace FMath.Linear.Generic.Immutable
         #endregion
 
         #region ICloneable
-        /// <inheritdoc />
         [Pure]
         public object Clone()
         {
@@ -52,14 +37,11 @@ namespace FMath.Linear.Generic.Immutable
         #endregion
 
         #region IMatrix
-        /// <inheritdoc />
         [Pure]
         object IMatrix.Get(MatrixIndices AIndices)
         {
             return this.Get(AIndices);
         }
-
-        /// <inheritdoc />
         public MatrixIndices Size
         {
             [Pure]
@@ -70,8 +52,6 @@ namespace FMath.Linear.Generic.Immutable
                     : new MatrixIndices(this.FElements.GetLength(0), this.FElements.GetLength(1));
             }
         }
-
-        /// <inheritdoc />
         object IMatrix.this[int ARow, int ACol]
         {
             [Pure]
@@ -80,7 +60,6 @@ namespace FMath.Linear.Generic.Immutable
         #endregion
 
         #region IMatrix<TData>
-        /// <inheritdoc />
         [Pure]
         public TData Get(MatrixIndices AIndices)
         {
@@ -89,8 +68,6 @@ namespace FMath.Linear.Generic.Immutable
 
             return this.FElements[AIndices.M, AIndices.N];
         }
-
-        /// <inheritdoc />
         public TData this[int ARow, int ACol]
         {
             [Pure]
@@ -99,7 +76,6 @@ namespace FMath.Linear.Generic.Immutable
         #endregion
 
         #region IFormattable
-        /// <inheritdoc />
         [Pure]
         public string ToString(string AFormat, IFormatProvider AFormatProvider)
         {
@@ -119,7 +95,6 @@ namespace FMath.Linear.Generic.Immutable
         #endregion
 
         #region IEquatable<ArrayMatrix<TData>>
-        /// <inheritdoc />
         [Pure]
         public bool Equals(ArrayMatrix<TData> AOther)
         {
@@ -143,7 +118,6 @@ namespace FMath.Linear.Generic.Immutable
         #endregion
 
         #region System.Object overrides
-        /// <inheritdoc />
         public override bool Equals(object AOther)
         {
             if (AOther == null)
@@ -155,12 +129,10 @@ namespace FMath.Linear.Generic.Immutable
 
             return false;
         }
-        /// <inheritdoc />
         public override int GetHashCode()
         {
             return Matrix.Hash(this);
         }
-        /// <inheritdoc />
         public override string ToString()
         {
             return this.ToString(null, null);

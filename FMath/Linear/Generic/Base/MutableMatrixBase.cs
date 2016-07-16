@@ -5,13 +5,6 @@ using FMath.Linear.Static;
 
 namespace FMath.Linear.Generic.Base
 {
-    /// <summary>
-    /// Abstract generic base class for mutable matrix types.
-    /// </summary>
-    /// <typeparam name="TData">The type of the stored data.</typeparam>
-    /// <seealso cref="MatrixBase{TData}" />
-    /// <seealso cref="IMutableMatrix{TData}" />
-    /// <seealso cref="FMath.IAssignable{MatrixBase{TData}}" />
     public abstract class MutableMatrixBase<TData> :
         MatrixBase<TData>,
         IMutableMatrix<TData>,
@@ -24,7 +17,6 @@ namespace FMath.Linear.Generic.Base
         protected internal abstract void DirectSet(MatrixIndices AIndices, TData AData);
 
         #region IAssignable<IMatrix>
-        /// <inheritDoc />
         public void Assign(IMatrix AFrom)
         {
             if (AFrom == null)
@@ -35,7 +27,6 @@ namespace FMath.Linear.Generic.Base
         #endregion
 
         #region IMutableMatrix
-        /// <inheritDoc />
         void IMutableMatrix.Set(MatrixIndices AIndices, object AData)
         {
             if (!AData.Matches<TData>())
@@ -43,8 +34,6 @@ namespace FMath.Linear.Generic.Base
 
             this.Set(AIndices, (TData)AData);
         }
-
-        /// <inheritDoc />
         object IMutableMatrix.this[int ARow, int ACol]
         {
             [Pure]
@@ -54,7 +43,6 @@ namespace FMath.Linear.Generic.Base
         #endregion
 
         #region IMutableMatrix<TData>
-        /// <inheritDoc />
         public void Set(MatrixIndices AIndices, TData AData)
         {
             if (!this.AreDefined(AIndices))
@@ -62,8 +50,6 @@ namespace FMath.Linear.Generic.Base
 
             this.DirectSet(AIndices, AData);
         }
-
-        /// <inheritDoc />
         public new TData this[int ARow, int ACol]
         {
             [Pure]
@@ -73,7 +59,6 @@ namespace FMath.Linear.Generic.Base
         #endregion
     
         #region IAssignable<MatrixBase<TData>>
-        /// <inheritDoc />
         public void Assign(MatrixBase<TData> AOther)
         {
             if (AOther == null)

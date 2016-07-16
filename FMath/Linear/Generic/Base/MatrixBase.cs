@@ -5,13 +5,6 @@ using FMath.Linear.Static;
 
 namespace FMath.Linear.Generic.Base
 {
-    /// <summary>
-    /// Abstract generic base class for matrix types.
-    /// </summary>
-    /// <typeparam name="TData">The type of the stored data.</typeparam>
-    /// <seealso cref="IMatrix{TData}" />
-    /// <seealso cref="System.IFormattable" />
-    /// <seealso cref="System.IEquatable{MatrixBase{TData}}" />
     public abstract class MatrixBase<TData> :
         IMatrix<TData>,
         IFormattable,
@@ -32,7 +25,6 @@ namespace FMath.Linear.Generic.Base
         protected internal abstract TData DirectGet(MatrixIndices AIndices);
 
         #region IStructure
-        /// <inheritDoc />
         public Type ElementType
         {
             [Pure]
@@ -41,27 +33,21 @@ namespace FMath.Linear.Generic.Base
         #endregion
 
         #region ICloneable
-        /// <inheritDoc />
         [Pure]
         public abstract object Clone();
         #endregion
 
         #region IMatrix
-        /// <inheritDoc />
         [Pure]
         object IMatrix.Get(MatrixIndices AIndices)
         {
             return this.Get(AIndices);
         }
-
-        /// <inheritDoc />
         public MatrixIndices Size
         {
             [Pure]
             get { return this.FSize; }
         }
-
-        /// <inheritDoc />
         object IMatrix.this[int ARow, int ACol]
         {
             [Pure]
@@ -70,7 +56,6 @@ namespace FMath.Linear.Generic.Base
         #endregion
 
         #region IMatrix<TData>
-        /// <inheritDoc />
         [Pure]
         public TData Get(MatrixIndices AIndices)
         {
@@ -79,8 +64,6 @@ namespace FMath.Linear.Generic.Base
 
             return this.DirectGet(AIndices);
         }
-
-        /// <inheritDoc />
         [Pure]
         public TData this[int ARow, int ACol]
         {
@@ -89,7 +72,6 @@ namespace FMath.Linear.Generic.Base
         #endregion
 
         #region IFormattable
-        /// <inheritDoc />
         [Pure]
         public string ToString(string AFormat, IFormatProvider AFormatProvider)
         {
@@ -109,7 +91,6 @@ namespace FMath.Linear.Generic.Base
         #endregion
 
         #region IEquatable<MatrixBase<TData>>
-        /// <inheritDoc />
         [Pure]
         public bool Equals(MatrixBase<TData> AOther)
         {
@@ -132,7 +113,6 @@ namespace FMath.Linear.Generic.Base
         #endregion
 
         #region System.Object overrides
-        /// <inheritDoc />
         public override bool Equals(object AOther)
         {
             if (AOther == null)
@@ -149,12 +129,10 @@ namespace FMath.Linear.Generic.Base
 
             return false;
         }
-        /// <inheritDoc />
         public override int GetHashCode()
         {
             return Matrix.Hash(this);
         }
-        /// <inheritDoc />
         public override string ToString()
         {
             return this.ToString(null, null);

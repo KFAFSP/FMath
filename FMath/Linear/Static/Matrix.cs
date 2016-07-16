@@ -9,23 +9,9 @@ using FMath.Linear.Generic.Proxy;
 
 namespace FMath.Linear.Static
 {
-    /// <summary>
-    /// Static class for handling <see cref="IMatrix"/> instances.
-    /// </summary>
     public static class Matrix
     {
-        /// <summary>
-        /// The salting prime used in the matrix hashing function.
-        /// </summary>
         public const int C_HashSaltPrime = 499;
-
-        /// <summary>
-        /// Checks whether the specified indices are defined in the matrix.
-        /// </summary>
-        /// <param name="AMatrix">The matrix.</param>
-        /// <param name="AIndices">The indices.</param>
-        /// <returns><c>true</c> if the indices are defined, <c>false</c> otherwise.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when AMatrix is null.</exception>
         [Pure]
         public static bool AreDefined(
             this IMatrix AMatrix,
@@ -39,12 +25,6 @@ namespace FMath.Linear.Static
         }
 
         #region Casting
-        /// <summary>
-        /// Casts the specified matrix.
-        /// </summary>
-        /// <typeparam name="TOut">The type to cast to.</typeparam>
-        /// <param name="AMatrix">The matrix.</param>
-        /// <returns>An immutable matrix proxy.</returns>
         public static IMatrix<TOut> Cast<TOut>(this IMatrix AMatrix)
         {
             return new MatrixCasterProxy<TOut>(AMatrix);
@@ -52,14 +32,6 @@ namespace FMath.Linear.Static
         #endregion
 
         #region Linear indexing
-        /// <summary>
-        /// Converts an offset to a pair of indices.
-        /// </summary>
-        /// <param name="AMatrix">The matrix.</param>
-        /// <param name="AOffset">The offset.</param>
-        /// <returns>The indices.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when AMatrix is null.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when AOffset is out of range.</exception>
         public static MatrixIndices OffsetToIndices(
              this IMatrix AMatrix,
              int AOffset)
@@ -76,14 +48,6 @@ namespace FMath.Linear.Static
 
             return miIndices;
         }
-        /// <summary>
-        /// Converts a pair of indices to an offset.
-        /// </summary>
-        /// <param name="AMatrix">The matrix.</param>
-        /// <param name="AIndices">The indices.</param>
-        /// <returns>The offset.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when AMatrix is null.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown AIndices are out of range.</exception>
         public static int IndicesToOffset(
             this IMatrix AMatrix,
             MatrixIndices AIndices)
@@ -98,26 +62,11 @@ namespace FMath.Linear.Static
         #endregion
 
         #region Equality
-        /// <summary>
-        /// Checks whether two matrices are equal by comparing their elements.
-        /// </summary>
-        /// <param name="ALeft">The left matrix.</param>
-        /// <param name="ARight">The right matrix.</param>
-        /// <returns><c>true</c> if they are equal, <c>false</c> otherwise.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the arguments is null.</exception>
         [Pure]
         public static bool AreEqual(IMatrix ALeft, IMatrix ARight)
         {
             return Matrix.AreEqual(ALeft, ARight, Object.Equals);
         }
-        /// <summary>
-        /// Checks whether two matrices are equal by comparing their elements.
-        /// </summary>
-        /// <param name="ALeft">The left matrix.</param>
-        /// <param name="ARight">The right matrix.</param>
-        /// <param name="AEquator">The element equator.</param>
-        /// <returns><c>true</c> if they are equal, <c>false</c> otherwise.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the arguments is null.</exception>
         [Pure]
         public static bool AreEqual(
             IMatrix ALeft,
@@ -144,18 +93,6 @@ namespace FMath.Linear.Static
 
             return true;
         }
-        /// <summary>
-        /// Checks whether two strongly typed matrices are equal by comparing their elements.
-        /// </summary>
-        /// <typeparam name="TLeft">The element type of the left matrix.</typeparam>
-        /// <typeparam name="TRight">The element type of the right matrix.</typeparam>
-        /// <param name="ALeft">The left matrix.</param>
-        /// <param name="ARight">The right matrix.</param>
-        /// <param name="AEquator">The element equator.</param>
-        /// <returns>
-        ///   <c>true</c> if they are equal, <c>false</c> otherwise.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the arguments is null.</exception>
         [Pure]
         public static bool AreEqual<TLeft, TRight>(
             IMatrix<TLeft> ALeft,
@@ -167,17 +104,6 @@ namespace FMath.Linear.Static
 
             return Matrix.AreEqual((IMatrix)ALeft, ARight, (AL, AR) => AEquator((TLeft)AL, (TRight)AR));
         }
-        /// <summary>
-        /// Checks whether two strongly typed matrices are equal by comparing their elements.
-        /// </summary>
-        /// <typeparam name="TData">The type of the stored data.</typeparam>
-        /// <param name="ALeft">The left matrix.</param>
-        /// <param name="ARight">The right matrix.</param>
-        /// <param name="AComparer">The element comparer, or null to use the default comparer.</param>
-        /// <returns>
-        ///   <c>true</c> if they are equal, <c>false</c> otherwise.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the arguments is null.</exception>
         [Pure]
         public static bool AreEqual<TData>(
             IMatrix<TData> ALeft,
@@ -192,24 +118,11 @@ namespace FMath.Linear.Static
         #endregion
 
         #region Hashing
-        /// <summary>
-        /// Hashes the specified matrix.
-        /// </summary>
-        /// <param name="AMatrix">A matrix.</param>
-        /// <returns>An element-wise computed hash that also contains the size of the matrix.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the arguments is null.</exception>
         [Pure]
         public static int Hash(IMatrix AMatrix)
         {
             return Matrix.Hash(AMatrix, EqualityComparer<object>.Default.GetHashCode);
         }
-        /// <summary>
-        /// Hashes the specified matrix.
-        /// </summary>
-        /// <param name="AMatrix">The matrix.</param>
-        /// <param name="AHasher">The element hashing delegate.</param>
-        /// <returns>An element-wise computed hash that also contains the size of the matrix.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the arguments is null.</exception>
         [Pure]
         public static int Hash(
             IMatrix AMatrix,
@@ -227,14 +140,6 @@ namespace FMath.Linear.Static
 
             return iHash;
         }
-        /// <summary>
-        /// Hashes the specified strongly typed matrix.
-        /// </summary>
-        /// <typeparam name="TData">The type of the stored data.</typeparam>
-        /// <param name="AMatrix">The matrix.</param>
-        /// <param name="AHasher">The element hashing delegate.</param>
-        /// <returns>An element-wise computed hash that also contains the size of the matrix.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the arguments is null.</exception>
         [Pure]
         public static int Hash<TData>(
             IMatrix<TData> AMatrix,
@@ -245,14 +150,6 @@ namespace FMath.Linear.Static
 
             return Matrix.Hash((IMatrix)AMatrix, AElement => AHasher((TData)AElement));
         }
-        /// <summary>
-        /// Hashes the specified strongly typed matrix.
-        /// </summary>
-        /// <typeparam name="TData">The type of the stored data.</typeparam>
-        /// <param name="AMatrix">The matrix.</param>
-        /// <param name="AComparer">The element comparer, or null to use the default comparer.</param>
-        /// <returns>An element-wise computed hash that also contains the size of the matrix.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the arguments is null.</exception>
         [Pure]
         public static int Hash<TData>(
             IMatrix<TData> AMatrix,
@@ -266,16 +163,6 @@ namespace FMath.Linear.Static
         #endregion
 
         #region Copying
-        /// <summary>
-        /// Copies data from one matrix into another.
-        /// </summary>
-        /// <param name="ASource">The source matrix.</param>
-        /// <param name="ASourceOffset">The source offset indices.</param>
-        /// <param name="ATarget">The target matrix.</param>
-        /// <param name="ATargetOffset">The target offset indices.</param>
-        /// <param name="ACount">The number of elements to copy.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when one of the matrices is null.</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the operation would exceed the matrix bounds.</exception>
         public static void Copy(
             IMatrix ASource,
             MatrixIndices ASourceOffset,
@@ -309,11 +196,6 @@ namespace FMath.Linear.Static
                     ATarget.Set(ATargetOffset + miLocal, ASource.Get(ASourceOffset + miLocal));
                 }
         }
-        /// <summary>
-        /// Copies all data from one matrix into another.
-        /// </summary>
-        /// <param name="ASource">The source matrix.</param>
-        /// <param name="ATarget">The target matrix.</param>
         public static void Copy(
             IMatrix ASource,
             IMutableMatrix ATarget)
@@ -323,15 +205,6 @@ namespace FMath.Linear.Static
         #endregion
 
         #region String formatting
-        /// <summary>
-        /// Formats a cell of the matrix.
-        /// </summary>
-        /// <param name="AMatrix">The matrix.</param>
-        /// <param name="AIndices">The indices of the cell.</param>
-        /// <param name="ACellFormat">The cell format.</param>
-        /// <param name="AFormatProvider">The format provider.</param>
-        /// <returns> The formatted cell. </returns>
-        /// <exception cref="ArgumentNullException">Thrown when AMatrix is null.</exception>
         [Pure]
         public static string FormatCell(
             IMatrix AMatrix,
@@ -344,16 +217,6 @@ namespace FMath.Linear.Static
 
             return AMatrix.Get(AIndices).SafeFormat(ACellFormat, AFormatProvider);
         }
-        /// <summary>
-        /// Linearizes the specified matrix.
-        /// </summary>
-        /// <param name="AMatrix">aThe matrix.</param>
-        /// <param name="ACellFormat">The cell format.</param>
-        /// <param name="AFormatProvider">The format provider.</param>
-        /// <returns>
-        /// A linear representation of the matrix.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">Thrown when AMatrix is null.</exception>
         [Pure]
         public static string FormatLinear(
             IMatrix AMatrix,
@@ -387,45 +250,6 @@ namespace FMath.Linear.Static
 
             return sbResult.ToString();
         }
-        /// <summary>
-        /// Formats the specified matrix.
-        /// </summary>
-        /// <param name="AMatrix">The matrix.</param>
-        /// <param name="AFormatMode">The format mode.</param>
-        /// <param name="ACellFormat">The cell format.</param>
-        /// <param name="AFormatProvider">The format provider.</param>
-        /// <returns>The resulting string.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when AMatrix is null.</exception>
-        /// <remarks>
-        /// The following format options are supported:
-        /// <list type="table">
-        ///     <listheader>
-        ///         <term>AFormatMode</term>
-        ///         <description>Description</description>
-        ///     </listheader>
-        ///     <item>
-        ///         <term>null, "G"(CD), "L"(CD), "linear"(ci)</term>
-        ///         <description>Linearizes the matrix.</description>
-        ///     </item>
-        ///     <item>
-        ///         <term>"T"(CD), "type"(ci)</term>
-        ///         <description>Outputs the element type and the size of the matrix.</description>
-        ///     </item>
-        ///     <item>
-        ///         <term>'a'-'z'(CD)</term>
-        ///         <description>Outputs the specified named element (converted to zero-based index starting with a=0).</description>
-        ///     </item> 
-        ///     <item>
-        ///         <term>&lt;number&gt;&lt;number&gt;</term>
-        ///         <description>
-        ///             Outputs the specified indexed element. Note that this string needs to be a fixed with address,
-        ///             meaning both numbers have to be padded with leading zeroes. The length of an address part must be
-        ///             ceil(log10(max(AMatrix.Size.M, AMatrix.Size.N))) so that it is well defined. These addresses make an expcetion,
-        ///             as they are one-based instead of zero-based, so that "(0...)1(0...)1" is the first cell of the matrix.
-        ///         </description>
-        ///     </item>
-        /// </list>
-        /// </remarks>
         [Pure]
         public static string Format(
             IMatrix AMatrix,
@@ -482,14 +306,6 @@ namespace FMath.Linear.Static
         #endregion
 
         #region Mapping
-        /// <summary>
-        /// Maps the specified matrix.
-        /// </summary>
-        /// <param name="ASource">The source matrix.</param>
-        /// <param name="ATarget">The target matrix.</param>
-        /// <param name="AMapper">The mapping function.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when any of the arguments is null.</exception>
-        /// <exception cref="System.ArgumentException">Target size does not match source size.</exception>
         public static void Map(
             IMatrix ASource,
             IMutableMatrix ATarget,
@@ -512,14 +328,6 @@ namespace FMath.Linear.Static
                     ATarget.Set(miIndices, AMapper(ASource.Get(miIndices)));
                 }
         }
-        /// <summary>
-        /// Maps the specified strongly typed matrix.
-        /// </summary>
-        /// <typeparam name="TData">The type of the stored data.</typeparam>
-        /// <param name="ASource">The source matrix.</param>
-        /// <param name="ATarget">The target matrix.</param>
-        /// <param name="AMapper">The mapping function.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when any of the arguments is null.</exception>
         public static void Map<TData>(
             IMatrix<TData> ASource,
             IMutableMatrix<TData> ATarget,
@@ -533,15 +341,6 @@ namespace FMath.Linear.Static
         #endregion
 
         #region Combining
-        /// <summary>
-        /// Combines two matrices.
-        /// </summary>
-        /// <param name="ALeft">The left hand side matrix.</param>
-        /// <param name="ARight">The right hand side matrix.</param>
-        /// <param name="AOut">The output matrix.</param>
-        /// <param name="ACombinator">The combinator function.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when any of the arguments is null.</exception>
-        /// <exception cref="System.ArgumentException">Thrown when the matrix sizes do not match.</exception>
         public static void Combine(
             IMatrix ALeft,
             IMatrix ARight,
@@ -569,18 +368,6 @@ namespace FMath.Linear.Static
                     AOut.Set(miIndices, ACombinator(ALeft.Get(miIndices), ARight.Get(miIndices)));
                 }
         }
-        /// <summary>
-        /// Combines two strongly typed matrices.
-        /// </summary>
-        /// <typeparam name="TLeft">The element type of the left matrix.</typeparam>
-        /// <typeparam name="TRight">The element type of the right matrix.</typeparam>
-        /// <typeparam name="TOut">The element type of the output matrix.</typeparam>
-        /// <param name="ALeft">The left hand side matrix.</param>
-        /// <param name="ARight">The right hand side matrix.</param>
-        /// <param name="AOut">The output matrix.</param>
-        /// <param name="ACombinator">The combinator function.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when any of the arguments is null.</exception>
-        /// <exception cref="System.ArgumentException">Thrown when the matrix sizes do not match.</exception>
         public static void Combine<TLeft, TRight, TOut>(
             IMatrix<TLeft> ALeft,
             IMatrix<TRight> ARight,
@@ -595,17 +382,6 @@ namespace FMath.Linear.Static
         #endregion
 
         #region Multiplying
-        /// <summary>
-        /// Multiplies two matrices.
-        /// </summary>
-        /// <param name="ALeft">The left matrix.</param>
-        /// <param name="ARight">The right matrix.</param>
-        /// <param name="AOutput">The output matrix.</param>
-        /// <param name="AMultiplication">The multiplication operation.</param>
-        /// <param name="AAddition">The addition operation.</param>
-        /// <param name="AZero">The neutral element of the addition operation.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when any of the arguments is null, except the neutral element.</exception>
-        /// <exception cref="System.ArgumentException">The multiplication cannot be performed.</exception>
         public static void Multiply(
             IMatrix ALeft,
             IMatrix ARight,
@@ -646,19 +422,6 @@ namespace FMath.Linear.Static
                     AOutput.Set(miOut, oCell);
                 }
         }
-        /// <summary>
-        /// Multiplies two strongly typed matrices.
-        /// </summary>
-        /// <typeparam name="TIn">The element type of the input matrices.</typeparam>
-        /// <typeparam name="TOut">The element type of the output matrix.</typeparam>
-        /// <param name="ALeft">The left matrix.</param>
-        /// <param name="ARight">The right matrix.</param>
-        /// <param name="AOutput">The output matrix.</param>
-        /// <param name="AMultiplication">The multiplication operation.</param>
-        /// <param name="AAddition">The addition operation.</param>
-        /// <param name="AZero">The neutral element of the addition operation.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when any of the arguments is null, except the neutral element.</exception>
-        /// <exception cref="System.ArgumentException">The multiplication cannot be performed.</exception>
         public static void Multiply<TIn, TOut>(
             IMatrix<TIn> ALeft,
             IMatrix<TIn> ARight,

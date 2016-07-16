@@ -8,13 +8,6 @@ using FMath.Linear.Static;
 
 namespace FMath.Linear.Generic.Base.Proxy
 {
-    /// <summary>
-    /// Abstract generic base class for vector proxies that produce a new vector.
-    /// </summary>
-    /// <typeparam name="TData">The type of the stored data.</typeparam>
-    /// <seealso cref="VectorProxy" />
-    /// <seealso cref="IMutableVector{TData}" />
-    /// <seealso cref="System.IFormattable" />
     public abstract class VectorVectorProxy<TData> :
         VectorProxy,
         IMutableVector<TData>,
@@ -28,7 +21,6 @@ namespace FMath.Linear.Generic.Base.Proxy
         protected internal abstract void DirectSet(int AIndex, TData AValue);
 
         #region IStructure
-        /// <inheritDoc />
         public Type ElementType
         {
             [Pure]
@@ -37,13 +29,11 @@ namespace FMath.Linear.Generic.Base.Proxy
         #endregion
 
         #region ICloneable
-        /// <inheritDoc />
         [Pure]
         public abstract object Clone();
         #endregion
 
         #region IEnumerable
-        /// <inheritDoc />
         [Pure]
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -52,17 +42,12 @@ namespace FMath.Linear.Generic.Base.Proxy
         #endregion
 
         #region IVector
-        /// <inheritDoc />
         [Pure]
         object IVector.Get(int AIndex)
         {
             return this.Get(AIndex);
         }
-
-        /// <inheritDoc />
         public abstract int Size { get; }
-
-        /// <inheritDoc />
         object IVector.this[int AIndex]
         {
             [Pure]
@@ -71,7 +56,6 @@ namespace FMath.Linear.Generic.Base.Proxy
         #endregion
 
         #region IEnumerable<TData>
-        /// <inheritDoc />
         [Pure]
         public virtual IEnumerator<TData> GetEnumerator()
         {
@@ -80,7 +64,6 @@ namespace FMath.Linear.Generic.Base.Proxy
         #endregion
 
         #region IVector<TData>
-        /// <inheritDoc />
         [Pure]
         public TData Get(int AIndex)
         {
@@ -92,7 +75,6 @@ namespace FMath.Linear.Generic.Base.Proxy
         #endregion
 
         #region IFormattable
-        /// <inheritDoc />
         [Pure]
         public string ToString(string AFormat, IFormatProvider AFormatProvider)
         {
@@ -112,7 +94,6 @@ namespace FMath.Linear.Generic.Base.Proxy
         #endregion
 
         #region IAssignable<IVector>
-        /// <inheritDoc />
         public void Assign(IVector AFrom)
         {
             if (AFrom == null)
@@ -123,7 +104,6 @@ namespace FMath.Linear.Generic.Base.Proxy
         #endregion
 
         #region IMutableVector
-        /// <inheritDoc />
         void IMutableVector.Set(int AIndex, object AData)
         {
             if (!AData.Matches<TData>())
@@ -131,8 +111,6 @@ namespace FMath.Linear.Generic.Base.Proxy
 
             this.Set(AIndex, (TData)AData);
         }
-
-        /// <inheritDoc />
         object IMutableVector.this[int AIndex]
         {
             [Pure]
@@ -142,7 +120,6 @@ namespace FMath.Linear.Generic.Base.Proxy
         #endregion
 
         #region IMutableVector<TData>
-        /// <inheritDoc />
         public void Set(int AIndex, TData AData)
         {
             if (!this.IsMutable)
@@ -152,8 +129,6 @@ namespace FMath.Linear.Generic.Base.Proxy
 
             this.DirectSet(AIndex, AData);
         }
-
-        /// <inheritDoc />
         public new TData this[int AIndex]
         {
             [Pure]
@@ -163,7 +138,6 @@ namespace FMath.Linear.Generic.Base.Proxy
         #endregion
 
         #region System.Object overrides
-        /// <inheritDoc />
         public override bool Equals(object AOther)
         {
             if (AOther == null)
@@ -177,12 +151,10 @@ namespace FMath.Linear.Generic.Base.Proxy
 
             return false;
         }
-        /// <inheritDoc />
         public override int GetHashCode()
         {
             return Vector.Hash(this);
         }
-        /// <inheritDoc />
         public override string ToString()
         {
             return this.ToString(null, null);

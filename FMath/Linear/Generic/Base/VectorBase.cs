@@ -8,13 +8,6 @@ using FMath.Linear.Static;
 
 namespace FMath.Linear.Generic.Base
 {
-    /// <summary>
-    /// Abstract generic base class for vector types.
-    /// </summary>
-    /// <typeparam name="TData">The type of the stored data.</typeparam>
-    /// <seealso cref="IVector{TData}" />
-    /// <seealso cref="System.IFormattable" />
-    /// <seealso cref="System.IEquatable{VectorBase{TData}}" />
     public abstract class VectorBase<TData> :
         IVector<TData>,
         IFormattable,
@@ -34,7 +27,6 @@ namespace FMath.Linear.Generic.Base
         protected internal abstract TData DirectGet(int AIndex);
 
         #region IStructure
-        /// <inheritDoc />
         public Type ElementType
         {
             [Pure]
@@ -43,13 +35,11 @@ namespace FMath.Linear.Generic.Base
         #endregion
 
         #region ICloneable
-        /// <inheritDoc />
         [Pure]
         public abstract object Clone();
         #endregion
 
         #region IEnumerable
-        /// <inheritDoc />
         [Pure]
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -58,21 +48,16 @@ namespace FMath.Linear.Generic.Base
         #endregion
 
         #region IVector
-        /// <inheritDoc />
         [Pure]
         object IVector.Get(int AIndex)
         {
             return this.Get(AIndex);
         }
-
-        /// <inheritDoc />
         public int Size
         {
             [Pure]
             get { return this.FSize; }
         }
-
-        /// <inheritDoc />
         object IVector.this[int AIndex]
         {
             [Pure]
@@ -81,7 +66,6 @@ namespace FMath.Linear.Generic.Base
         #endregion
 
         #region IEnumerable<TData>
-        /// <inheritDoc />
         [Pure]
         public virtual IEnumerator<TData> GetEnumerator()
         {
@@ -90,7 +74,6 @@ namespace FMath.Linear.Generic.Base
         #endregion
 
         #region IVector<TData>
-        /// <inheritDoc />
         [Pure]
         public TData Get(int AIndex)
         {
@@ -99,8 +82,6 @@ namespace FMath.Linear.Generic.Base
 
             return this.DirectGet(AIndex);
         }
-
-        /// <inheritDoc />
         public TData this[int AIndex]
         {
             [Pure]
@@ -109,7 +90,6 @@ namespace FMath.Linear.Generic.Base
         #endregion
 
         #region IFormattable
-        /// <inheritDoc />
         [Pure]
         public string ToString(string AFormat, IFormatProvider AFormatProvider)
         {
@@ -129,7 +109,6 @@ namespace FMath.Linear.Generic.Base
         #endregion
 
         #region IEquatable<VectorBase<TData>>
-        /// <inheritDoc />
         [Pure]
         public bool Equals(VectorBase<TData> AOther)
         {
@@ -148,7 +127,6 @@ namespace FMath.Linear.Generic.Base
         #endregion
 
         #region System.Object overrides
-        /// <inheritDoc />
         public override bool Equals(object AOther)
         {
             if (AOther == null)
@@ -165,12 +143,10 @@ namespace FMath.Linear.Generic.Base
 
             return false;
         }
-        /// <inheritDoc />
         public override int GetHashCode()
         {
             return Vector.Hash(this);
         }
-        /// <inheritDoc />
         public override string ToString()
         {
             return this.ToString(null, null);

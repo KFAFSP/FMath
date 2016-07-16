@@ -5,13 +5,6 @@ using FMath.Linear.Static;
 
 namespace FMath.Linear.Generic.Base.Proxy
 {
-    /// <summary>
-    /// Abstract generic base class for matrix proxies that produce a new matrix.
-    /// </summary>
-    /// <typeparam name="TData">The type of the stored data.</typeparam>
-    /// <seealso cref="MatrixProxy" />
-    /// <seealso cref="IMutableMatrix{TData}" />
-    /// <seealso cref="System.IFormattable" />
     public abstract class MatrixMatrixProxy<TData> :
         MatrixProxy,
         IMutableMatrix<TData>,
@@ -25,7 +18,6 @@ namespace FMath.Linear.Generic.Base.Proxy
         protected internal abstract void DirectSet(MatrixIndices AIndices, TData AValue);
 
         #region IStructure
-        /// <inheritDoc />
         Type IStructure.ElementType
         {
             [Pure]
@@ -34,23 +26,17 @@ namespace FMath.Linear.Generic.Base.Proxy
         #endregion
 
         #region ICloneable
-        /// <inheritDoc />
         [Pure]
         public abstract object Clone();
         #endregion
 
         #region IMatrix
-        /// <inheritDoc />
         [Pure]
         object IMatrix.Get(MatrixIndices AIndices)
         {
             return this.Get(AIndices);
         }
-
-        /// <inheritDoc />
         public abstract MatrixIndices Size { get; }
-
-        /// <inheritDoc />
         object IMatrix.this[int ARow, int ACol]
         {
             [Pure]
@@ -59,7 +45,6 @@ namespace FMath.Linear.Generic.Base.Proxy
         #endregion
 
         #region IMatrix<TData>
-        /// <inheritDoc />
         [Pure]
         public TData Get(MatrixIndices AIndices)
         {
@@ -71,7 +56,6 @@ namespace FMath.Linear.Generic.Base.Proxy
         #endregion
 
         #region IFormattable
-        /// <inheritDoc />
         [Pure]
         public string ToString(string AFormat, IFormatProvider AFormatProvider)
         {
@@ -91,7 +75,6 @@ namespace FMath.Linear.Generic.Base.Proxy
         #endregion
 
         #region IAssignable<IMatrix>
-        /// <inheritDoc />
         public void Assign(IMatrix AFrom)
         {
             if (AFrom == null)
@@ -102,7 +85,6 @@ namespace FMath.Linear.Generic.Base.Proxy
         #endregion
 
         #region IMutableMatrix
-        /// <inheritDoc />
         void IMutableMatrix.Set(MatrixIndices AIndices, object AData)
         {
             if (!AData.Matches<TData>())
@@ -110,8 +92,6 @@ namespace FMath.Linear.Generic.Base.Proxy
 
             this.Set(AIndices, (TData)AData);
         }
-
-        /// <inheritDoc />
         object IMutableMatrix.this[int ARow, int ACol]
         {
             [Pure]
@@ -121,7 +101,6 @@ namespace FMath.Linear.Generic.Base.Proxy
         #endregion
 
         #region IMutableMatrix<TData>
-        /// <inheritDoc />
         public void Set(MatrixIndices AIndices, TData AData)
         {
             if (!this.IsMutable)
@@ -131,8 +110,6 @@ namespace FMath.Linear.Generic.Base.Proxy
 
             this.DirectSet(AIndices, AData);
         }
-
-        /// <inheritDoc />
         public TData this[int ARow, int ACol]
         {
             [Pure]
@@ -142,7 +119,6 @@ namespace FMath.Linear.Generic.Base.Proxy
         #endregion
 
         #region System.Object overrides
-        /// <inheritDoc />
         public override bool Equals(object AOther)
         {
             if (AOther == null)
@@ -156,12 +132,10 @@ namespace FMath.Linear.Generic.Base.Proxy
 
             return false;
         }
-        /// <inheritDoc />
         public override int GetHashCode()
         {
             return Matrix.Hash(this);
         }
-        /// <inheritDoc />
         public override string ToString()
         {
             return this.ToString(null, null);

@@ -10,96 +10,41 @@ namespace FMath.Linear.Numeric
         IEquatable<HomogeneousFltMatrix>
     {
         #region Static factories
-        /// <summary>
-        /// Gets a new zero matrix.
-        /// </summary>
-        /// <value>
-        /// A zero matrix.
-        /// </value>
         public static HomogeneousFltMatrix Zero { get { return new HomogeneousFltMatrix(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f); } }
-        /// <summary>
-        /// Gets a new identity matrix.
-        /// </summary>
-        /// <value>
-        /// An identity matrix.
-        /// </value>
         public static HomogeneousFltMatrix Identitiy { get { return new HomogeneousFltMatrix(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f); } }
         #endregion
 
         #region Pure static operators
-        /// <summary>
-        /// Gets a negated copy of the specified matrix.
-        /// </summary>
-        /// <param name="ALeft">A vector.</param>
-        /// <returns>A negated copy of the matrix.</returns>
         [Pure]
         public static HomogeneousFltMatrix Negate(HomogeneousFltMatrix ALeft)
         {
             return ALeft.Clone().Negate();
         }
-        /// <summary>
-        /// Gets the sum of two matrix.
-        /// </summary>
-        /// <param name="ALeft">The left hand side.</param>
-        /// <param name="ARight">The right hand side.</param>
-        /// <returns>The sum of the two matrix as a new matrix.</returns>
         [Pure]
         public static HomogeneousFltMatrix Add(HomogeneousFltMatrix ALeft, HomogeneousFltMatrix ARight)
         {
             return ALeft.Clone().Add(ARight);
         }
-        /// <summary>
-        /// Gets the difference of two matrix.
-        /// </summary>
-        /// <param name="ALeft">The left hand side.</param>
-        /// <param name="ARight">The right hand side.</param>
-        /// <returns>The difference of the two matrix as a new matrix.</returns>
         [Pure]
         public static HomogeneousFltMatrix Subtract(HomogeneousFltMatrix ALeft, HomogeneousFltMatrix ARight)
         {
             return ARight.Clone().Negate().Add(ALeft);
         }
-        /// <summary>
-        /// Gets a scaled version of a matrix.
-        /// </summary>
-        /// <param name="ALeft">The left hand side.</param>
-        /// <param name="ARight">The right hand side.</param>
-        /// <returns>The scaled matrix as a new matrix.</returns>
         [Pure]
         public static HomogeneousFltMatrix Scale(HomogeneousFltMatrix ALeft, float ARight)
         {
             return ALeft.Clone().Scale(ARight);
         }
-        /// <summary>
-        /// Divides a matrix by a scalar.
-        /// </summary>
-        /// <param name="ALeft">The left hand side.</param>
-        /// <param name="ARight">The right hand side.</param>
-        /// <returns>The divided matrix as a new matrix.</returns>
         [Pure]
         public static HomogeneousFltMatrix Divide(HomogeneousFltMatrix ALeft, float ARight)
         {
             return ALeft.Clone().Divide(ARight);
         }
-        /// <summary>
-        /// Masks the specified matrix.
-        /// </summary>
-        /// <param name="ALeft">The left hand side.</param>
-        /// <param name="ARight">The right hand side.</param>
-        /// <returns>The masked matrix as a new matrix.</returns>
         [Pure]
         public static HomogeneousFltMatrix Mask(HomogeneousFltMatrix ALeft, HomogeneousFltMatrix ARight)
         {
             return ALeft.Clone().Mask(ARight);
         }
-
-        /// <summary>
-        /// Get the determinant of a matrix.
-        /// </summary>
-        /// <param name="AMatrix">The matrix.</param>
-        /// <returns>
-        /// The determinant of the matrix.
-        /// </returns>
         [Pure]
         public static float Determinant(HomogeneousFltMatrix AMatrix)
         {
@@ -110,13 +55,6 @@ namespace FMath.Linear.Numeric
                    - AMatrix.FCells[2, 0] * AMatrix.FCells[1, 1] * AMatrix.FCells[0, 2]
                    - AMatrix.FCells[1, 0] * AMatrix.FCells[0, 1] * AMatrix.FCells[2, 2];
         }
-
-        /// <summary>
-        /// Combines to homogeneous transformations.
-        /// </summary>
-        /// <param name="ALeft">The left hand side.</param>
-        /// <param name="ARight">The right hand side.</param>
-        /// <returns>A new matrix that is the product of the argumens.</returns>
         [Pure]
         public static HomogeneousFltMatrix Project(HomogeneousFltMatrix ALeft, HomogeneousFltMatrix ARight)
         {
@@ -128,12 +66,6 @@ namespace FMath.Linear.Numeric
 
             return hfmMatrix;
         }
-        /// <summary>
-        /// Applies a homogeneous transformation to a vector.
-        /// </summary>
-        /// <param name="ALeft">The matrix.</param>
-        /// <param name="ARight">The vector.</param>
-        /// <returns>The transformed vector.</returns>
         [Pure]
         public static Vec3Flt Project(HomogeneousFltMatrix ALeft, Vec3Flt ARight)
         {
@@ -142,13 +74,6 @@ namespace FMath.Linear.Numeric
                 ALeft.FCells[1, 0] * ARight.X + ALeft.FCells[1, 1] * ARight.Y + ALeft.FCells[1, 2] * ARight.Z,
                 ALeft.FCells[2, 0] * ARight.X + ALeft.FCells[2, 1] * ARight.Y + ALeft.FCells[2, 2] * ARight.Z);
         }
-
-        /// <summary>
-        /// Inverts the specified matrix.
-        /// </summary>
-        /// <param name="ALeft">A matrix.</param>
-        /// <returns>A new matrix that is the inverse of the argument.</returns>
-        /// <exception cref="System.InvalidOperationException">Cannot invert singular matrices.</exception>
         [Pure]
         public static HomogeneousFltMatrix Invert(HomogeneousFltMatrix ALeft)
         {
@@ -183,11 +108,6 @@ namespace FMath.Linear.Numeric
             float A31, float A32, float A33)
             : base(new [,] { { A11, A12, A13 }, {A21, A22, A23}, {A31, A32, A33} }, false)
         { }
-
-        /// <summary>
-        /// Clones this matrix.
-        /// </summary>
-        /// <returns>A copy of this matrix.</returns>
         [Pure]
         public new HomogeneousFltMatrix Clone()
         {
@@ -198,10 +118,6 @@ namespace FMath.Linear.Numeric
         }
 
         #region Mutating chainable operators
-        /// <summary>
-        /// Negates this matrix.
-        /// </summary>
-        /// <returns>A reference to this matrix.</returns>
         public HomogeneousFltMatrix Negate()
         {
             for (int I = 0; I < 9; I++)
@@ -246,7 +162,6 @@ namespace FMath.Linear.Numeric
         #endregion
 
         #region IEquatable<HomogeneousFltMatrix>
-        /// <inheritDoc />
         [Pure]
         public bool Equals(HomogeneousFltMatrix AOther)
         {
@@ -266,7 +181,6 @@ namespace FMath.Linear.Numeric
         #endregion
 
         #region System.Object overrides
-        /// <inheritDoc />
         public override bool Equals(object AOther)
         {
             if (AOther is HomogeneousFltMatrix)

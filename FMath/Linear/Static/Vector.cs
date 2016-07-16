@@ -9,23 +9,9 @@ using FMath.Linear.Generic.Proxy;
 
 namespace FMath.Linear.Static
 {
-    /// <summary>
-    /// Static class for handling <see cref="IVector"/> instances.
-    /// </summary>
     public static class Vector
     {
-        /// <summary>
-        /// The salting prime used in the vector hashing function.
-        /// </summary>
         public const int C_HashSaltPrime = 409;
-
-        /// <summary>
-        /// Checks whether the specified index is defined in the vector.
-        /// </summary>
-        /// <param name="AVector">The vector.</param>
-        /// <param name="AIndex">The index.</param>
-        /// <returns><c>true</c> if the index is defined, <c>false</c> otherwise.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when AVector is null.</exception>
         [Pure]
         public static bool IsDefined(
             this IVector AVector,
@@ -38,12 +24,6 @@ namespace FMath.Linear.Static
         }
 
         #region Casting
-        /// <summary>
-        /// Casts the specified vector.
-        /// </summary>
-        /// <typeparam name="TOut">The type to cast to.</typeparam>
-        /// <param name="AVector">The vector.</param>
-        /// <returns>An immutable vector proxy.</returns>
         public static IVector<TOut> Cast<TOut>(this IVector AVector)
         {
             return new VectorCasterProxy<TOut>(AVector);
@@ -51,28 +31,11 @@ namespace FMath.Linear.Static
         #endregion
 
         #region Equality
-        /// <summary>
-        /// Checks whether two vectors are equal by comparing their elements.
-        /// </summary>
-        /// <param name="ALeft">The left vector.</param>
-        /// <param name="ARight">The right vector.</param>
-        /// <returns><c>true</c> if they are equal, <c>false</c> otherwise.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the arguments is null.</exception>
         [Pure]
         public static bool AreEqual(IVector ALeft, IVector ARight)
         {
             return Vector.AreEqual(ALeft, ARight, Object.Equals);
         }
-        /// <summary>
-        /// Checks whether two vectors are equal by comparing their elements.
-        /// </summary>
-        /// <param name="ALeft">The left vector.</param>
-        /// <param name="ARight">The right vector.</param>
-        /// <param name="AEquator">The element equator delegate.</param>
-        /// <returns>
-        ///   <c>true</c> if they are equal, <c>false</c> otherwise.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the arguments is null.</exception>
         [Pure]
         public static bool AreEqual(
             IVector ALeft,
@@ -95,18 +58,6 @@ namespace FMath.Linear.Static
 
             return true;
         }
-        /// <summary>
-        /// Checks whether two strongly typed vectors are equal by comparing their elements.
-        /// </summary>
-        /// <typeparam name="TLeft">The element type of the left vector.</typeparam>
-        /// <typeparam name="TRight">The element type of the right vector.</typeparam>
-        /// <param name="ALeft">The left vector.</param>
-        /// <param name="ARight">The right vector.</param>
-        /// <param name="AEquator">The element equator delegate.</param>
-        /// <returns>
-        ///   <c>true</c> if they are equal, <c>false</c> otherwise.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the arguments is null.</exception>
         [Pure]
         public static bool AreEqual<TLeft, TRight>(
             IVector<TLeft> ALeft,
@@ -118,17 +69,6 @@ namespace FMath.Linear.Static
 
             return Vector.AreEqual((IVector)ALeft, ARight, (AL, AR) => AEquator((TLeft)AL, (TRight)AR));
         }
-        /// <summary>
-        /// Checks whether two strongly typed vectors are equal by comparing their elements.
-        /// </summary>
-        /// <typeparam name="TData">The type of the stored data.</typeparam>
-        /// <param name="ALeft">The left vector.</param>
-        /// <param name="ARight">The right vector.</param>
-        /// <param name="AComparer">The element comparer, or <c>null</c> to use the default comparer.</param>
-        /// <returns>
-        ///   <c>true</c> if they are equal, <c>false</c> otherwise.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the arguments is null.</exception>
         [Pure]
         public static bool AreEqual<TData>(
             IVector<TData> ALeft,
@@ -143,24 +83,11 @@ namespace FMath.Linear.Static
         #endregion
 
         #region Hashing
-        /// <summary>
-        /// Hashes the specified vector.
-        /// </summary>
-        /// <param name="AVector">A vector.</param>
-        /// <returns>An element-wise computed hash that also contains the size of the vector.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the arguments is null.</exception>
         [Pure]
         public static int Hash(IVector AVector)
         {
             return Vector.Hash(AVector, EqualityComparer<object>.Default.GetHashCode);
         }
-        /// <summary>
-        /// Hashes the specified vector.
-        /// </summary>
-        /// <param name="AVector">The vector.</param>
-        /// <param name="AHasher">The element hashing delegate.</param>
-        /// <returns>An element-wise computed hash that also contains the size of the vector.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the arguments is null.</exception>
         [Pure]
         public static int Hash(
             IVector AVector,
@@ -177,14 +104,6 @@ namespace FMath.Linear.Static
 
             return iHash;
         }
-        /// <summary>
-        /// Hashes the specified strongly typed vector.
-        /// </summary>
-        /// <typeparam name="TData">The type of the stored data.</typeparam>
-        /// <param name="AVector">The vector.</param>
-        /// <param name="AHasher">The element hashing delegate.</param>
-        /// <returns>An element-wise computed hash that also contains the size of the vector.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the arguments is null.</exception>
         [Pure]
         public static int Hash<TData>(
             IVector<TData> AVector,
@@ -195,14 +114,6 @@ namespace FMath.Linear.Static
 
             return Vector.Hash((IVector)AVector, AElement => AHasher((TData)AElement));
         }
-        /// <summary>
-        /// Hashes the specified strongly typed vector.
-        /// </summary>
-        /// <typeparam name="TData">The type of the stored data.</typeparam>
-        /// <param name="AVector">The vector.</param>
-        /// <param name="AComparer">The element comparer, or null to use the default comparer.</param>
-        /// <returns>An element-wise computed hash that also contains the size of the vector.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when any of the arguments is null.</exception>
         [Pure]
         public static int Hash<TData>(
             IVector<TData> AVector,
@@ -216,16 +127,6 @@ namespace FMath.Linear.Static
         #endregion
 
         #region Copying
-        /// <summary>
-        /// Copies data from one vector into another.
-        /// </summary>
-        /// <param name="ASource">The source vector.</param>
-        /// <param name="ASourceOffset">The source offset index.</param>
-        /// <param name="ATarget">The target vector.</param>
-        /// <param name="ATargetOffset">The target offset index.</param>
-        /// <param name="ACount">The number of elements to copy.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when one of the vectors is null.</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when the operation would exceed the vector bounds.</exception>
         public static void Copy(
             IVector ASource,
             int ASourceOffset,
@@ -255,11 +156,6 @@ namespace FMath.Linear.Static
             for (int I = 0; I < ACount; I++)
                 ATarget.Set(ATargetOffset + I, ASource.Get(ASourceOffset + I));
         }
-        /// <summary>
-        /// Copies all data from one vector into another.
-        /// </summary>
-        /// <param name="ASource">The source vector.</param>
-        /// <param name="ATarget">The target vector.</param>
         public static void Copy(
             IVector ASource,
             IMutableVector ATarget)
@@ -269,15 +165,6 @@ namespace FMath.Linear.Static
         #endregion
 
         #region String formatting
-        /// <summary>
-        /// Formats an element of the vector.
-        /// </summary>
-        /// <param name="AVector">The vector.</param>
-        /// <param name="AIndex">The index of the element.</param>
-        /// <param name="AElementFormat">The element format.</param>
-        /// <param name="AFormatProvider">The format provider.</param>
-        /// <returns>The formatted element.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when AVector is null.</exception>
         [Pure]
         public static string FormatElement(
             IVector AVector,
@@ -290,14 +177,6 @@ namespace FMath.Linear.Static
 
             return AVector.Get(AIndex).SafeFormat(AElementFormat, AFormatProvider);
         }
-        /// <summary>
-        /// Linearizes the specified vector.
-        /// </summary>
-        /// <param name="AVector">The vector.</param>
-        /// <param name="AElementFormat">The element format.</param>
-        /// <param name="AFormatProvider">The format provider.</param>
-        /// <returns>A linear representation of the vector.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when AVector is null.</exception>
         [Pure]
         public static string FormatLinear(
             IVector AVector,
@@ -323,40 +202,6 @@ namespace FMath.Linear.Static
 
             return sbResult.ToString();
         }
-        /// <summary>
-        /// Formats the specified vector.
-        /// </summary>
-        /// <param name="AVector">The vector.</param>
-        /// <param name="AFormatMode">The format mode.</param>
-        /// <param name="AElementFormat">The element format.</param>
-        /// <param name="AFormatProvider">The format provider.</param>
-        /// <returns>The resulting string.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when AVector is null.</exception>
-        /// <remarks>
-        /// The following format options are supported:
-        /// <list type="table">
-        ///     <listheader>
-        ///         <term>AFormatMode</term>
-        ///         <description>Description</description>
-        ///     </listheader>
-        ///     <item>
-        ///         <term>null, "G"(CD), "L"(CD), "linear"(ci)</term>
-        ///         <description>Linearizes the vector.</description>
-        ///     </item>
-        ///     <item>
-        ///         <term>"T"(CD), "type"(ci)</term>
-        ///         <description>Outputs the element type and the size of the vector.</description>
-        ///     </item>
-        ///     <item>
-        ///         <term>'a'-'z'(CD)</term>
-        ///         <description>Outputs the specified named element (converted to zero-based index starting with a=0).</description>
-        ///     </item> 
-        ///     <item>
-        ///         <term>&lt;number&gt;</term>
-        ///         <description>Outputs the specified indexed element.</description>
-        ///     </item>   
-        /// </list>
-        /// </remarks>
         [Pure]
         public static string Format(
             IVector AVector,
@@ -410,14 +255,6 @@ namespace FMath.Linear.Static
         #endregion
 
         #region Mapping
-        /// <summary>
-        /// Maps the specified vector.
-        /// </summary>
-        /// <param name="ASource">The source vector.</param>
-        /// <param name="ATarget">The target vector.</param>
-        /// <param name="AMapper">The mapping function.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when any of the arguments is null.</exception>
-        /// <exception cref="System.ArgumentException">Target size does not match source size.</exception>
         public static void Map(
             IVector ASource,
             IMutableVector ATarget,
@@ -436,14 +273,6 @@ namespace FMath.Linear.Static
             for (int I = 0; I < ASource.Size; I++)
                 ATarget.Set(I, AMapper(ASource.Get(I)));
         }
-        /// <summary>
-        /// Maps the specified strongly typed vector.
-        /// </summary>
-        /// <typeparam name="TData">The type of the stored data.</typeparam>
-        /// <param name="ASource">The source vector.</param>
-        /// <param name="ATarget">The target vector.</param>
-        /// <param name="AMapper">The mapping function.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when any of the arguments is null.</exception>
         public static void Map<TData>(
             IVector<TData> ASource,
             IMutableVector<TData> ATarget,
@@ -457,14 +286,6 @@ namespace FMath.Linear.Static
         #endregion
 
         #region Folding
-        /// <summary>
-        /// Folds the specified vector.
-        /// </summary>
-        /// <param name="AVector">The vector.</param>
-        /// <param name="ANeutral">The neutral element to the folding operation.</param>
-        /// <param name="AFolder">The folding operation.</param>
-        /// <returns>The result of the folding operation.</returns>
-        /// <exception cref="System.ArgumentNullException">Thrown when the vector or the folder is null.</exception>
         public static object Fold(
             IVector AVector,
             object ANeutral,
@@ -481,16 +302,6 @@ namespace FMath.Linear.Static
 
             return oResult;
         }
-        /// <summary>
-        /// Folds the specified strongly typed vector.
-        /// </summary>
-        /// <typeparam name="TIn">The type of the vector elements.</typeparam>
-        /// <typeparam name="TOut">The type of the folding result.</typeparam>
-        /// <param name="AVector">The vector.</param>
-        /// <param name="ANeutral">The neutral element to the folding operation.</param>
-        /// <param name="AFolder">The folding operation.</param>
-        /// <returns>The result of the folding operation.</returns>
-        /// <exception cref="System.ArgumentNullException">Thrown when the vector or the folder is null.</exception>
         public static TOut Fold<TIn, TOut>(
             IVector<TIn> AVector,
             TOut ANeutral,
@@ -504,15 +315,6 @@ namespace FMath.Linear.Static
         #endregion
 
         #region Combining
-        /// <summary>
-        /// Combines two vectors.
-        /// </summary>
-        /// <param name="ALeft">The left hand side vector.</param>
-        /// <param name="ARight">The right hand side vector.</param>
-        /// <param name="AOut">The output vector.</param>
-        /// <param name="ACombinator">The combinator function.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when any of the arguments is null.</exception>
-        /// <exception cref="System.ArgumentException">Thrown when the vector sizes do not match.</exception>
         public static void Combine(
             IVector ALeft,
             IVector ARight,
@@ -536,18 +338,6 @@ namespace FMath.Linear.Static
             for (int I = 0; I < ALeft.Size; I++)
                 AOut.Set(I, ACombinator(ALeft.Get(I), ARight.Get(I)));
         }
-        /// <summary>
-        /// Combines two strongly typed vectors.
-        /// </summary>
-        /// <typeparam name="TLeft">The element type of the left vector.</typeparam>
-        /// <typeparam name="TRight">The element type of the right vector.</typeparam>
-        /// <typeparam name="TOut">The element type of the output vector.</typeparam>
-        /// <param name="ALeft">The left hand side vector.</param>
-        /// <param name="ARight">The right hand side vector.</param>
-        /// <param name="AOut">The output vector.</param>
-        /// <param name="ACombinator">The combinator function.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when any of the arguments is null.</exception>
-        /// <exception cref="System.ArgumentException">Thrown when the vector sizes do not match.</exception>
         public static void Combine<TLeft, TRight, TOut>(
             IVector<TLeft> ALeft,
             IVector<TRight> ARight,

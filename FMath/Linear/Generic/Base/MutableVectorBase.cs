@@ -5,13 +5,6 @@ using FMath.Linear.Static;
 
 namespace FMath.Linear.Generic.Base
 {
-    /// <summary>
-    /// Abstract generic base class for mutable vector types.
-    /// </summary>
-    /// <typeparam name="TData">The type of the stored data.</typeparam>
-    /// <seealso cref="VectorBase{TData}" />
-    /// <seealso cref="IMutableVector{TData}" />
-    /// <seealso cref="FMath.IAssignable{VectorBase{TData}}" />
     public abstract class MutableVectorBase<TData> :
         VectorBase<TData>,
         IMutableVector<TData>,
@@ -24,7 +17,6 @@ namespace FMath.Linear.Generic.Base
         protected internal abstract void DirectSet(int AIndex, TData AData);
 
         #region IAssignable<IVector>        
-        /// <inheritDoc />
         public void Assign(IVector AFrom)
         {
             if (AFrom == null)
@@ -35,7 +27,6 @@ namespace FMath.Linear.Generic.Base
         #endregion
 
         #region IMutableVector
-        /// <inheritDoc />
         void IMutableVector.Set(int AIndex, object AData)
         {
             if (!AData.Matches<TData>())
@@ -43,8 +34,6 @@ namespace FMath.Linear.Generic.Base
 
             this.Set(AIndex, (TData)AData);
         }
-
-        /// <inheritDoc />
         object IMutableVector.this[int AIndex]
         {
             [Pure]
@@ -54,7 +43,6 @@ namespace FMath.Linear.Generic.Base
         #endregion
 
         #region IMutableVector<TData>
-        /// <inheritDoc />
         public void Set(int AIndex, TData AData)
         {
             if (!this.IsDefined(AIndex))
@@ -62,8 +50,6 @@ namespace FMath.Linear.Generic.Base
 
             this.DirectSet(AIndex, AData);
         }
-
-        /// <inheritDoc />
         public new TData this[int AIndex]
         {
             [Pure]
@@ -73,7 +59,6 @@ namespace FMath.Linear.Generic.Base
         #endregion
 
         #region IAssignable<VectorBase<TData>>
-        /// <inheritDoc />
         public void Assign(VectorBase<TData> AOther)
         {
             if (AOther == null)
