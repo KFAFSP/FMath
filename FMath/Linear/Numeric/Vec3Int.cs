@@ -11,7 +11,7 @@ namespace FMath.Linear.Numeric
     /// <seealso cref="System.Int32" />
     /// <seealso cref="Vec3Int" />
     /// <seealso cref="Vec3Int" />
-    public class Vec3Int :
+    public sealed class Vec3Int :
         DenseVector<int>,
         IEquatable<Vec3Int>,
         IAssignable<Vec3Int>
