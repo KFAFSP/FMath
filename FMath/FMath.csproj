@@ -46,6 +46,12 @@
     <Compile Include="Linear\Generic\Base\MatrixBase.cs" />
     <Compile Include="Linear\Generic\Base\MutableMatrixBase.cs" />
     <Compile Include="Linear\Generic\Base\MutableVectorBase.cs" />
+    <Compile Include="Linear\Generic\Base\Proxy\MatrixMatrixProxy.cs" />
+    <Compile Include="Linear\Generic\Base\Proxy\MatrixVectorProxy.cs" />
+    <Compile Include="Linear\Generic\Base\Proxy\MatrixProxy.cs" />
+    <Compile Include="Linear\Generic\Base\Proxy\VectorMatrixProxy.cs" />
+    <Compile Include="Linear\Generic\Base\Proxy\VectorProxy.cs" />
+    <Compile Include="Linear\Generic\Base\Proxy\VectorVectorProxy.cs" />
     <Compile Include="Linear\Generic\Base\VectorBase.cs" />
     <Compile Include="Linear\Generic\Factory.cs" />
     <Compile Include="Linear\Generic\IMatrix.cs" />
