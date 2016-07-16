@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Text;
@@ -392,6 +393,158 @@ namespace FMath.Linear.Static
             }
 
             throw new FormatException("Unknown vector format string \"" + AFormatMode + "\"");
+        }
+        #endregion
+
+        #region Mapping
+        /// <summary>
+        /// Maps the specified vector.
+        /// </summary>
+        /// <param name="ASource">The source vector.</param>
+        /// <param name="ATarget">The target vector.</param>
+        /// <param name="AMapper">The mapping function.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when any of the arguments is null.</exception>
+        /// <exception cref="System.ArgumentException">Target size does not match source size.</exception>
+        public static void Map(
+            IVector ASource,
+            IMutableVector ATarget,
+            Func<object, object> AMapper)
+        {
+            if (ASource == null)
+                throw new ArgumentNullException("ASource");
+            if (ATarget == null)
+                throw new ArgumentNullException("ATarget");
+            if (AMapper == null)
+                throw new ArgumentNullException("AMapper");
+
+            if (ASource.Size != ATarget.Size)
+                throw new ArgumentException("Target size does not match source size.");
+
+            for (int I = 0; I < ASource.Size; I++)
+                ATarget.Set(I, AMapper(ASource.Get(I)));
+        }
+        /// <summary>
+        /// Maps the specified strongly typed vector.
+        /// </summary>
+        /// <typeparam name="TData">The type of the stored data.</typeparam>
+        /// <param name="ASource">The source vector.</param>
+        /// <param name="ATarget">The target vector.</param>
+        /// <param name="AMapper">The mapping function.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when any of the arguments is null.</exception>
+        public static void Map<TData>(
+            IVector<TData> ASource,
+            IMutableVector<TData> ATarget,
+            Func<TData, TData> AMapper)
+        {
+            if (AMapper == null)
+                throw new ArgumentNullException("AMapper");
+
+            Vector.Map((IVector)ASource, ATarget, AIn => AMapper((TData)AIn));
+        }
+        #endregion
+
+        #region Folding
+        /// <summary>
+        /// Folds the specified vector.
+        /// </summary>
+        /// <param name="AVector">The vector.</param>
+        /// <param name="ANeutral">The neutral element to the folding operation.</param>
+        /// <param name="AFolder">The folding operation.</param>
+        /// <returns>The result of the folding operation.</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown when the vector or the folder is null.</exception>
+        public static object Fold(
+            IVector AVector,
+            object ANeutral,
+            Func<object, object, object> AFolder)
+        {
+            if (AVector == null)
+                throw new ArgumentNullException("AVector");
+            if (AFolder == null)
+                throw new ArgumentNullException("AFolder");
+
+            object oResult = ANeutral;
+            for (int I = 0; I < AVector.Size; I++)
+                oResult = AFolder(oResult, AVector.Get(I));
+
+            return oResult;
+        }
+        /// <summary>
+        /// Folds the specified strongly typed vector.
+        /// </summary>
+        /// <typeparam name="TIn">The type of the vector elements.</typeparam>
+        /// <typeparam name="TOut">The type of the folding result.</typeparam>
+        /// <param name="AVector">The vector.</param>
+        /// <param name="ANeutral">The neutral element to the folding operation.</param>
+        /// <param name="AFolder">The folding operation.</param>
+        /// <returns>The result of the folding operation.</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown when the vector or the folder is null.</exception>
+        public static TOut Fold<TIn, TOut>(
+            IVector<TIn> AVector,
+            TOut ANeutral,
+            Func<TOut, TIn, TOut> AFolder)
+        {
+            if (AFolder == null)
+                throw new ArgumentNullException("AFolder");
+
+            return (TOut)Vector.Fold((IVector)AVector, ANeutral, (AState, ANext) => AFolder((TOut)AState, (TIn)ANext));
+        }
+        #endregion
+
+        #region Combining
+        /// <summary>
+        /// Combines two vectors.
+        /// </summary>
+        /// <param name="ALeft">The left hand side vector.</param>
+        /// <param name="ARight">The right hand side vector.</param>
+        /// <param name="AOut">The output vector.</param>
+        /// <param name="ACombinator">The combinator function.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when any of the arguments is null.</exception>
+        /// <exception cref="System.ArgumentException">Thrown when the vector sizes do not match.</exception>
+        public static void Combine(
+            IVector ALeft,
+            IVector ARight,
+            IMutableVector AOut,
+            Func<object, object, object> ACombinator)
+        {
+            if (ALeft == null)
+                throw new ArgumentNullException("ALeft");
+            if (ARight == null)
+                throw new ArgumentNullException("ARight");
+            if (AOut == null)
+                throw new ArgumentNullException("AOut");
+            if (ACombinator == null)
+                throw new ArgumentNullException("ACombinator");
+
+            if (ALeft.Size != ARight.Size)
+                throw new ArgumentException("Input vector sizes do not match.");
+            if (ALeft.Size != AOut.Size)
+                throw new ArgumentException("Output vector sizes does not match.");
+
+            for (int I = 0; I < ALeft.Size; I++)
+                AOut.Set(I, ACombinator(ALeft.Get(I), ARight.Get(I)));
+        }
+        /// <summary>
+        /// Combines two strongly typed vectors.
+        /// </summary>
+        /// <typeparam name="TLeft">The element type of the left vector.</typeparam>
+        /// <typeparam name="TRight">The element type of the right vector.</typeparam>
+        /// <typeparam name="TOut">The element type of the output vector.</typeparam>
+        /// <param name="ALeft">The left hand side vector.</param>
+        /// <param name="ARight">The right hand side vector.</param>
+        /// <param name="AOut">The output vector.</param>
+        /// <param name="ACombinator">The combinator function.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when any of the arguments is null.</exception>
+        /// <exception cref="System.ArgumentException">Thrown when the vector sizes do not match.</exception>
+        public static void Combine<TLeft, TRight, TOut>(
+            IVector<TLeft> ALeft,
+            IVector<TRight> ARight,
+            IMutableVector<TOut> AOut,
+            Func<TLeft, TRight, TOut> ACombinator)
+        {
+            if (ACombinator == null)
+                throw new ArgumentNullException("ACombinator");
+
+            Vector.Combine((IVector)ALeft, ARight, AOut, (AL, AR) => ACombinator((TLeft)AL, (TRight)AR));
         }
         #endregion
     }
