@@ -79,6 +79,7 @@
     <Compile Include="Linear\IMutableVector.cs" />
     <Compile Include="Linear\IVector.cs" />
     <Compile Include="Linear\MatrixIndices.cs" />
+    <Compile Include="Linear\Numeric\AffineFltMatrix.cs" />
     <Compile Include="Linear\Numeric\HomogeneousFltMatrix.cs" />
     <Compile Include="Linear\Numeric\NumericMatrix.cs" />
     <Compile Include="Linear\Numeric\NumericVector.cs" />

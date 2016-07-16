@@ -12,6 +12,45 @@ namespace FMath.Linear.Numeric
         #region Static factories
         public static HomogeneousFltMatrix Zero { get { return new HomogeneousFltMatrix(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f); } }
         public static HomogeneousFltMatrix Identitiy { get { return new HomogeneousFltMatrix(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f); } }
+
+        public static HomogeneousFltMatrix RotateX(float AAngle)
+        {
+            float fCos = (float)Math.Cos(AAngle);
+            float fSin = (float)Math.Sin(AAngle);
+
+            return new HomogeneousFltMatrix(
+                1.0f, 0.0f, 0.0f,
+                0.0f, fCos, -fSin,
+                0.0f, fSin, fCos);
+        }
+        public static HomogeneousFltMatrix RotateY(float AAngle)
+        {
+            float fCos = (float)Math.Cos(AAngle);
+            float fSin = (float)Math.Sin(AAngle);
+
+            return new HomogeneousFltMatrix(
+                fCos, 0.0f, fSin,
+                0.0f, 1.0f, 0.0f,
+                -fSin, 0.0f, fCos);
+        }
+        public static HomogeneousFltMatrix RotateZ(float AAngle)
+        {
+            float fCos = (float)Math.Cos(AAngle);
+            float fSin = (float)Math.Sin(AAngle);
+
+            return new HomogeneousFltMatrix(
+                fCos, -fSin, 0.0f,
+                fSin, fCos, 0.0f,
+                0.0f, 0.0f, 1.0f);
+        }
+
+        public static HomogeneousFltMatrix Scale(Vector3Flt AScale)
+        {
+            return new HomogeneousFltMatrix(
+                AScale.X, 0.0f, 0.0f,
+                0.0f, AScale.Y, 0.0f,
+                0.0f, 0.0f, AScale.Z);
+        }
         #endregion
 
         #region Pure static operators
