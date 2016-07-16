@@ -467,5 +467,206 @@ namespace FMath.Linear.Static
             throw new FormatException("Unknown matrix format string \"" + AFormatMode + "\"");
         }
         #endregion
+
+        #region Mapping
+        /// <summary>
+        /// Maps the specified matrix.
+        /// </summary>
+        /// <param name="ASource">The source matrix.</param>
+        /// <param name="ATarget">The target matrix.</param>
+        /// <param name="AMapper">The mapping function.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when any of the arguments is null.</exception>
+        /// <exception cref="System.ArgumentException">Target size does not match source size.</exception>
+        public static void Map(
+            IMatrix ASource,
+            IMutableMatrix ATarget,
+            Func<object, object> AMapper)
+        {
+            if (ASource == null)
+                throw new ArgumentNullException("ASource");
+            if (ATarget == null)
+                throw new ArgumentNullException("ATarget");
+            if (AMapper == null)
+                throw new ArgumentNullException("AMapper");
+
+            if (ASource.Size != ATarget.Size)
+                throw new ArgumentException("Target size does not match source size.");
+
+            for (int N = 0; N < ASource.Size.N; N++)
+                for (int M = 0; M < ASource.Size.M; M++)
+                {
+                    MatrixIndices miIndices = new MatrixIndices(M, N);
+                    ATarget.Set(miIndices, AMapper(ASource.Get(miIndices)));
+                }
+        }
+        /// <summary>
+        /// Maps the specified strongly typed matrix.
+        /// </summary>
+        /// <typeparam name="TData">The type of the stored data.</typeparam>
+        /// <param name="ASource">The source matrix.</param>
+        /// <param name="ATarget">The target matrix.</param>
+        /// <param name="AMapper">The mapping function.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when any of the arguments is null.</exception>
+        public static void Map<TData>(
+            IMatrix<TData> ASource,
+            IMutableMatrix<TData> ATarget,
+            Func<TData, TData> AMapper)
+        {
+            if (AMapper == null)
+                throw new ArgumentNullException("AMapper");
+
+            Matrix.Map((IMatrix)ASource, ATarget, AIn => AMapper((TData)AIn));
+        }
+        #endregion
+
+        #region Combining
+        /// <summary>
+        /// Combines two matrices.
+        /// </summary>
+        /// <param name="ALeft">The left hand side matrix.</param>
+        /// <param name="ARight">The right hand side matrix.</param>
+        /// <param name="AOut">The output matrix.</param>
+        /// <param name="ACombinator">The combinator function.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when any of the arguments is null.</exception>
+        /// <exception cref="System.ArgumentException">Thrown when the matrix sizes do not match.</exception>
+        public static void Combine(
+            IMatrix ALeft,
+            IMatrix ARight,
+            IMutableMatrix AOut,
+            Func<object, object, object> ACombinator)
+        {
+            if (ALeft == null)
+                throw new ArgumentNullException("ALeft");
+            if (ARight == null)
+                throw new ArgumentNullException("ARight");
+            if (AOut == null)
+                throw new ArgumentNullException("AOut");
+            if (ACombinator == null)
+                throw new ArgumentNullException("ACombinator");
+
+            if (ALeft.Size != ARight.Size)
+                throw new ArgumentException("Input vector sizes do not match.");
+            if (ALeft.Size != AOut.Size)
+                throw new ArgumentException("Output vector sizes does not match.");
+
+            for (int N = 0; N < ALeft.Size.N; N++)
+                for (int M = 0; M < ALeft.Size.M; M++)
+                {
+                    MatrixIndices miIndices = new MatrixIndices(M, N);
+                    AOut.Set(miIndices, ACombinator(ALeft.Get(miIndices), ARight.Get(miIndices)));
+                }
+        }
+        /// <summary>
+        /// Combines two strongly typed matrices.
+        /// </summary>
+        /// <typeparam name="TLeft">The element type of the left matrix.</typeparam>
+        /// <typeparam name="TRight">The element type of the right matrix.</typeparam>
+        /// <typeparam name="TOut">The element type of the output matrix.</typeparam>
+        /// <param name="ALeft">The left hand side matrix.</param>
+        /// <param name="ARight">The right hand side matrix.</param>
+        /// <param name="AOut">The output matrix.</param>
+        /// <param name="ACombinator">The combinator function.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when any of the arguments is null.</exception>
+        /// <exception cref="System.ArgumentException">Thrown when the matrix sizes do not match.</exception>
+        public static void Combine<TLeft, TRight, TOut>(
+            IMatrix<TLeft> ALeft,
+            IMatrix<TRight> ARight,
+            IMutableMatrix<TOut> AOut,
+            Func<TLeft, TRight, TOut> ACombinator)
+        {
+            if (ACombinator == null)
+                throw new ArgumentNullException("ACombinator");
+
+            Matrix.Combine((IMatrix)ALeft, ARight, AOut, (AL, AR) => ACombinator((TLeft)AL, (TRight)AR));
+        }
+        #endregion
+
+        #region Multiplying
+        /// <summary>
+        /// Multiplies two matrices.
+        /// </summary>
+        /// <param name="ALeft">The left matrix.</param>
+        /// <param name="ARight">The right matrix.</param>
+        /// <param name="AOutput">The output matrix.</param>
+        /// <param name="AMultiplication">The multiplication operation.</param>
+        /// <param name="AAddition">The addition operation.</param>
+        /// <param name="AZero">The neutral element of the addition operation.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when any of the arguments is null, except the neutral element.</exception>
+        /// <exception cref="System.ArgumentException">The multiplication cannot be performed.</exception>
+        public static void Multiply(
+            IMatrix ALeft,
+            IMatrix ARight,
+            IMutableMatrix AOutput,
+            Func<object, object, object> AMultiplication,
+            Func<object, object, object> AAddition,
+            object AZero)
+        {
+            if (ALeft == null)
+                throw new ArgumentNullException("ALeft");
+            if (ARight == null)
+                throw new ArgumentNullException("ARight");
+            if (AOutput == null)
+                throw new ArgumentNullException("AOutput");
+            if (AMultiplication == null)
+                throw new ArgumentNullException("AMultiplication");
+            if (AAddition == null)
+                throw new ArgumentNullException("AAddition");
+
+            if (ALeft.Size.N != ARight.Size.M)
+                throw new ArgumentException("Matrices are not multiplyable.");
+            if (AOutput.Size.M != ALeft.Size.M || AOutput.Size.N != ARight.Size.N)
+                throw new ArgumentException("Output matrix has the wrong size.");
+
+            for (int N = 0; N < AOutput.Size.N; N++)
+                for (int M = 0; M < AOutput.Size.M; M++)
+                {
+                    MatrixIndices miOut = new MatrixIndices(N, M);
+                    object oCell = AZero;
+
+                    for (int I = 0; I < ALeft.Size.N; I++)
+                    {
+                        MatrixIndices miLeft = new MatrixIndices(miOut.M, I);
+                        MatrixIndices miRight = new MatrixIndices(I, miOut.N);
+                        oCell = AAddition(oCell, AMultiplication(ALeft.Get(miLeft), ARight.Get(miRight)));
+                    }
+
+                    AOutput.Set(miOut, oCell);
+                }
+        }
+        /// <summary>
+        /// Multiplies two strongly typed matrices.
+        /// </summary>
+        /// <typeparam name="TIn">The element type of the input matrices.</typeparam>
+        /// <typeparam name="TOut">The element type of the output matrix.</typeparam>
+        /// <param name="ALeft">The left matrix.</param>
+        /// <param name="ARight">The right matrix.</param>
+        /// <param name="AOutput">The output matrix.</param>
+        /// <param name="AMultiplication">The multiplication operation.</param>
+        /// <param name="AAddition">The addition operation.</param>
+        /// <param name="AZero">The neutral element of the addition operation.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when any of the arguments is null, except the neutral element.</exception>
+        /// <exception cref="System.ArgumentException">The multiplication cannot be performed.</exception>
+        public static void Multiply<TIn, TOut>(
+            IMatrix<TIn> ALeft,
+            IMatrix<TIn> ARight,
+            IMutableMatrix<TOut> AOutput,
+            Func<TIn, TIn, TOut> AMultiplication,
+            Func<TOut, TOut, TOut> AAddition,
+            TOut AZero)
+        {
+            if (AMultiplication == null)
+                throw new ArgumentNullException("AMultiplication");
+            if (AAddition == null)
+                throw new ArgumentNullException("AAddition");
+
+            Matrix.Multiply(
+                (IMatrix)ALeft,
+                ARight,
+                AOutput,
+                (AL, AR) => AMultiplication((TIn)AL, (TIn)AR),
+                (AL, AR) => AAddition((TOut)AL, (TOut)AR),
+                AZero);
+        }
+        #endregion
     }
 }
