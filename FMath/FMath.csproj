@@ -64,6 +64,10 @@
     <Compile Include="Linear\Generic\Mutable\DenseVector.cs" />
     <Compile Include="Linear\Generic\Mutable\SparseMatrix.cs" />
     <Compile Include="Linear\Generic\Mutable\SparseVector.cs" />
+    <Compile Include="Linear\Generic\Proxy\MatrixCasterProxy.cs" />
+    <Compile Include="Linear\Generic\Proxy\MatrixMappingProxy.cs" />
+    <Compile Include="Linear\Generic\Proxy\VectorCasterProxy.cs" />
+    <Compile Include="Linear\Generic\Proxy\VectorMappingProxy.cs" />
     <Compile Include="Linear\IMatrix.cs" />
     <Compile Include="Linear\IMutableMatrix.cs" />
     <Compile Include="Linear\IMutableVector.cs" />

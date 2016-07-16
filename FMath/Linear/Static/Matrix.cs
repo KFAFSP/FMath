@@ -5,7 +5,6 @@ using System.Globalization;
 using System.Text;
 
 using FMath.Linear.Generic;
-using FMath.Linear.Generic.Immutable;
 
 namespace FMath.Linear.Static
 {
