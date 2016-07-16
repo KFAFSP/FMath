@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arithmetics\ArithmeticProvider.cs" />
+    <Compile Include="Arithmetics\Constructs\Fraction.cs" />
     <Compile Include="Arithmetics\GenericArithmetics.cs" />
     <Compile Include="Arithmetics\NumeralType.cs" />
     <Compile Include="Arithmetics\Providers\Real\FloatArithmetics.cs" />
@@ -81,8 +82,6 @@
     <Compile Include="Linear\Static\ArrayMatrix.cs" />
     <Compile Include="Linear\Static\ArrayVector.cs" />
     <Compile Include="Linear\Static\Matrix.cs" />
-    <Compile Include="Linear\Static\NumericMatrix.cs" />
-    <Compile Include="Linear\Static\NumericVector.cs" />
     <Compile Include="Linear\Static\Vector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UtilityExtensions.cs" />

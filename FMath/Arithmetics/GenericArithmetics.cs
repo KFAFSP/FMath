@@ -1,80 +1,81 @@
-﻿using System;
-
 namespace FMath.Arithmetics
 {
     public static class GenericArithmetics
     {
-        public static bool IsNumeric<TType>()
+        public static TNumeral Add<TNumeral>(TNumeral ALeft, TNumeral ARight)
         {
-            return ArithmeticProvider<TType>.Exists;
+            return ArithmeticProvider<TNumeral>.AsNatural.Add(ALeft, ARight);
+        }
+        public static TNumeral Multiply<TNumeral>(TNumeral ALeft, TNumeral ARight)
+        {
+            return ArithmeticProvider<TNumeral>.AsNatural.Multiply(ALeft, ARight);
         }
 
-        public static TType Add<TType>(TType ALeft, TType ARight)
+        public static TNumeral IntDivision<TNumeral>(TNumeral ALeft, TNumeral ARight, out TNumeral ARest)
         {
-            ArithmeticProvider<TType> apProvider = ArithmeticProvider<TType>.Instance;
-            if (!ArithmeticProvider<TType>.IsNatural)
-                throw new InvalidOperationException("Type is not natural.");
-
-            return ((NaturalArithmeticProvider<TType>)apProvider).Add(ALeft, ARight);
-        }
-        public static TType Multiply<TType>(TType ALeft, TType ARight)
-        {
-            ArithmeticProvider<TType> apProvider = ArithmeticProvider<TType>.Instance;
-            if (!ArithmeticProvider<TType>.IsNatural)
-                throw new InvalidOperationException("Type is not natural.");
-
-            return ((NaturalArithmeticProvider<TType>)apProvider).Multiply(ALeft, ARight);
+            return ArithmeticProvider<TNumeral>.AsNatural.IntDivision(ALeft, ARight, out ARest);
         }
 
-        public static TType Negate<TType>(TType ALeft)
+        public static TNumeral Zero<TNumeral>()
         {
-            ArithmeticProvider<TType> apProvider = ArithmeticProvider<TType>.Instance;
-            if (!ArithmeticProvider<TType>.IsInteger)
-                throw new InvalidOperationException("Type is not integer.");
-
-            return ((IntegerArithmeticProvider<TType>)apProvider).Negate(ALeft);
+            return ArithmeticProvider<TNumeral>.AsNatural.Zero;
         }
-        public static TType Subtract<TType>(TType ALeft, TType ARight)
+        public static TNumeral One<TNumeral>()
         {
-            ArithmeticProvider<TType> apProvider = ArithmeticProvider<TType>.Instance;
-            if (!ArithmeticProvider<TType>.IsInteger)
-                throw new InvalidOperationException("Type is not integer.");
-
-            return ((IntegerArithmeticProvider<TType>)apProvider).Subtract(ALeft, ARight);
+            return ArithmeticProvider<TNumeral>.AsNatural.One;
         }
 
-        public static TType Invert<TType>(TType ALeft)
+        public static TNumeral Sign<TNumeral>(TNumeral ALeft)
         {
-            ArithmeticProvider<TType> apProvider = ArithmeticProvider<TType>.Instance;
-            if (!ArithmeticProvider<TType>.IsReal)
-                throw new InvalidOperationException("Type is not real.");
-
-            return ((RealArithmeticProvider<TType>)apProvider).Invert(ALeft);
-        }
-        public static TType Divide<TType>(TType ALeft, TType ARight)
-        {
-            ArithmeticProvider<TType> apProvider = ArithmeticProvider<TType>.Instance;
-            if (!ArithmeticProvider<TType>.IsReal)
-                throw new InvalidOperationException("Type is not real.");
-
-            return ((RealArithmeticProvider<TType>)apProvider).Divide(ALeft, ARight);
+            return ArithmeticProvider<TNumeral>.AsInteger.Sign(ALeft);
         }
 
-        public static TType GetZero<TType>()
+        public static TNumeral NegativeOne<TNumeral>(TNumeral ALeft)
         {
-            ArithmeticProvider<TType> apProvider = ArithmeticProvider<TType>.Instance;
-            if (!ArithmeticProvider<TType>.IsNatural)
-                throw new InvalidOperationException("Type is not natural.");
-
-            return ((NaturalArithmeticProvider<TType>)apProvider).Zero;
+            return ArithmeticProvider<TNumeral>.AsInteger.NegativeOne;
         }
-        public static TType GetOne<TType>()
-        {
-            ArithmeticProvider<TType> apProvider = ArithmeticProvider<TType>.Instance;
-            if (!ArithmeticProvider<TType>.IsNatural)
-                throw new InvalidOperationException("Type is not natural.");
 
-            return ((NaturalArithmeticProvider<TType>)apProvider).One;
+        public static TNumeral Absolute<TNumeral>(TNumeral ALeft)
+        {
+            return ArithmeticProvider<TNumeral>.AsInteger.Absolute(ALeft);
+        }
+        public static TNumeral Negate<TNumeral>(TNumeral ALeft)
+        {
+            return ArithmeticProvider<TNumeral>.AsInteger.Negate(ALeft);
+        }
+        public static TNumeral Subtract<TNumeral>(TNumeral ALeft, TNumeral ARight)
+        {
+            return ArithmeticProvider<TNumeral>.AsInteger.Subtract(ALeft, ARight);
+        }
+
+        public static TNumeral Round<TNumeral>(TNumeral ALeft, RoundingMode AMode = RoundingMode.Down)
+        {
+            return ArithmeticProvider<TNumeral>.AsReal.Round(ALeft, AMode);
+        }
+
+        public static TNumeral Invert<TNumeral>(TNumeral ALeft)
+        {
+            return ArithmeticProvider<TNumeral>.AsReal.Invert(ALeft);
+        }
+        public static TNumeral Divide<TNumeral>(TNumeral ALeft, TNumeral ARight)
+        {
+            return ArithmeticProvider<TNumeral>.AsReal.Divide(ALeft, ARight);
+        }
+
+        public static TNumeral Gcd<TNumeral>(TNumeral ALeft, TNumeral ARight)
+        {
+            if (ARight.Equals(GenericArithmetics.Zero<TNumeral>()))
+                return ALeft;
+
+            TNumeral nRest;
+            GenericArithmetics.IntDivision(ALeft, ARight, out nRest);
+
+            return GenericArithmetics.Gcd<TNumeral>(ARight, nRest);
+        }
+        public static TNumeral Lcm<TNumeral>(TNumeral ALeft, TNumeral ARight)
+        {
+            TNumeral nGcd = GenericArithmetics.Gcd(ALeft, ARight);
+            return GenericArithmetics.Multiply(GenericArithmetics.Divide(GenericArithmetics.Absolute(ALeft), nGcd), GenericArithmetics.Divide(GenericArithmetics.Absolute(ARight), nGcd));
         }
     }
 }

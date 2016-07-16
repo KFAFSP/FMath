@@ -35,13 +35,12 @@ namespace TestApp
 
             Console.WriteLine();
             Console.WriteLine("Arithmetics");
-            Console.WriteLine(GenericArithmetics.IsNumeric<float>());
-            Console.WriteLine(GenericArithmetics.Add(1.0f, 2.0f));
+            Console.WriteLine(ArithmeticProvider<float>.Instance);
 
             ArrayVector<int> av1 = ArrayVector.Pack(0, 1, -2);
             ArrayVector<int> av2 = ArrayVector.Pack(1, -1, 1);
             DenseVector<int> dv1 = new DenseVector<int>(3);
-            NumericVector.Subtract(av1, av2, dv1);
+            //NumericVector.Subtract(av1, av2, dv1);
             Console.WriteLine(dv1.ToString());
 
             Console.ReadLine();

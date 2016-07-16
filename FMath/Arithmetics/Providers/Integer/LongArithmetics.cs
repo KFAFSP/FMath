@@ -1,4 +1,6 @@
-﻿namespace FMath.Arithmetics.Providers.Integer
+﻿using System;
+
+namespace FMath.Arithmetics.Providers.Integer
 {
     public sealed class LongArithmetics :
         IntegerArithmeticProvider<long>
@@ -18,6 +20,11 @@
             return ALeft / ARight;
         }
 
+        public override long Sign(long ALeft)
+        {
+            return Math.Sign(ALeft);
+        }
+
         public override long Negate(long ALeft)
         {
             return unchecked(-ALeft) % long.MaxValue;
@@ -25,5 +32,7 @@
 
         public override long Zero { get { return 0; } }
         public override long One { get { return 1; } }
+
+        public override NumeralType NumberType { get { return NumeralType.Integer; } }
     }
 }

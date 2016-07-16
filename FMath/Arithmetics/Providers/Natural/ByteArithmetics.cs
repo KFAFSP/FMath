@@ -20,5 +20,7 @@
 
         public override byte Zero { get { return 0; } }
         public override byte One { get { return 1; } }
+
+        public override NumeralType NumberType { get { return NumeralType.Natural; } }
     }
 }

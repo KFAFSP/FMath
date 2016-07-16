@@ -5,10 +5,10 @@ namespace FMath.Arithmetics
     /// <summary>
     /// Abstract base class for natural arithemtic providers.
     /// </summary>
-    /// <typeparam name="TType">The type that is provided for.</typeparam>
+    /// <typeparam name="TNumeral">The type that is provided for.</typeparam>
     /// <seealso cref="FMath.Arithmetics.ArithmeticProvider{TType}" />
-    public abstract class NaturalArithmeticProvider<TType> :
-        ArithmeticProvider<TType>
+    public abstract class NaturalArithmeticProvider<TNumeral> :
+        ArithmeticProvider<TNumeral>
     {
         /// <summary>
         /// Returns the sum of two specified arguments.
@@ -17,7 +17,7 @@ namespace FMath.Arithmetics
         /// <param name="ARight">The right hand side.</param>
         /// <returns>The sum.</returns>
         [Pure]
-        public abstract TType Add(TType ALeft, TType ARight);
+        public abstract TNumeral Add(TNumeral ALeft, TNumeral ARight);
         /// <summary>
         /// Returns the product of two specified arguments.
         /// </summary>
@@ -25,7 +25,7 @@ namespace FMath.Arithmetics
         /// <param name="ARight">The right hand side.</param>
         /// <returns>The product.</returns>
         [Pure]
-        public abstract TType Multiply(TType ALeft, TType ARight);
+        public abstract TNumeral Multiply(TNumeral ALeft, TNumeral ARight);
 
         /// <summary>
         /// Performs an integer division of the two specified arguments.
@@ -35,7 +35,7 @@ namespace FMath.Arithmetics
         /// <param name="ARest">The division rest.</param>
         /// <returns>The integer part of the quotient.</returns>
         [Pure]
-        public abstract TType IntDivision(TType ALeft, TType ARight, out TType ARest);
+        public abstract TNumeral IntDivision(TNumeral ALeft, TNumeral ARight, out TNumeral ARest);
 
         /// <summary>
         /// Gets the neutral element of the addition.
@@ -43,13 +43,13 @@ namespace FMath.Arithmetics
         /// <value>
         /// The neutral element of the addition.
         /// </value>
-        public abstract TType Zero { [Pure] get; }
+        public abstract TNumeral Zero { [Pure] get; }
         /// <summary>
         /// Gets the neutral element of the multiplication.
         /// </summary>
         /// <value>
         /// The neutral element of the multiplication.
         /// </value>
-        public abstract TType One { [Pure] get; }
+        public abstract TNumeral One { [Pure] get; }
     }
 }

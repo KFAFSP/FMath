@@ -1,4 +1,6 @@
-﻿namespace FMath.Arithmetics.Providers.Integer
+﻿using System;
+
+namespace FMath.Arithmetics.Providers.Integer
 {
     public sealed class ShortArithmetics :
         IntegerArithmeticProvider<short>
@@ -18,6 +20,11 @@
             return (short)(ALeft / ARight);
         }
 
+        public override short Sign(short ALeft)
+        {
+            return (short)Math.Sign(ALeft);
+        }
+
         public override short Negate(short ALeft)
         {
             return (short)(unchecked(-ALeft) % short.MaxValue);
@@ -25,5 +32,7 @@
 
         public override short Zero { get { return 0; } }
         public override short One { get { return 1; } }
+
+        public override NumeralType NumberType { get { return NumeralType.Integer; } }
     }
 }

@@ -20,5 +20,7 @@ namespace FMath.Arithmetics.Providers.Natural
 
         public override ulong Zero { get { return 0; } }
         public override ulong One { get { return 1; } }
+
+        public override NumeralType NumberType { get { return NumeralType.Natural; } }
     }
 }

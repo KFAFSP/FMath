@@ -20,5 +20,7 @@
 
         public override uint Zero { get { return 0; } }
         public override uint One { get { return 1; } }
+
+        public override NumeralType NumberType { get { return NumeralType.Natural; } }
     }
 }

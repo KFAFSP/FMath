@@ -20,6 +20,11 @@ namespace FMath.Arithmetics.Providers.Real
             return ALeft / ARight;
         }
 
+        public override double Sign(double ALeft)
+        {
+            return Math.Sign(ALeft);
+        }
+
         public override double Negate(double ALeft)
         {
             return -ALeft;
@@ -59,5 +64,7 @@ namespace FMath.Arithmetics.Providers.Real
         {
             get { return 1.0d; }
         }
+
+        public override NumeralType NumberType { get { return NumeralType.Real; } }
     }
 }

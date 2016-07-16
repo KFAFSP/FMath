@@ -1,4 +1,6 @@
-﻿namespace FMath.Arithmetics.Providers.Integer
+﻿using System;
+
+namespace FMath.Arithmetics.Providers.Integer
 {
     public sealed class SByteArithmetics :
         IntegerArithmeticProvider<sbyte>
@@ -18,6 +20,11 @@
             return (sbyte)(ALeft / ARight);
         }
 
+        public override sbyte Sign(sbyte ALeft)
+        {
+            return (sbyte)Math.Sign(ALeft);
+        }
+
         public override sbyte Negate(sbyte ALeft)
         {
             return (sbyte)(unchecked(-ALeft) % sbyte.MaxValue);
@@ -25,5 +32,7 @@
 
         public override sbyte Zero { get { return 0; } }
         public override sbyte One { get { return 1; } }
+
+        public override NumeralType NumberType { get { return NumeralType.Integer; } }
     }
 }

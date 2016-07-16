@@ -1,3 +1,5 @@
+using System;
+
 namespace FMath.Arithmetics.Providers.Integer
 {
     public sealed class IntArithmetics :
@@ -18,6 +20,11 @@ namespace FMath.Arithmetics.Providers.Integer
             return ALeft / ARight;
         }
 
+        public override int Sign(int ALeft)
+        {
+            return Math.Sign(ALeft);
+        }
+
         public override int Negate(int ALeft)
         {
             return unchecked(-ALeft) % int.MaxValue;
@@ -25,5 +32,7 @@ namespace FMath.Arithmetics.Providers.Integer
 
         public override int Zero { get { return 0; } }
         public override int One { get { return 1; } }
+
+        public override NumeralType NumberType { get { return NumeralType.Integer; } }
     }
 }

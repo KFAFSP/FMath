@@ -20,5 +20,7 @@ namespace FMath.Arithmetics.Providers.Natural
 
         public override ushort Zero { get { return 0; } }
         public override ushort One { get { return 1; } }
+
+        public override NumeralType NumberType { get { return NumeralType.Natural; } }
     }
 }
