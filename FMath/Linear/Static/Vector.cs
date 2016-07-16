@@ -37,7 +37,7 @@ namespace FMath.Linear.Static
             return AIndex >= 0 && AIndex < AVector.Size;
         }
 
-        #region Casting        
+        #region Casting
         /// <summary>
         /// Casts the specified vector.
         /// </summary>
