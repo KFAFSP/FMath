@@ -82,8 +82,11 @@
     <Compile Include="Linear\Numeric\HomogeneousFltMatrix.cs" />
     <Compile Include="Linear\Numeric\NumericMatrix.cs" />
     <Compile Include="Linear\Numeric\NumericVector.cs" />
-    <Compile Include="Linear\Numeric\Vec3Flt.cs" />
-    <Compile Include="Linear\Numeric\Vec3Int.cs" />
+    <Compile Include="Linear\Numeric\Vectors.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Vectors.tt</DependentUpon>
+    </Compile>
     <Compile Include="Linear\Static\ArrayMatrix.cs" />
     <Compile Include="Linear\Static\ArrayVector.cs" />
     <Compile Include="Linear\Static\Matrix.cs" />
@@ -91,7 +94,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UtilityExtensions.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Linear\Numeric\Vectors.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Vectors.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

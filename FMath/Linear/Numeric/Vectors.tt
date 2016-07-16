@@ -1,0 +1,350 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+using System;
+using System.Diagnostics.Contracts;
+
+using FMath.Linear.Generic.Mutable;
+
+<#
+string[] Vec2Names = new []{"X","Y"};
+string[] Vec3Names = new []{"X","Y","Z"};
+string[] Vec4Names = new []{"X","Y","Z", "W"};
+#>
+namespace FMath.Linear.Numeric
+{
+<# EmitVectorN(2, "Int", "int", Vec2Names); #>
+
+<# EmitVectorN(2, "Flt", "float", Vec2Names); #>
+
+<# EmitVectorN(2, "Dbl", "double", Vec2Names); #>
+
+<# EmitVectorN(2, "Dcm", "decimal", Vec2Names); #>
+
+<# EmitVectorN(3, "Int", "int", Vec3Names); #>
+
+<# EmitVectorN(3, "Flt", "float", Vec3Names); #>
+
+<# EmitVectorN(3, "Dbl", "double", Vec3Names); #>
+
+<# EmitVectorN(3, "Dcm", "decimal", Vec3Names); #>
+
+<# EmitVectorN(4, "Int", "int", Vec4Names); #>
+
+<# EmitVectorN(4, "Flt", "float", Vec4Names); #>
+
+<# EmitVectorN(4, "Dbl", "double", Vec4Names); #>
+
+<# EmitVectorN(4, "Dcm", "decimal", Vec4Names); #>
+}<#+
+private void EmitScalarProduct(int N)
+{
+	for (int I = 0; I < N; I++)
+	{
+		string sLeft = String.Format("ALeft.FElements[{0}]", I);
+		string sRight = String.Format("ARight.FElements[{0}]", I);
+
+		if (I != 0)
+		{
+			#><#= "\r\n\t\t\t\t + " #><#+
+		}
+
+		#><#= sLeft #><#= "*" #><#= sRight #><#+
+	}
+}
+
+private void EmitEquiList(int N)
+{
+	for (int I = 0; I < N; I++)
+	{
+		string sThis = String.Format("this.FElements[{0}]", I);
+		string sOther = String.Format("AOther.FElements[{0}]", I);
+
+		if (I != 0)
+		{
+			#><#= "\r\n\t\t\t\t && " #><#+
+		}
+
+		#><#= sThis #><#= " == " #><#= sOther #><#+
+	}
+}
+
+private void EmitAssignList(int N)
+{
+	for (int I = 0; I < N; I++)
+	{
+		string sThis = String.Format("this.FElements[{0}]", I);
+		string sFrom = String.Format("AFrom.FElements[{0}]", I);
+
+		if (I != 0)
+		{
+			#><#= "\t\t\t" #><#+
+		}
+
+		#><#= sThis #><#= " = " #><#= sFrom #>;
+<#+
+	}
+}
+
+private void EmitProperties(int N, string TYPE, string[] NAMES)
+{
+	for (int I = 0; I < N; I++)
+	{#>		public <#= TYPE #> <#= NAMES[I] #>
+		{
+			[Pure]
+			get { return this.FElements[<#= I #>]; }
+			set { this.FElements[<#= I #>] = value; }
+		}
+<#+
+	}
+}
+
+private void EmitNegate(int N)
+{
+	for (int I = 0; I < N; I++)
+	{
+		string sThis = String.Format("this.FElements[{0}]", I);
+
+		if (I != 0)
+		{
+			#><#= "\t\t\t" #><#+
+		}
+
+		#><#= sThis #><#= " = -" #><#= sThis #>;
+<#+
+	}
+}
+
+private void EmitAdd(int N)
+{
+	for (int I = 0; I < N; I++)
+	{
+		string sThis = String.Format("this.FElements[{0}]", I);
+		string sFrom = String.Format("ARight.FElements[{0}]", I);
+
+		if (I != 0)
+		{
+			#><#= "\t\t\t" #><#+
+		}
+
+		#><#= sThis #><#= " += " #><#= sFrom #>;
+<#+
+	}
+}
+
+private void EmitScale(int N)
+{
+	for (int I = 0; I < N; I++)
+	{
+		string sThis = String.Format("this.FElements[{0}]", I);
+
+		if (I != 0)
+		{
+			#><#= "\t\t\t" #><#+
+		}
+
+		#><#= sThis #><#= " *= ARight" #>;
+<#+
+	}
+}
+
+private void EmitMask(int N)
+{
+	for (int I = 0; I < N; I++)
+	{
+		string sThis = String.Format("this.FElements[{0}]", I);
+		string sFrom = String.Format("ARight.FElements[{0}]", I);
+
+		if (I != 0)
+		{
+			#><#= "\t\t\t" #><#+
+		}
+
+		#><#= sThis #><#= " *= " #><#= sFrom #>;
+<#+
+	}
+}
+#>
+
+<#+
+private void EmitVectorN(int N, string SUFFIX, string TYPE, string[] NAMES)
+{
+	string VectorNx = "Vector" + N.ToString() + SUFFIX;
+	
+	string InitList = String.Join(", ", NAMES.Select(AName => TYPE + " A" + AName));
+	string NameList = String.Join(", ", NAMES.Select(AName => "A" + AName));
+
+	string ZeroList = String.Join(", ", Enumerable.Repeat("0", N));
+	string OneList = String.Join(", ", Enumerable.Repeat("1", N));
+
+	string CopyList = String.Join(", ", Enumerable.Range(0, N).Select(AIndex => String.Format("this.FElements[{0}]", AIndex)));
+
+#>
+    public sealed class <#= VectorNx #> :
+		DenseVector<<#= TYPE #>>,
+		IEquatable<<#= VectorNx #>>,
+		IAssignable<<#= VectorNx #>>
+	{
+		#region Static factories
+        public static <#= VectorNx #> Zero { get { return new <#= VectorNx #>(<#= ZeroList #>); } }
+        public static <#= VectorNx #> One { get { return new <#= VectorNx #>(<#= OneList #>); } }
+        #endregion
+
+		#region Pure static operators
+        [Pure]
+        public static <#= VectorNx #> Negate(<#= VectorNx #> ALeft)
+        {
+            return ALeft.Clone().Negate();
+        }
+        [Pure]
+        public static <#= VectorNx #> Add(<#= VectorNx #> ALeft, <#= VectorNx #> ARight)
+        {
+            return ALeft.Clone().Add(ARight);
+        }
+        [Pure]
+        public static <#= VectorNx #> Subtract(<#= VectorNx #> ALeft, <#= VectorNx #> ARight)
+        {
+            return ARight.Clone().Negate().Add(ALeft);
+        }
+        [Pure]
+        public static <#= VectorNx #> Scale(<#= VectorNx #> ALeft, <#= TYPE #> ARight)
+        {
+            return ALeft.Clone().Scale(ARight);
+        }
+        [Pure]
+        public static <#= VectorNx #> Mask(<#= VectorNx #> ALeft, <#= VectorNx #> ARight)
+        {
+            return ALeft.Clone().Mask(ARight);
+        }
+
+        [Pure]
+        public static <#= TYPE #> ScalarProduct(<#= VectorNx #> ALeft, <#= VectorNx #> ARight)
+        {
+            return <#+ EmitScalarProduct(N); #>;
+        }<#+ if (N == 3) {#>
+
+		[Pure]
+        public static <#= VectorNx #> VectorProduct(<#= VectorNx #> ALeft, <#= VectorNx #> ARight)
+        {
+            return new <#= VectorNx #>(
+                ALeft.FElements[1] * ARight.FElements[2] - ALeft.FElements[2] * ARight.FElements[1],
+                ALeft.FElements[2] * ARight.FElements[0] - ALeft.FElements[0] * ARight.FElements[2],
+                ALeft.FElements[0] * ARight.FElements[1] - ALeft.FElements[1] * ARight.FElements[0]);
+        }<#+}#>
+
+        #endregion
+
+        public <#= VectorNx #>()
+			: base(<#= N.ToString() #>)
+		{ }
+		public <#= VectorNx #>(<#= InitList #>)
+			: base(new []{<#= NameList #>}, false)
+		{ }
+
+		[Pure]
+        public new <#= VectorNx #> Clone()
+        {
+            return new <#= VectorNx #>(<#= CopyList #>);
+        }
+
+		#region IEquatable<<#= VectorNx #>>
+		public bool Equals(<#= VectorNx #> AOther)
+		{
+			if (AOther == null)
+				return false;
+
+			return <#+ EmitEquiList(N); #>;
+		}
+		#endregion
+
+		#region IAssignable<<#= VectorNx #>>
+		public void Assign(<#= VectorNx #> AFrom)
+		{
+			if (AFrom == null)
+				throw new ArgumentNullException("AFrom");
+
+			<#+ EmitAssignList(N); #>
+		}
+		#endregion
+
+		#region Mutating chainable operators
+        public <#= VectorNx #> Negate()
+        {
+			<#+ EmitNegate(N); #>
+            return this;
+        }
+        public <#= VectorNx #> Add(<#= VectorNx #> ARight)
+        {
+            if (ARight == null)
+                throw new ArgumentNullException("ARight");
+
+			<#+ EmitAdd(N); #>
+            return this;
+        }
+        public <#= VectorNx #> Scale(<#= TYPE #> ARight)
+        {
+			<#+ EmitScale(N); #>
+            return this;
+        }
+        public <#= VectorNx #> Mask(<#= VectorNx #> ARight)
+        {
+            if (ARight == null)
+                throw new ArgumentNullException("ARight");
+
+			<#+ EmitMask(N); #>
+            return this;
+        }
+        #endregion
+
+		#region System.Object overrides
+        public override bool Equals(object AOther)
+        {
+            if (AOther is <#= VectorNx #>)
+                return this.Equals((<#= VectorNx #>)AOther);
+
+            return base.Equals(AOther);
+        }
+        #endregion
+
+<#+ EmitProperties(N, TYPE, NAMES); #>
+
+		#region Static operator overloads
+        public static bool operator ==(<#= VectorNx #> ALeft, <#= VectorNx #> ARight)
+        {
+            if (ALeft == null || ARight == null)
+                return false;
+
+            return ALeft.Equals(ARight);
+        }
+        public static bool operator !=(<#= VectorNx #> ALeft, <#= VectorNx #> ARight)
+        {
+            if (ALeft == null || ARight == null)
+                return false;
+
+            return !ALeft.Equals(ARight);
+        }
+
+        public static <#= VectorNx #> operator -(<#= VectorNx #> ALeft)
+        {
+            return <#= VectorNx #>.Negate(ALeft);
+        }
+        public static <#= VectorNx #> operator +(<#= VectorNx #> ALeft, <#= VectorNx #> ARight)
+        {
+            return <#= VectorNx #>.Add(ALeft, ARight);
+        }
+        public static <#= VectorNx #> operator -(<#= VectorNx #> ALeft, <#= VectorNx #> ARight)
+        {
+            return <#= VectorNx #>.Subtract(ALeft, ARight);
+        }
+        public static <#= VectorNx #> operator *(<#= VectorNx #> ALeft, <#= TYPE #> ARight)
+        {
+            return <#= VectorNx #>.Scale(ALeft, ARight);
+        }
+        #endregion
+    }
+<#+
+}
+#>

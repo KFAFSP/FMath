@@ -67,9 +67,9 @@ namespace FMath.Linear.Numeric
             return hfmMatrix;
         }
         [Pure]
-        public static Vec3Flt Project(HomogeneousFltMatrix ALeft, Vec3Flt ARight)
+        public static Vector3Flt Project(HomogeneousFltMatrix ALeft, Vector3Flt ARight)
         {
-            return new Vec3Flt(
+            return new Vector3Flt(
                 ALeft.FCells[0, 0] * ARight.X + ALeft.FCells[0, 1] * ARight.Y + ALeft.FCells[0, 2] * ARight.Z,
                 ALeft.FCells[1, 0] * ARight.X + ALeft.FCells[1, 1] * ARight.Y + ALeft.FCells[1, 2] * ARight.Z,
                 ALeft.FCells[2, 0] * ARight.X + ALeft.FCells[2, 1] * ARight.Y + ALeft.FCells[2, 2] * ARight.Z);
@@ -108,6 +108,7 @@ namespace FMath.Linear.Numeric
             float A31, float A32, float A33)
             : base(new [,] { { A11, A12, A13 }, {A21, A22, A23}, {A31, A32, A33} }, false)
         { }
+        
         [Pure]
         public new HomogeneousFltMatrix Clone()
         {
@@ -231,7 +232,7 @@ namespace FMath.Linear.Numeric
         {
             return HomogeneousFltMatrix.Project(ALeft, ARight);
         }
-        public static Vec3Flt operator *(HomogeneousFltMatrix ALeft, Vec3Flt ARight)
+        public static Vector3Flt operator *(HomogeneousFltMatrix ALeft, Vector3Flt ARight)
         {
             return HomogeneousFltMatrix.Project(ALeft, ARight);
         }
