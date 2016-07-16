@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace FMath.Arithmetics
 {
+    /// <summary>
+    /// Abstract base class for arithmetic providers.
+    /// </summary>
     public abstract class ArithmeticProvider
     {
         private static Dictionary<Type, ArithmeticProvider> _FProviders;
@@ -28,6 +31,11 @@ namespace FMath.Arithmetics
             }
         }
 
+        /// <summary>
+        /// Gets the provider for the specified type.
+        /// </summary>
+        /// <param name="AType">The type.</param>
+        /// <returns>The provider instance, or null.</returns>
         public static ArithmeticProvider Get(Type AType)
         {
             ArithmeticProvider apProvider;
@@ -36,20 +44,56 @@ namespace FMath.Arithmetics
 
             return apProvider;
         }
+        /// <summary>
+        /// Gets the strongly typed provider for the specified type.
+        /// </summary>
+        /// <typeparam name="TType">The type.</typeparam>
+        /// <returns>The provider instance, or null.</returns>
         public static ArithmeticProvider<TType> Get<TType>()
         {
             return ArithmeticProvider.Get(typeof(TType)) as ArithmeticProvider<TType>;
         }
     }
 
+    /// <summary>
+    /// Abstract generic base class for arithmetic providers.
+    /// </summary>
+    /// <typeparam name="TType">The type that is provided for.</typeparam>
     public abstract class ArithmeticProvider<TType> :
         ArithmeticProvider
     {
+        /// <summary>
+        /// Gets the instance of this provider.
+        /// </summary>
         public static readonly ArithmeticProvider<TType> Instance = ArithmeticProvider.Get<TType>();
 
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="ArithmeticProvider{TType}"/> is exists.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if exists, <c>false</c> otherwise.
+        /// </value>
         public static bool Exists { get { return ArithmeticProvider<TType>.Instance != null; } }
+        /// <summary>
+        /// Gets a value indicating whether this provider supports natural operations.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this provider supports natural operations, <c>false</c> otherwise.
+        /// </value>
         public static bool IsNatural { get { return ArithmeticProvider<TType>.Instance is NaturalArithmeticProvider<TType>; } }
+        /// <summary>
+        /// Gets a value indicating whether this provider supports integer operations.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this provider supports integer operations, <c>false</c> otherwise.
+        /// </value>
         public static bool IsInteger { get { return ArithmeticProvider<TType>.Instance is IntegerArithmeticProvider<TType>; } }
+        /// <summary>
+        /// Gets a value indicating whether this provider supports real operations.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this provider supports real operations, <c>false</c> otherwise.
+        /// </value>
         public static bool IsReal { get { return ArithmeticProvider<TType>.Instance is RealArithmeticProvider<TType>; } }
     }
 }
