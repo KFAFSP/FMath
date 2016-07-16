@@ -14,7 +14,7 @@ namespace FMath.Linear.Numeric
     {
         #region Static factories
         public static AffineFltMatrix Zero { get { return new AffineFltMatrix(HomogeneousFltMatrix.Zero, Vector3Flt.Zero); } }
-        public static AffineFltMatrix Identitiy { get { return new AffineFltMatrix(HomogeneousFltMatrix.Identitiy, Vector3Flt.Zero); } }
+        public static AffineFltMatrix Identity { get { return new AffineFltMatrix(HomogeneousFltMatrix.Identity, Vector3Flt.Zero); } }
         #endregion
 
         #region Pure static operators

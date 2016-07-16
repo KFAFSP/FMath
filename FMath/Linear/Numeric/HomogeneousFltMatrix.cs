@@ -11,7 +11,7 @@ namespace FMath.Linear.Numeric
     {
         #region Static factories
         public static HomogeneousFltMatrix Zero { get { return new HomogeneousFltMatrix(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f); } }
-        public static HomogeneousFltMatrix Identitiy { get { return new HomogeneousFltMatrix(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f); } }
+        public static HomogeneousFltMatrix Identity { get { return new HomogeneousFltMatrix(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f); } }
 
         public static HomogeneousFltMatrix RotateX(float AAngle)
         {
