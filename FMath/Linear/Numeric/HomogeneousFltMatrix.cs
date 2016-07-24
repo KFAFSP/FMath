@@ -91,11 +91,15 @@ namespace FMath.Linear.Numeric
 
         public static HomogeneousFltMatrix Mirror(Vector3F ALine)
         {
-            return HomogeneousFltMatrix.OrthogonalProjection(ALine).Add(HomogeneousFltMatrix.Identity.Negate());
+            return HomogeneousFltMatrix.OrthogonalProjection(ALine)
+                .Scale(2.0f)
+                .Add(HomogeneousFltMatrix.Identity.Negate());
         }
         public static HomogeneousFltMatrix Mirror(Vector3F AFirst, Vector3F ASecond)
         {
-            return HomogeneousFltMatrix.OrthogonalProjection(AFirst, ASecond).Add(HomogeneousFltMatrix.Identity.Negate());
+            return HomogeneousFltMatrix.OrthogonalProjection(AFirst, ASecond)
+                .Scale(2.0f)
+                .Add(HomogeneousFltMatrix.Identity.Negate());
         }
 
         public static HomogeneousFltMatrix Parallelepiped(Vector3F AX, Vector3F AY, Vector3F AZ)
