@@ -286,6 +286,10 @@ namespace FMath.Linear.Numeric
 
             return base.Equals(AOther);
         }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
         #endregion
 
         #region Static operator overloads
