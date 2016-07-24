@@ -5,66 +5,67 @@ using FMath.Linear.Generic.Mutable;
 
 namespace FMath.Linear.Numeric
 {
-    public sealed class Vector2Int :
+    public sealed class Vector2I :
 		DenseVector<int>,
-		IEquatable<Vector2Int>,
-		IAssignable<Vector2Int>
+		IEquatable<Vector2I>,
+		IAssignable<Vector2I>
 	{
 		#region Static factories
-        public static Vector2Int Zero { get { return new Vector2Int(0, 0); } }
-        public static Vector2Int One { get { return new Vector2Int(1, 1); } }
+        public static Vector2I Zero { get { return new Vector2I(0, 0); } }
+        public static Vector2I One { get { return new Vector2I(1, 1); } }
         #endregion
 
 		#region Pure static operators
         [Pure]
-        public static Vector2Int Negate(Vector2Int ALeft)
+        public static Vector2I Negate(Vector2I ALeft)
         {
             return ALeft.Clone().Negate();
         }
         [Pure]
-        public static Vector2Int Add(Vector2Int ALeft, Vector2Int ARight)
+        public static Vector2I Add(Vector2I ALeft, Vector2I ARight)
         {
             return ALeft.Clone().Add(ARight);
         }
         [Pure]
-        public static Vector2Int Subtract(Vector2Int ALeft, Vector2Int ARight)
+        public static Vector2I Subtract(Vector2I ALeft, Vector2I ARight)
         {
             return ARight.Clone().Negate().Add(ALeft);
         }
         [Pure]
-        public static Vector2Int Scale(Vector2Int ALeft, int ARight)
+        public static Vector2I Scale(Vector2I ALeft, int ARight)
         {
             return ALeft.Clone().Scale(ARight);
         }
         [Pure]
-        public static Vector2Int Mask(Vector2Int ALeft, Vector2Int ARight)
+        public static Vector2I Mask(Vector2I ALeft, Vector2I ARight)
         {
             return ALeft.Clone().Mask(ARight);
         }
 
         [Pure]
-        public static int ScalarProduct(Vector2Int ALeft, Vector2Int ARight)
+        public static int ScalarProduct(Vector2I ALeft, Vector2I ARight)
         {
             return ALeft.FElements[0]*ARight.FElements[0]
 				 + ALeft.FElements[1]*ARight.FElements[1];
         }
         #endregion
 
-        public Vector2Int()
+        public Vector2I()
 			: base(2)
 		{ }
-		public Vector2Int(int AX, int AY)
+		public Vector2I(int AX, int AY)
 			: base(new []{AX, AY}, false)
 		{ }
 
 		[Pure]
-        public new Vector2Int Clone()
+        public new Vector2I Clone()
         {
-            return new Vector2Int(this.FElements[0], this.FElements[1]);
+            return new Vector2I(this.FElements[0], this.FElements[1]);
         }
 
-		#region IEquatable<Vector2Int>
-		public bool Equals(Vector2Int AOther)
+		#region IEquatable<Vector2I>
+		[Pure]
+		public bool Equals(Vector2I AOther)
 		{
 			if (AOther == null)
 				return false;
@@ -74,8 +75,8 @@ namespace FMath.Linear.Numeric
 		}
 		#endregion
 
-		#region IAssignable<Vector2Int>
-		public void Assign(Vector2Int AFrom)
+		#region IAssignable<Vector2I>
+		public void Assign(Vector2I AFrom)
 		{
 			if (AFrom == null)
 				throw new ArgumentNullException("AFrom");
@@ -86,13 +87,13 @@ namespace FMath.Linear.Numeric
 		#endregion
 
 		#region Mutating chainable operators
-        public Vector2Int Negate()
+        public Vector2I Negate()
         {
 			this.FElements[0] = -this.FElements[0];
 			this.FElements[1] = -this.FElements[1];
             return this;
         }
-        public Vector2Int Add(Vector2Int ARight)
+        public Vector2I Add(Vector2I ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -101,13 +102,13 @@ namespace FMath.Linear.Numeric
 			this.FElements[1] += ARight.FElements[1];
             return this;
         }
-        public Vector2Int Scale(int ARight)
+        public Vector2I Scale(int ARight)
         {
 			this.FElements[0] *= ARight;
 			this.FElements[1] *= ARight;
             return this;
         }
-        public Vector2Int Mask(Vector2Int ARight)
+        public Vector2I Mask(Vector2I ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -119,14 +120,25 @@ namespace FMath.Linear.Numeric
         #endregion
 
 		#region System.Object overrides
+		[Pure]
         public override bool Equals(object AOther)
         {
-            if (AOther is Vector2Int)
-                return this.Equals((Vector2Int)AOther);
+            if (AOther is Vector2I)
+                return this.Equals((Vector2I)AOther);
 
             return base.Equals(AOther);
         }
+		[Pure]
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
         #endregion
+
+		public int LengthSq
+		{
+			get { return Vector2I.ScalarProduct(this, this); }
+		}
 
 		public int X
 		{
@@ -142,100 +154,101 @@ namespace FMath.Linear.Numeric
 		}
 
 		#region Static operator overloads
-        public static bool operator ==(Vector2Int ALeft, Vector2Int ARight)
+        public static bool operator ==(Vector2I ALeft, Vector2I ARight)
         {
-            if (ALeft == null || ARight == null)
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
                 return false;
 
             return ALeft.Equals(ARight);
         }
-        public static bool operator !=(Vector2Int ALeft, Vector2Int ARight)
+        public static bool operator !=(Vector2I ALeft, Vector2I ARight)
         {
-            if (ALeft == null || ARight == null)
-                return false;
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
+                return true;
 
             return !ALeft.Equals(ARight);
         }
 
-        public static Vector2Int operator -(Vector2Int ALeft)
+        public static Vector2I operator -(Vector2I ALeft)
         {
-            return Vector2Int.Negate(ALeft);
+            return Vector2I.Negate(ALeft);
         }
-        public static Vector2Int operator +(Vector2Int ALeft, Vector2Int ARight)
+        public static Vector2I operator +(Vector2I ALeft, Vector2I ARight)
         {
-            return Vector2Int.Add(ALeft, ARight);
+            return Vector2I.Add(ALeft, ARight);
         }
-        public static Vector2Int operator -(Vector2Int ALeft, Vector2Int ARight)
+        public static Vector2I operator -(Vector2I ALeft, Vector2I ARight)
         {
-            return Vector2Int.Subtract(ALeft, ARight);
+            return Vector2I.Subtract(ALeft, ARight);
         }
-        public static Vector2Int operator *(Vector2Int ALeft, int ARight)
+        public static Vector2I operator *(Vector2I ALeft, int ARight)
         {
-            return Vector2Int.Scale(ALeft, ARight);
+            return Vector2I.Scale(ALeft, ARight);
         }
         #endregion
     }
 
-    public sealed class Vector2Flt :
+    public sealed class Vector2F :
 		DenseVector<float>,
-		IEquatable<Vector2Flt>,
-		IAssignable<Vector2Flt>
+		IEquatable<Vector2F>,
+		IAssignable<Vector2F>
 	{
 		#region Static factories
-        public static Vector2Flt Zero { get { return new Vector2Flt(0, 0); } }
-        public static Vector2Flt One { get { return new Vector2Flt(1, 1); } }
+        public static Vector2F Zero { get { return new Vector2F(0, 0); } }
+        public static Vector2F One { get { return new Vector2F(1, 1); } }
         #endregion
 
 		#region Pure static operators
         [Pure]
-        public static Vector2Flt Negate(Vector2Flt ALeft)
+        public static Vector2F Negate(Vector2F ALeft)
         {
             return ALeft.Clone().Negate();
         }
         [Pure]
-        public static Vector2Flt Add(Vector2Flt ALeft, Vector2Flt ARight)
+        public static Vector2F Add(Vector2F ALeft, Vector2F ARight)
         {
             return ALeft.Clone().Add(ARight);
         }
         [Pure]
-        public static Vector2Flt Subtract(Vector2Flt ALeft, Vector2Flt ARight)
+        public static Vector2F Subtract(Vector2F ALeft, Vector2F ARight)
         {
             return ARight.Clone().Negate().Add(ALeft);
         }
         [Pure]
-        public static Vector2Flt Scale(Vector2Flt ALeft, float ARight)
+        public static Vector2F Scale(Vector2F ALeft, float ARight)
         {
             return ALeft.Clone().Scale(ARight);
         }
         [Pure]
-        public static Vector2Flt Mask(Vector2Flt ALeft, Vector2Flt ARight)
+        public static Vector2F Mask(Vector2F ALeft, Vector2F ARight)
         {
             return ALeft.Clone().Mask(ARight);
         }
 
         [Pure]
-        public static float ScalarProduct(Vector2Flt ALeft, Vector2Flt ARight)
+        public static float ScalarProduct(Vector2F ALeft, Vector2F ARight)
         {
             return ALeft.FElements[0]*ARight.FElements[0]
 				 + ALeft.FElements[1]*ARight.FElements[1];
         }
         #endregion
 
-        public Vector2Flt()
+        public Vector2F()
 			: base(2)
 		{ }
-		public Vector2Flt(float AX, float AY)
+		public Vector2F(float AX, float AY)
 			: base(new []{AX, AY}, false)
 		{ }
 
 		[Pure]
-        public new Vector2Flt Clone()
+        public new Vector2F Clone()
         {
-            return new Vector2Flt(this.FElements[0], this.FElements[1]);
+            return new Vector2F(this.FElements[0], this.FElements[1]);
         }
 
-		#region IEquatable<Vector2Flt>
-		public bool Equals(Vector2Flt AOther)
+		#region IEquatable<Vector2F>
+		[Pure]
+		public bool Equals(Vector2F AOther)
 		{
 			if (AOther == null)
 				return false;
@@ -245,8 +258,8 @@ namespace FMath.Linear.Numeric
 		}
 		#endregion
 
-		#region IAssignable<Vector2Flt>
-		public void Assign(Vector2Flt AFrom)
+		#region IAssignable<Vector2F>
+		public void Assign(Vector2F AFrom)
 		{
 			if (AFrom == null)
 				throw new ArgumentNullException("AFrom");
@@ -257,13 +270,13 @@ namespace FMath.Linear.Numeric
 		#endregion
 
 		#region Mutating chainable operators
-        public Vector2Flt Negate()
+        public Vector2F Negate()
         {
 			this.FElements[0] = -this.FElements[0];
 			this.FElements[1] = -this.FElements[1];
             return this;
         }
-        public Vector2Flt Add(Vector2Flt ARight)
+        public Vector2F Add(Vector2F ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -272,13 +285,13 @@ namespace FMath.Linear.Numeric
 			this.FElements[1] += ARight.FElements[1];
             return this;
         }
-        public Vector2Flt Scale(float ARight)
+        public Vector2F Scale(float ARight)
         {
 			this.FElements[0] *= ARight;
 			this.FElements[1] *= ARight;
             return this;
         }
-        public Vector2Flt Mask(Vector2Flt ARight)
+        public Vector2F Mask(Vector2F ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -290,14 +303,25 @@ namespace FMath.Linear.Numeric
         #endregion
 
 		#region System.Object overrides
+		[Pure]
         public override bool Equals(object AOther)
         {
-            if (AOther is Vector2Flt)
-                return this.Equals((Vector2Flt)AOther);
+            if (AOther is Vector2F)
+                return this.Equals((Vector2F)AOther);
 
             return base.Equals(AOther);
         }
+		[Pure]
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
         #endregion
+
+		public float LengthSq
+		{
+			get { return Vector2F.ScalarProduct(this, this); }
+		}
 
 		public float X
 		{
@@ -313,100 +337,101 @@ namespace FMath.Linear.Numeric
 		}
 
 		#region Static operator overloads
-        public static bool operator ==(Vector2Flt ALeft, Vector2Flt ARight)
+        public static bool operator ==(Vector2F ALeft, Vector2F ARight)
         {
-            if (ALeft == null || ARight == null)
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
                 return false;
 
             return ALeft.Equals(ARight);
         }
-        public static bool operator !=(Vector2Flt ALeft, Vector2Flt ARight)
+        public static bool operator !=(Vector2F ALeft, Vector2F ARight)
         {
-            if (ALeft == null || ARight == null)
-                return false;
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
+                return true;
 
             return !ALeft.Equals(ARight);
         }
 
-        public static Vector2Flt operator -(Vector2Flt ALeft)
+        public static Vector2F operator -(Vector2F ALeft)
         {
-            return Vector2Flt.Negate(ALeft);
+            return Vector2F.Negate(ALeft);
         }
-        public static Vector2Flt operator +(Vector2Flt ALeft, Vector2Flt ARight)
+        public static Vector2F operator +(Vector2F ALeft, Vector2F ARight)
         {
-            return Vector2Flt.Add(ALeft, ARight);
+            return Vector2F.Add(ALeft, ARight);
         }
-        public static Vector2Flt operator -(Vector2Flt ALeft, Vector2Flt ARight)
+        public static Vector2F operator -(Vector2F ALeft, Vector2F ARight)
         {
-            return Vector2Flt.Subtract(ALeft, ARight);
+            return Vector2F.Subtract(ALeft, ARight);
         }
-        public static Vector2Flt operator *(Vector2Flt ALeft, float ARight)
+        public static Vector2F operator *(Vector2F ALeft, float ARight)
         {
-            return Vector2Flt.Scale(ALeft, ARight);
+            return Vector2F.Scale(ALeft, ARight);
         }
         #endregion
     }
 
-    public sealed class Vector2Dbl :
+    public sealed class Vector2D :
 		DenseVector<double>,
-		IEquatable<Vector2Dbl>,
-		IAssignable<Vector2Dbl>
+		IEquatable<Vector2D>,
+		IAssignable<Vector2D>
 	{
 		#region Static factories
-        public static Vector2Dbl Zero { get { return new Vector2Dbl(0, 0); } }
-        public static Vector2Dbl One { get { return new Vector2Dbl(1, 1); } }
+        public static Vector2D Zero { get { return new Vector2D(0, 0); } }
+        public static Vector2D One { get { return new Vector2D(1, 1); } }
         #endregion
 
 		#region Pure static operators
         [Pure]
-        public static Vector2Dbl Negate(Vector2Dbl ALeft)
+        public static Vector2D Negate(Vector2D ALeft)
         {
             return ALeft.Clone().Negate();
         }
         [Pure]
-        public static Vector2Dbl Add(Vector2Dbl ALeft, Vector2Dbl ARight)
+        public static Vector2D Add(Vector2D ALeft, Vector2D ARight)
         {
             return ALeft.Clone().Add(ARight);
         }
         [Pure]
-        public static Vector2Dbl Subtract(Vector2Dbl ALeft, Vector2Dbl ARight)
+        public static Vector2D Subtract(Vector2D ALeft, Vector2D ARight)
         {
             return ARight.Clone().Negate().Add(ALeft);
         }
         [Pure]
-        public static Vector2Dbl Scale(Vector2Dbl ALeft, double ARight)
+        public static Vector2D Scale(Vector2D ALeft, double ARight)
         {
             return ALeft.Clone().Scale(ARight);
         }
         [Pure]
-        public static Vector2Dbl Mask(Vector2Dbl ALeft, Vector2Dbl ARight)
+        public static Vector2D Mask(Vector2D ALeft, Vector2D ARight)
         {
             return ALeft.Clone().Mask(ARight);
         }
 
         [Pure]
-        public static double ScalarProduct(Vector2Dbl ALeft, Vector2Dbl ARight)
+        public static double ScalarProduct(Vector2D ALeft, Vector2D ARight)
         {
             return ALeft.FElements[0]*ARight.FElements[0]
 				 + ALeft.FElements[1]*ARight.FElements[1];
         }
         #endregion
 
-        public Vector2Dbl()
+        public Vector2D()
 			: base(2)
 		{ }
-		public Vector2Dbl(double AX, double AY)
+		public Vector2D(double AX, double AY)
 			: base(new []{AX, AY}, false)
 		{ }
 
 		[Pure]
-        public new Vector2Dbl Clone()
+        public new Vector2D Clone()
         {
-            return new Vector2Dbl(this.FElements[0], this.FElements[1]);
+            return new Vector2D(this.FElements[0], this.FElements[1]);
         }
 
-		#region IEquatable<Vector2Dbl>
-		public bool Equals(Vector2Dbl AOther)
+		#region IEquatable<Vector2D>
+		[Pure]
+		public bool Equals(Vector2D AOther)
 		{
 			if (AOther == null)
 				return false;
@@ -416,8 +441,8 @@ namespace FMath.Linear.Numeric
 		}
 		#endregion
 
-		#region IAssignable<Vector2Dbl>
-		public void Assign(Vector2Dbl AFrom)
+		#region IAssignable<Vector2D>
+		public void Assign(Vector2D AFrom)
 		{
 			if (AFrom == null)
 				throw new ArgumentNullException("AFrom");
@@ -428,13 +453,13 @@ namespace FMath.Linear.Numeric
 		#endregion
 
 		#region Mutating chainable operators
-        public Vector2Dbl Negate()
+        public Vector2D Negate()
         {
 			this.FElements[0] = -this.FElements[0];
 			this.FElements[1] = -this.FElements[1];
             return this;
         }
-        public Vector2Dbl Add(Vector2Dbl ARight)
+        public Vector2D Add(Vector2D ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -443,13 +468,13 @@ namespace FMath.Linear.Numeric
 			this.FElements[1] += ARight.FElements[1];
             return this;
         }
-        public Vector2Dbl Scale(double ARight)
+        public Vector2D Scale(double ARight)
         {
 			this.FElements[0] *= ARight;
 			this.FElements[1] *= ARight;
             return this;
         }
-        public Vector2Dbl Mask(Vector2Dbl ARight)
+        public Vector2D Mask(Vector2D ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -461,14 +486,25 @@ namespace FMath.Linear.Numeric
         #endregion
 
 		#region System.Object overrides
+		[Pure]
         public override bool Equals(object AOther)
         {
-            if (AOther is Vector2Dbl)
-                return this.Equals((Vector2Dbl)AOther);
+            if (AOther is Vector2D)
+                return this.Equals((Vector2D)AOther);
 
             return base.Equals(AOther);
         }
+		[Pure]
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
         #endregion
+
+		public double LengthSq
+		{
+			get { return Vector2D.ScalarProduct(this, this); }
+		}
 
 		public double X
 		{
@@ -484,100 +520,101 @@ namespace FMath.Linear.Numeric
 		}
 
 		#region Static operator overloads
-        public static bool operator ==(Vector2Dbl ALeft, Vector2Dbl ARight)
+        public static bool operator ==(Vector2D ALeft, Vector2D ARight)
         {
-            if (ALeft == null || ARight == null)
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
                 return false;
 
             return ALeft.Equals(ARight);
         }
-        public static bool operator !=(Vector2Dbl ALeft, Vector2Dbl ARight)
+        public static bool operator !=(Vector2D ALeft, Vector2D ARight)
         {
-            if (ALeft == null || ARight == null)
-                return false;
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
+                return true;
 
             return !ALeft.Equals(ARight);
         }
 
-        public static Vector2Dbl operator -(Vector2Dbl ALeft)
+        public static Vector2D operator -(Vector2D ALeft)
         {
-            return Vector2Dbl.Negate(ALeft);
+            return Vector2D.Negate(ALeft);
         }
-        public static Vector2Dbl operator +(Vector2Dbl ALeft, Vector2Dbl ARight)
+        public static Vector2D operator +(Vector2D ALeft, Vector2D ARight)
         {
-            return Vector2Dbl.Add(ALeft, ARight);
+            return Vector2D.Add(ALeft, ARight);
         }
-        public static Vector2Dbl operator -(Vector2Dbl ALeft, Vector2Dbl ARight)
+        public static Vector2D operator -(Vector2D ALeft, Vector2D ARight)
         {
-            return Vector2Dbl.Subtract(ALeft, ARight);
+            return Vector2D.Subtract(ALeft, ARight);
         }
-        public static Vector2Dbl operator *(Vector2Dbl ALeft, double ARight)
+        public static Vector2D operator *(Vector2D ALeft, double ARight)
         {
-            return Vector2Dbl.Scale(ALeft, ARight);
+            return Vector2D.Scale(ALeft, ARight);
         }
         #endregion
     }
 
-    public sealed class Vector2Dcm :
+    public sealed class Vector2M :
 		DenseVector<decimal>,
-		IEquatable<Vector2Dcm>,
-		IAssignable<Vector2Dcm>
+		IEquatable<Vector2M>,
+		IAssignable<Vector2M>
 	{
 		#region Static factories
-        public static Vector2Dcm Zero { get { return new Vector2Dcm(0, 0); } }
-        public static Vector2Dcm One { get { return new Vector2Dcm(1, 1); } }
+        public static Vector2M Zero { get { return new Vector2M(0, 0); } }
+        public static Vector2M One { get { return new Vector2M(1, 1); } }
         #endregion
 
 		#region Pure static operators
         [Pure]
-        public static Vector2Dcm Negate(Vector2Dcm ALeft)
+        public static Vector2M Negate(Vector2M ALeft)
         {
             return ALeft.Clone().Negate();
         }
         [Pure]
-        public static Vector2Dcm Add(Vector2Dcm ALeft, Vector2Dcm ARight)
+        public static Vector2M Add(Vector2M ALeft, Vector2M ARight)
         {
             return ALeft.Clone().Add(ARight);
         }
         [Pure]
-        public static Vector2Dcm Subtract(Vector2Dcm ALeft, Vector2Dcm ARight)
+        public static Vector2M Subtract(Vector2M ALeft, Vector2M ARight)
         {
             return ARight.Clone().Negate().Add(ALeft);
         }
         [Pure]
-        public static Vector2Dcm Scale(Vector2Dcm ALeft, decimal ARight)
+        public static Vector2M Scale(Vector2M ALeft, decimal ARight)
         {
             return ALeft.Clone().Scale(ARight);
         }
         [Pure]
-        public static Vector2Dcm Mask(Vector2Dcm ALeft, Vector2Dcm ARight)
+        public static Vector2M Mask(Vector2M ALeft, Vector2M ARight)
         {
             return ALeft.Clone().Mask(ARight);
         }
 
         [Pure]
-        public static decimal ScalarProduct(Vector2Dcm ALeft, Vector2Dcm ARight)
+        public static decimal ScalarProduct(Vector2M ALeft, Vector2M ARight)
         {
             return ALeft.FElements[0]*ARight.FElements[0]
 				 + ALeft.FElements[1]*ARight.FElements[1];
         }
         #endregion
 
-        public Vector2Dcm()
+        public Vector2M()
 			: base(2)
 		{ }
-		public Vector2Dcm(decimal AX, decimal AY)
+		public Vector2M(decimal AX, decimal AY)
 			: base(new []{AX, AY}, false)
 		{ }
 
 		[Pure]
-        public new Vector2Dcm Clone()
+        public new Vector2M Clone()
         {
-            return new Vector2Dcm(this.FElements[0], this.FElements[1]);
+            return new Vector2M(this.FElements[0], this.FElements[1]);
         }
 
-		#region IEquatable<Vector2Dcm>
-		public bool Equals(Vector2Dcm AOther)
+		#region IEquatable<Vector2M>
+		[Pure]
+		public bool Equals(Vector2M AOther)
 		{
 			if (AOther == null)
 				return false;
@@ -587,8 +624,8 @@ namespace FMath.Linear.Numeric
 		}
 		#endregion
 
-		#region IAssignable<Vector2Dcm>
-		public void Assign(Vector2Dcm AFrom)
+		#region IAssignable<Vector2M>
+		public void Assign(Vector2M AFrom)
 		{
 			if (AFrom == null)
 				throw new ArgumentNullException("AFrom");
@@ -599,13 +636,13 @@ namespace FMath.Linear.Numeric
 		#endregion
 
 		#region Mutating chainable operators
-        public Vector2Dcm Negate()
+        public Vector2M Negate()
         {
 			this.FElements[0] = -this.FElements[0];
 			this.FElements[1] = -this.FElements[1];
             return this;
         }
-        public Vector2Dcm Add(Vector2Dcm ARight)
+        public Vector2M Add(Vector2M ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -614,13 +651,13 @@ namespace FMath.Linear.Numeric
 			this.FElements[1] += ARight.FElements[1];
             return this;
         }
-        public Vector2Dcm Scale(decimal ARight)
+        public Vector2M Scale(decimal ARight)
         {
 			this.FElements[0] *= ARight;
 			this.FElements[1] *= ARight;
             return this;
         }
-        public Vector2Dcm Mask(Vector2Dcm ARight)
+        public Vector2M Mask(Vector2M ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -632,14 +669,25 @@ namespace FMath.Linear.Numeric
         #endregion
 
 		#region System.Object overrides
+		[Pure]
         public override bool Equals(object AOther)
         {
-            if (AOther is Vector2Dcm)
-                return this.Equals((Vector2Dcm)AOther);
+            if (AOther is Vector2M)
+                return this.Equals((Vector2M)AOther);
 
             return base.Equals(AOther);
         }
+		[Pure]
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
         #endregion
+
+		public decimal LengthSq
+		{
+			get { return Vector2M.ScalarProduct(this, this); }
+		}
 
 		public decimal X
 		{
@@ -655,109 +703,110 @@ namespace FMath.Linear.Numeric
 		}
 
 		#region Static operator overloads
-        public static bool operator ==(Vector2Dcm ALeft, Vector2Dcm ARight)
+        public static bool operator ==(Vector2M ALeft, Vector2M ARight)
         {
-            if (ALeft == null || ARight == null)
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
                 return false;
 
             return ALeft.Equals(ARight);
         }
-        public static bool operator !=(Vector2Dcm ALeft, Vector2Dcm ARight)
+        public static bool operator !=(Vector2M ALeft, Vector2M ARight)
         {
-            if (ALeft == null || ARight == null)
-                return false;
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
+                return true;
 
             return !ALeft.Equals(ARight);
         }
 
-        public static Vector2Dcm operator -(Vector2Dcm ALeft)
+        public static Vector2M operator -(Vector2M ALeft)
         {
-            return Vector2Dcm.Negate(ALeft);
+            return Vector2M.Negate(ALeft);
         }
-        public static Vector2Dcm operator +(Vector2Dcm ALeft, Vector2Dcm ARight)
+        public static Vector2M operator +(Vector2M ALeft, Vector2M ARight)
         {
-            return Vector2Dcm.Add(ALeft, ARight);
+            return Vector2M.Add(ALeft, ARight);
         }
-        public static Vector2Dcm operator -(Vector2Dcm ALeft, Vector2Dcm ARight)
+        public static Vector2M operator -(Vector2M ALeft, Vector2M ARight)
         {
-            return Vector2Dcm.Subtract(ALeft, ARight);
+            return Vector2M.Subtract(ALeft, ARight);
         }
-        public static Vector2Dcm operator *(Vector2Dcm ALeft, decimal ARight)
+        public static Vector2M operator *(Vector2M ALeft, decimal ARight)
         {
-            return Vector2Dcm.Scale(ALeft, ARight);
+            return Vector2M.Scale(ALeft, ARight);
         }
         #endregion
     }
 
-    public sealed class Vector3Int :
+    public sealed class Vector3I :
 		DenseVector<int>,
-		IEquatable<Vector3Int>,
-		IAssignable<Vector3Int>
+		IEquatable<Vector3I>,
+		IAssignable<Vector3I>
 	{
 		#region Static factories
-        public static Vector3Int Zero { get { return new Vector3Int(0, 0, 0); } }
-        public static Vector3Int One { get { return new Vector3Int(1, 1, 1); } }
+        public static Vector3I Zero { get { return new Vector3I(0, 0, 0); } }
+        public static Vector3I One { get { return new Vector3I(1, 1, 1); } }
         #endregion
 
 		#region Pure static operators
         [Pure]
-        public static Vector3Int Negate(Vector3Int ALeft)
+        public static Vector3I Negate(Vector3I ALeft)
         {
             return ALeft.Clone().Negate();
         }
         [Pure]
-        public static Vector3Int Add(Vector3Int ALeft, Vector3Int ARight)
+        public static Vector3I Add(Vector3I ALeft, Vector3I ARight)
         {
             return ALeft.Clone().Add(ARight);
         }
         [Pure]
-        public static Vector3Int Subtract(Vector3Int ALeft, Vector3Int ARight)
+        public static Vector3I Subtract(Vector3I ALeft, Vector3I ARight)
         {
             return ARight.Clone().Negate().Add(ALeft);
         }
         [Pure]
-        public static Vector3Int Scale(Vector3Int ALeft, int ARight)
+        public static Vector3I Scale(Vector3I ALeft, int ARight)
         {
             return ALeft.Clone().Scale(ARight);
         }
         [Pure]
-        public static Vector3Int Mask(Vector3Int ALeft, Vector3Int ARight)
+        public static Vector3I Mask(Vector3I ALeft, Vector3I ARight)
         {
             return ALeft.Clone().Mask(ARight);
         }
 
         [Pure]
-        public static int ScalarProduct(Vector3Int ALeft, Vector3Int ARight)
+        public static int ScalarProduct(Vector3I ALeft, Vector3I ARight)
         {
             return ALeft.FElements[0]*ARight.FElements[0]
 				 + ALeft.FElements[1]*ARight.FElements[1]
 				 + ALeft.FElements[2]*ARight.FElements[2];
         }
 		[Pure]
-        public static Vector3Int VectorProduct(Vector3Int ALeft, Vector3Int ARight)
+        public static Vector3I VectorProduct(Vector3I ALeft, Vector3I ARight)
         {
-            return new Vector3Int(
+            return new Vector3I(
                 ALeft.FElements[1] * ARight.FElements[2] - ALeft.FElements[2] * ARight.FElements[1],
                 ALeft.FElements[2] * ARight.FElements[0] - ALeft.FElements[0] * ARight.FElements[2],
                 ALeft.FElements[0] * ARight.FElements[1] - ALeft.FElements[1] * ARight.FElements[0]);
         }
         #endregion
 
-        public Vector3Int()
+        public Vector3I()
 			: base(3)
 		{ }
-		public Vector3Int(int AX, int AY, int AZ)
+		public Vector3I(int AX, int AY, int AZ)
 			: base(new []{AX, AY, AZ}, false)
 		{ }
 
 		[Pure]
-        public new Vector3Int Clone()
+        public new Vector3I Clone()
         {
-            return new Vector3Int(this.FElements[0], this.FElements[1], this.FElements[2]);
+            return new Vector3I(this.FElements[0], this.FElements[1], this.FElements[2]);
         }
 
-		#region IEquatable<Vector3Int>
-		public bool Equals(Vector3Int AOther)
+		#region IEquatable<Vector3I>
+		[Pure]
+		public bool Equals(Vector3I AOther)
 		{
 			if (AOther == null)
 				return false;
@@ -768,8 +817,8 @@ namespace FMath.Linear.Numeric
 		}
 		#endregion
 
-		#region IAssignable<Vector3Int>
-		public void Assign(Vector3Int AFrom)
+		#region IAssignable<Vector3I>
+		public void Assign(Vector3I AFrom)
 		{
 			if (AFrom == null)
 				throw new ArgumentNullException("AFrom");
@@ -781,14 +830,14 @@ namespace FMath.Linear.Numeric
 		#endregion
 
 		#region Mutating chainable operators
-        public Vector3Int Negate()
+        public Vector3I Negate()
         {
 			this.FElements[0] = -this.FElements[0];
 			this.FElements[1] = -this.FElements[1];
 			this.FElements[2] = -this.FElements[2];
             return this;
         }
-        public Vector3Int Add(Vector3Int ARight)
+        public Vector3I Add(Vector3I ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -798,14 +847,14 @@ namespace FMath.Linear.Numeric
 			this.FElements[2] += ARight.FElements[2];
             return this;
         }
-        public Vector3Int Scale(int ARight)
+        public Vector3I Scale(int ARight)
         {
 			this.FElements[0] *= ARight;
 			this.FElements[1] *= ARight;
 			this.FElements[2] *= ARight;
             return this;
         }
-        public Vector3Int Mask(Vector3Int ARight)
+        public Vector3I Mask(Vector3I ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -818,14 +867,25 @@ namespace FMath.Linear.Numeric
         #endregion
 
 		#region System.Object overrides
+		[Pure]
         public override bool Equals(object AOther)
         {
-            if (AOther is Vector3Int)
-                return this.Equals((Vector3Int)AOther);
+            if (AOther is Vector3I)
+                return this.Equals((Vector3I)AOther);
 
             return base.Equals(AOther);
         }
+		[Pure]
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
         #endregion
+
+		public int LengthSq
+		{
+			get { return Vector3I.ScalarProduct(this, this); }
+		}
 
 		public int X
 		{
@@ -847,109 +907,110 @@ namespace FMath.Linear.Numeric
 		}
 
 		#region Static operator overloads
-        public static bool operator ==(Vector3Int ALeft, Vector3Int ARight)
+        public static bool operator ==(Vector3I ALeft, Vector3I ARight)
         {
-            if (ALeft == null || ARight == null)
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
                 return false;
 
             return ALeft.Equals(ARight);
         }
-        public static bool operator !=(Vector3Int ALeft, Vector3Int ARight)
+        public static bool operator !=(Vector3I ALeft, Vector3I ARight)
         {
-            if (ALeft == null || ARight == null)
-                return false;
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
+                return true;
 
             return !ALeft.Equals(ARight);
         }
 
-        public static Vector3Int operator -(Vector3Int ALeft)
+        public static Vector3I operator -(Vector3I ALeft)
         {
-            return Vector3Int.Negate(ALeft);
+            return Vector3I.Negate(ALeft);
         }
-        public static Vector3Int operator +(Vector3Int ALeft, Vector3Int ARight)
+        public static Vector3I operator +(Vector3I ALeft, Vector3I ARight)
         {
-            return Vector3Int.Add(ALeft, ARight);
+            return Vector3I.Add(ALeft, ARight);
         }
-        public static Vector3Int operator -(Vector3Int ALeft, Vector3Int ARight)
+        public static Vector3I operator -(Vector3I ALeft, Vector3I ARight)
         {
-            return Vector3Int.Subtract(ALeft, ARight);
+            return Vector3I.Subtract(ALeft, ARight);
         }
-        public static Vector3Int operator *(Vector3Int ALeft, int ARight)
+        public static Vector3I operator *(Vector3I ALeft, int ARight)
         {
-            return Vector3Int.Scale(ALeft, ARight);
+            return Vector3I.Scale(ALeft, ARight);
         }
         #endregion
     }
 
-    public sealed class Vector3Flt :
+    public sealed class Vector3F :
 		DenseVector<float>,
-		IEquatable<Vector3Flt>,
-		IAssignable<Vector3Flt>
+		IEquatable<Vector3F>,
+		IAssignable<Vector3F>
 	{
 		#region Static factories
-        public static Vector3Flt Zero { get { return new Vector3Flt(0, 0, 0); } }
-        public static Vector3Flt One { get { return new Vector3Flt(1, 1, 1); } }
+        public static Vector3F Zero { get { return new Vector3F(0, 0, 0); } }
+        public static Vector3F One { get { return new Vector3F(1, 1, 1); } }
         #endregion
 
 		#region Pure static operators
         [Pure]
-        public static Vector3Flt Negate(Vector3Flt ALeft)
+        public static Vector3F Negate(Vector3F ALeft)
         {
             return ALeft.Clone().Negate();
         }
         [Pure]
-        public static Vector3Flt Add(Vector3Flt ALeft, Vector3Flt ARight)
+        public static Vector3F Add(Vector3F ALeft, Vector3F ARight)
         {
             return ALeft.Clone().Add(ARight);
         }
         [Pure]
-        public static Vector3Flt Subtract(Vector3Flt ALeft, Vector3Flt ARight)
+        public static Vector3F Subtract(Vector3F ALeft, Vector3F ARight)
         {
             return ARight.Clone().Negate().Add(ALeft);
         }
         [Pure]
-        public static Vector3Flt Scale(Vector3Flt ALeft, float ARight)
+        public static Vector3F Scale(Vector3F ALeft, float ARight)
         {
             return ALeft.Clone().Scale(ARight);
         }
         [Pure]
-        public static Vector3Flt Mask(Vector3Flt ALeft, Vector3Flt ARight)
+        public static Vector3F Mask(Vector3F ALeft, Vector3F ARight)
         {
             return ALeft.Clone().Mask(ARight);
         }
 
         [Pure]
-        public static float ScalarProduct(Vector3Flt ALeft, Vector3Flt ARight)
+        public static float ScalarProduct(Vector3F ALeft, Vector3F ARight)
         {
             return ALeft.FElements[0]*ARight.FElements[0]
 				 + ALeft.FElements[1]*ARight.FElements[1]
 				 + ALeft.FElements[2]*ARight.FElements[2];
         }
 		[Pure]
-        public static Vector3Flt VectorProduct(Vector3Flt ALeft, Vector3Flt ARight)
+        public static Vector3F VectorProduct(Vector3F ALeft, Vector3F ARight)
         {
-            return new Vector3Flt(
+            return new Vector3F(
                 ALeft.FElements[1] * ARight.FElements[2] - ALeft.FElements[2] * ARight.FElements[1],
                 ALeft.FElements[2] * ARight.FElements[0] - ALeft.FElements[0] * ARight.FElements[2],
                 ALeft.FElements[0] * ARight.FElements[1] - ALeft.FElements[1] * ARight.FElements[0]);
         }
         #endregion
 
-        public Vector3Flt()
+        public Vector3F()
 			: base(3)
 		{ }
-		public Vector3Flt(float AX, float AY, float AZ)
+		public Vector3F(float AX, float AY, float AZ)
 			: base(new []{AX, AY, AZ}, false)
 		{ }
 
 		[Pure]
-        public new Vector3Flt Clone()
+        public new Vector3F Clone()
         {
-            return new Vector3Flt(this.FElements[0], this.FElements[1], this.FElements[2]);
+            return new Vector3F(this.FElements[0], this.FElements[1], this.FElements[2]);
         }
 
-		#region IEquatable<Vector3Flt>
-		public bool Equals(Vector3Flt AOther)
+		#region IEquatable<Vector3F>
+		[Pure]
+		public bool Equals(Vector3F AOther)
 		{
 			if (AOther == null)
 				return false;
@@ -960,8 +1021,8 @@ namespace FMath.Linear.Numeric
 		}
 		#endregion
 
-		#region IAssignable<Vector3Flt>
-		public void Assign(Vector3Flt AFrom)
+		#region IAssignable<Vector3F>
+		public void Assign(Vector3F AFrom)
 		{
 			if (AFrom == null)
 				throw new ArgumentNullException("AFrom");
@@ -973,14 +1034,14 @@ namespace FMath.Linear.Numeric
 		#endregion
 
 		#region Mutating chainable operators
-        public Vector3Flt Negate()
+        public Vector3F Negate()
         {
 			this.FElements[0] = -this.FElements[0];
 			this.FElements[1] = -this.FElements[1];
 			this.FElements[2] = -this.FElements[2];
             return this;
         }
-        public Vector3Flt Add(Vector3Flt ARight)
+        public Vector3F Add(Vector3F ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -990,14 +1051,14 @@ namespace FMath.Linear.Numeric
 			this.FElements[2] += ARight.FElements[2];
             return this;
         }
-        public Vector3Flt Scale(float ARight)
+        public Vector3F Scale(float ARight)
         {
 			this.FElements[0] *= ARight;
 			this.FElements[1] *= ARight;
 			this.FElements[2] *= ARight;
             return this;
         }
-        public Vector3Flt Mask(Vector3Flt ARight)
+        public Vector3F Mask(Vector3F ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -1010,14 +1071,25 @@ namespace FMath.Linear.Numeric
         #endregion
 
 		#region System.Object overrides
+		[Pure]
         public override bool Equals(object AOther)
         {
-            if (AOther is Vector3Flt)
-                return this.Equals((Vector3Flt)AOther);
+            if (AOther is Vector3F)
+                return this.Equals((Vector3F)AOther);
 
             return base.Equals(AOther);
         }
+		[Pure]
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
         #endregion
+
+		public float LengthSq
+		{
+			get { return Vector3F.ScalarProduct(this, this); }
+		}
 
 		public float X
 		{
@@ -1039,109 +1111,110 @@ namespace FMath.Linear.Numeric
 		}
 
 		#region Static operator overloads
-        public static bool operator ==(Vector3Flt ALeft, Vector3Flt ARight)
+        public static bool operator ==(Vector3F ALeft, Vector3F ARight)
         {
-            if (ALeft == null || ARight == null)
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
                 return false;
 
             return ALeft.Equals(ARight);
         }
-        public static bool operator !=(Vector3Flt ALeft, Vector3Flt ARight)
+        public static bool operator !=(Vector3F ALeft, Vector3F ARight)
         {
-            if (ALeft == null || ARight == null)
-                return false;
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
+                return true;
 
             return !ALeft.Equals(ARight);
         }
 
-        public static Vector3Flt operator -(Vector3Flt ALeft)
+        public static Vector3F operator -(Vector3F ALeft)
         {
-            return Vector3Flt.Negate(ALeft);
+            return Vector3F.Negate(ALeft);
         }
-        public static Vector3Flt operator +(Vector3Flt ALeft, Vector3Flt ARight)
+        public static Vector3F operator +(Vector3F ALeft, Vector3F ARight)
         {
-            return Vector3Flt.Add(ALeft, ARight);
+            return Vector3F.Add(ALeft, ARight);
         }
-        public static Vector3Flt operator -(Vector3Flt ALeft, Vector3Flt ARight)
+        public static Vector3F operator -(Vector3F ALeft, Vector3F ARight)
         {
-            return Vector3Flt.Subtract(ALeft, ARight);
+            return Vector3F.Subtract(ALeft, ARight);
         }
-        public static Vector3Flt operator *(Vector3Flt ALeft, float ARight)
+        public static Vector3F operator *(Vector3F ALeft, float ARight)
         {
-            return Vector3Flt.Scale(ALeft, ARight);
+            return Vector3F.Scale(ALeft, ARight);
         }
         #endregion
     }
 
-    public sealed class Vector3Dbl :
+    public sealed class Vector3D :
 		DenseVector<double>,
-		IEquatable<Vector3Dbl>,
-		IAssignable<Vector3Dbl>
+		IEquatable<Vector3D>,
+		IAssignable<Vector3D>
 	{
 		#region Static factories
-        public static Vector3Dbl Zero { get { return new Vector3Dbl(0, 0, 0); } }
-        public static Vector3Dbl One { get { return new Vector3Dbl(1, 1, 1); } }
+        public static Vector3D Zero { get { return new Vector3D(0, 0, 0); } }
+        public static Vector3D One { get { return new Vector3D(1, 1, 1); } }
         #endregion
 
 		#region Pure static operators
         [Pure]
-        public static Vector3Dbl Negate(Vector3Dbl ALeft)
+        public static Vector3D Negate(Vector3D ALeft)
         {
             return ALeft.Clone().Negate();
         }
         [Pure]
-        public static Vector3Dbl Add(Vector3Dbl ALeft, Vector3Dbl ARight)
+        public static Vector3D Add(Vector3D ALeft, Vector3D ARight)
         {
             return ALeft.Clone().Add(ARight);
         }
         [Pure]
-        public static Vector3Dbl Subtract(Vector3Dbl ALeft, Vector3Dbl ARight)
+        public static Vector3D Subtract(Vector3D ALeft, Vector3D ARight)
         {
             return ARight.Clone().Negate().Add(ALeft);
         }
         [Pure]
-        public static Vector3Dbl Scale(Vector3Dbl ALeft, double ARight)
+        public static Vector3D Scale(Vector3D ALeft, double ARight)
         {
             return ALeft.Clone().Scale(ARight);
         }
         [Pure]
-        public static Vector3Dbl Mask(Vector3Dbl ALeft, Vector3Dbl ARight)
+        public static Vector3D Mask(Vector3D ALeft, Vector3D ARight)
         {
             return ALeft.Clone().Mask(ARight);
         }
 
         [Pure]
-        public static double ScalarProduct(Vector3Dbl ALeft, Vector3Dbl ARight)
+        public static double ScalarProduct(Vector3D ALeft, Vector3D ARight)
         {
             return ALeft.FElements[0]*ARight.FElements[0]
 				 + ALeft.FElements[1]*ARight.FElements[1]
 				 + ALeft.FElements[2]*ARight.FElements[2];
         }
 		[Pure]
-        public static Vector3Dbl VectorProduct(Vector3Dbl ALeft, Vector3Dbl ARight)
+        public static Vector3D VectorProduct(Vector3D ALeft, Vector3D ARight)
         {
-            return new Vector3Dbl(
+            return new Vector3D(
                 ALeft.FElements[1] * ARight.FElements[2] - ALeft.FElements[2] * ARight.FElements[1],
                 ALeft.FElements[2] * ARight.FElements[0] - ALeft.FElements[0] * ARight.FElements[2],
                 ALeft.FElements[0] * ARight.FElements[1] - ALeft.FElements[1] * ARight.FElements[0]);
         }
         #endregion
 
-        public Vector3Dbl()
+        public Vector3D()
 			: base(3)
 		{ }
-		public Vector3Dbl(double AX, double AY, double AZ)
+		public Vector3D(double AX, double AY, double AZ)
 			: base(new []{AX, AY, AZ}, false)
 		{ }
 
 		[Pure]
-        public new Vector3Dbl Clone()
+        public new Vector3D Clone()
         {
-            return new Vector3Dbl(this.FElements[0], this.FElements[1], this.FElements[2]);
+            return new Vector3D(this.FElements[0], this.FElements[1], this.FElements[2]);
         }
 
-		#region IEquatable<Vector3Dbl>
-		public bool Equals(Vector3Dbl AOther)
+		#region IEquatable<Vector3D>
+		[Pure]
+		public bool Equals(Vector3D AOther)
 		{
 			if (AOther == null)
 				return false;
@@ -1152,8 +1225,8 @@ namespace FMath.Linear.Numeric
 		}
 		#endregion
 
-		#region IAssignable<Vector3Dbl>
-		public void Assign(Vector3Dbl AFrom)
+		#region IAssignable<Vector3D>
+		public void Assign(Vector3D AFrom)
 		{
 			if (AFrom == null)
 				throw new ArgumentNullException("AFrom");
@@ -1165,14 +1238,14 @@ namespace FMath.Linear.Numeric
 		#endregion
 
 		#region Mutating chainable operators
-        public Vector3Dbl Negate()
+        public Vector3D Negate()
         {
 			this.FElements[0] = -this.FElements[0];
 			this.FElements[1] = -this.FElements[1];
 			this.FElements[2] = -this.FElements[2];
             return this;
         }
-        public Vector3Dbl Add(Vector3Dbl ARight)
+        public Vector3D Add(Vector3D ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -1182,14 +1255,14 @@ namespace FMath.Linear.Numeric
 			this.FElements[2] += ARight.FElements[2];
             return this;
         }
-        public Vector3Dbl Scale(double ARight)
+        public Vector3D Scale(double ARight)
         {
 			this.FElements[0] *= ARight;
 			this.FElements[1] *= ARight;
 			this.FElements[2] *= ARight;
             return this;
         }
-        public Vector3Dbl Mask(Vector3Dbl ARight)
+        public Vector3D Mask(Vector3D ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -1202,14 +1275,25 @@ namespace FMath.Linear.Numeric
         #endregion
 
 		#region System.Object overrides
+		[Pure]
         public override bool Equals(object AOther)
         {
-            if (AOther is Vector3Dbl)
-                return this.Equals((Vector3Dbl)AOther);
+            if (AOther is Vector3D)
+                return this.Equals((Vector3D)AOther);
 
             return base.Equals(AOther);
         }
+		[Pure]
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
         #endregion
+
+		public double LengthSq
+		{
+			get { return Vector3D.ScalarProduct(this, this); }
+		}
 
 		public double X
 		{
@@ -1231,109 +1315,110 @@ namespace FMath.Linear.Numeric
 		}
 
 		#region Static operator overloads
-        public static bool operator ==(Vector3Dbl ALeft, Vector3Dbl ARight)
+        public static bool operator ==(Vector3D ALeft, Vector3D ARight)
         {
-            if (ALeft == null || ARight == null)
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
                 return false;
 
             return ALeft.Equals(ARight);
         }
-        public static bool operator !=(Vector3Dbl ALeft, Vector3Dbl ARight)
+        public static bool operator !=(Vector3D ALeft, Vector3D ARight)
         {
-            if (ALeft == null || ARight == null)
-                return false;
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
+                return true;
 
             return !ALeft.Equals(ARight);
         }
 
-        public static Vector3Dbl operator -(Vector3Dbl ALeft)
+        public static Vector3D operator -(Vector3D ALeft)
         {
-            return Vector3Dbl.Negate(ALeft);
+            return Vector3D.Negate(ALeft);
         }
-        public static Vector3Dbl operator +(Vector3Dbl ALeft, Vector3Dbl ARight)
+        public static Vector3D operator +(Vector3D ALeft, Vector3D ARight)
         {
-            return Vector3Dbl.Add(ALeft, ARight);
+            return Vector3D.Add(ALeft, ARight);
         }
-        public static Vector3Dbl operator -(Vector3Dbl ALeft, Vector3Dbl ARight)
+        public static Vector3D operator -(Vector3D ALeft, Vector3D ARight)
         {
-            return Vector3Dbl.Subtract(ALeft, ARight);
+            return Vector3D.Subtract(ALeft, ARight);
         }
-        public static Vector3Dbl operator *(Vector3Dbl ALeft, double ARight)
+        public static Vector3D operator *(Vector3D ALeft, double ARight)
         {
-            return Vector3Dbl.Scale(ALeft, ARight);
+            return Vector3D.Scale(ALeft, ARight);
         }
         #endregion
     }
 
-    public sealed class Vector3Dcm :
+    public sealed class Vector3M :
 		DenseVector<decimal>,
-		IEquatable<Vector3Dcm>,
-		IAssignable<Vector3Dcm>
+		IEquatable<Vector3M>,
+		IAssignable<Vector3M>
 	{
 		#region Static factories
-        public static Vector3Dcm Zero { get { return new Vector3Dcm(0, 0, 0); } }
-        public static Vector3Dcm One { get { return new Vector3Dcm(1, 1, 1); } }
+        public static Vector3M Zero { get { return new Vector3M(0, 0, 0); } }
+        public static Vector3M One { get { return new Vector3M(1, 1, 1); } }
         #endregion
 
 		#region Pure static operators
         [Pure]
-        public static Vector3Dcm Negate(Vector3Dcm ALeft)
+        public static Vector3M Negate(Vector3M ALeft)
         {
             return ALeft.Clone().Negate();
         }
         [Pure]
-        public static Vector3Dcm Add(Vector3Dcm ALeft, Vector3Dcm ARight)
+        public static Vector3M Add(Vector3M ALeft, Vector3M ARight)
         {
             return ALeft.Clone().Add(ARight);
         }
         [Pure]
-        public static Vector3Dcm Subtract(Vector3Dcm ALeft, Vector3Dcm ARight)
+        public static Vector3M Subtract(Vector3M ALeft, Vector3M ARight)
         {
             return ARight.Clone().Negate().Add(ALeft);
         }
         [Pure]
-        public static Vector3Dcm Scale(Vector3Dcm ALeft, decimal ARight)
+        public static Vector3M Scale(Vector3M ALeft, decimal ARight)
         {
             return ALeft.Clone().Scale(ARight);
         }
         [Pure]
-        public static Vector3Dcm Mask(Vector3Dcm ALeft, Vector3Dcm ARight)
+        public static Vector3M Mask(Vector3M ALeft, Vector3M ARight)
         {
             return ALeft.Clone().Mask(ARight);
         }
 
         [Pure]
-        public static decimal ScalarProduct(Vector3Dcm ALeft, Vector3Dcm ARight)
+        public static decimal ScalarProduct(Vector3M ALeft, Vector3M ARight)
         {
             return ALeft.FElements[0]*ARight.FElements[0]
 				 + ALeft.FElements[1]*ARight.FElements[1]
 				 + ALeft.FElements[2]*ARight.FElements[2];
         }
 		[Pure]
-        public static Vector3Dcm VectorProduct(Vector3Dcm ALeft, Vector3Dcm ARight)
+        public static Vector3M VectorProduct(Vector3M ALeft, Vector3M ARight)
         {
-            return new Vector3Dcm(
+            return new Vector3M(
                 ALeft.FElements[1] * ARight.FElements[2] - ALeft.FElements[2] * ARight.FElements[1],
                 ALeft.FElements[2] * ARight.FElements[0] - ALeft.FElements[0] * ARight.FElements[2],
                 ALeft.FElements[0] * ARight.FElements[1] - ALeft.FElements[1] * ARight.FElements[0]);
         }
         #endregion
 
-        public Vector3Dcm()
+        public Vector3M()
 			: base(3)
 		{ }
-		public Vector3Dcm(decimal AX, decimal AY, decimal AZ)
+		public Vector3M(decimal AX, decimal AY, decimal AZ)
 			: base(new []{AX, AY, AZ}, false)
 		{ }
 
 		[Pure]
-        public new Vector3Dcm Clone()
+        public new Vector3M Clone()
         {
-            return new Vector3Dcm(this.FElements[0], this.FElements[1], this.FElements[2]);
+            return new Vector3M(this.FElements[0], this.FElements[1], this.FElements[2]);
         }
 
-		#region IEquatable<Vector3Dcm>
-		public bool Equals(Vector3Dcm AOther)
+		#region IEquatable<Vector3M>
+		[Pure]
+		public bool Equals(Vector3M AOther)
 		{
 			if (AOther == null)
 				return false;
@@ -1344,8 +1429,8 @@ namespace FMath.Linear.Numeric
 		}
 		#endregion
 
-		#region IAssignable<Vector3Dcm>
-		public void Assign(Vector3Dcm AFrom)
+		#region IAssignable<Vector3M>
+		public void Assign(Vector3M AFrom)
 		{
 			if (AFrom == null)
 				throw new ArgumentNullException("AFrom");
@@ -1357,14 +1442,14 @@ namespace FMath.Linear.Numeric
 		#endregion
 
 		#region Mutating chainable operators
-        public Vector3Dcm Negate()
+        public Vector3M Negate()
         {
 			this.FElements[0] = -this.FElements[0];
 			this.FElements[1] = -this.FElements[1];
 			this.FElements[2] = -this.FElements[2];
             return this;
         }
-        public Vector3Dcm Add(Vector3Dcm ARight)
+        public Vector3M Add(Vector3M ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -1374,14 +1459,14 @@ namespace FMath.Linear.Numeric
 			this.FElements[2] += ARight.FElements[2];
             return this;
         }
-        public Vector3Dcm Scale(decimal ARight)
+        public Vector3M Scale(decimal ARight)
         {
 			this.FElements[0] *= ARight;
 			this.FElements[1] *= ARight;
 			this.FElements[2] *= ARight;
             return this;
         }
-        public Vector3Dcm Mask(Vector3Dcm ARight)
+        public Vector3M Mask(Vector3M ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -1394,14 +1479,25 @@ namespace FMath.Linear.Numeric
         #endregion
 
 		#region System.Object overrides
+		[Pure]
         public override bool Equals(object AOther)
         {
-            if (AOther is Vector3Dcm)
-                return this.Equals((Vector3Dcm)AOther);
+            if (AOther is Vector3M)
+                return this.Equals((Vector3M)AOther);
 
             return base.Equals(AOther);
         }
+		[Pure]
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
         #endregion
+
+		public decimal LengthSq
+		{
+			get { return Vector3M.ScalarProduct(this, this); }
+		}
 
 		public decimal X
 		{
@@ -1423,79 +1519,79 @@ namespace FMath.Linear.Numeric
 		}
 
 		#region Static operator overloads
-        public static bool operator ==(Vector3Dcm ALeft, Vector3Dcm ARight)
+        public static bool operator ==(Vector3M ALeft, Vector3M ARight)
         {
-            if (ALeft == null || ARight == null)
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
                 return false;
 
             return ALeft.Equals(ARight);
         }
-        public static bool operator !=(Vector3Dcm ALeft, Vector3Dcm ARight)
+        public static bool operator !=(Vector3M ALeft, Vector3M ARight)
         {
-            if (ALeft == null || ARight == null)
-                return false;
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
+                return true;
 
             return !ALeft.Equals(ARight);
         }
 
-        public static Vector3Dcm operator -(Vector3Dcm ALeft)
+        public static Vector3M operator -(Vector3M ALeft)
         {
-            return Vector3Dcm.Negate(ALeft);
+            return Vector3M.Negate(ALeft);
         }
-        public static Vector3Dcm operator +(Vector3Dcm ALeft, Vector3Dcm ARight)
+        public static Vector3M operator +(Vector3M ALeft, Vector3M ARight)
         {
-            return Vector3Dcm.Add(ALeft, ARight);
+            return Vector3M.Add(ALeft, ARight);
         }
-        public static Vector3Dcm operator -(Vector3Dcm ALeft, Vector3Dcm ARight)
+        public static Vector3M operator -(Vector3M ALeft, Vector3M ARight)
         {
-            return Vector3Dcm.Subtract(ALeft, ARight);
+            return Vector3M.Subtract(ALeft, ARight);
         }
-        public static Vector3Dcm operator *(Vector3Dcm ALeft, decimal ARight)
+        public static Vector3M operator *(Vector3M ALeft, decimal ARight)
         {
-            return Vector3Dcm.Scale(ALeft, ARight);
+            return Vector3M.Scale(ALeft, ARight);
         }
         #endregion
     }
 
-    public sealed class Vector4Int :
+    public sealed class Vector4I :
 		DenseVector<int>,
-		IEquatable<Vector4Int>,
-		IAssignable<Vector4Int>
+		IEquatable<Vector4I>,
+		IAssignable<Vector4I>
 	{
 		#region Static factories
-        public static Vector4Int Zero { get { return new Vector4Int(0, 0, 0, 0); } }
-        public static Vector4Int One { get { return new Vector4Int(1, 1, 1, 1); } }
+        public static Vector4I Zero { get { return new Vector4I(0, 0, 0, 0); } }
+        public static Vector4I One { get { return new Vector4I(1, 1, 1, 1); } }
         #endregion
 
 		#region Pure static operators
         [Pure]
-        public static Vector4Int Negate(Vector4Int ALeft)
+        public static Vector4I Negate(Vector4I ALeft)
         {
             return ALeft.Clone().Negate();
         }
         [Pure]
-        public static Vector4Int Add(Vector4Int ALeft, Vector4Int ARight)
+        public static Vector4I Add(Vector4I ALeft, Vector4I ARight)
         {
             return ALeft.Clone().Add(ARight);
         }
         [Pure]
-        public static Vector4Int Subtract(Vector4Int ALeft, Vector4Int ARight)
+        public static Vector4I Subtract(Vector4I ALeft, Vector4I ARight)
         {
             return ARight.Clone().Negate().Add(ALeft);
         }
         [Pure]
-        public static Vector4Int Scale(Vector4Int ALeft, int ARight)
+        public static Vector4I Scale(Vector4I ALeft, int ARight)
         {
             return ALeft.Clone().Scale(ARight);
         }
         [Pure]
-        public static Vector4Int Mask(Vector4Int ALeft, Vector4Int ARight)
+        public static Vector4I Mask(Vector4I ALeft, Vector4I ARight)
         {
             return ALeft.Clone().Mask(ARight);
         }
 
         [Pure]
-        public static int ScalarProduct(Vector4Int ALeft, Vector4Int ARight)
+        public static int ScalarProduct(Vector4I ALeft, Vector4I ARight)
         {
             return ALeft.FElements[0]*ARight.FElements[0]
 				 + ALeft.FElements[1]*ARight.FElements[1]
@@ -1504,21 +1600,22 @@ namespace FMath.Linear.Numeric
         }
         #endregion
 
-        public Vector4Int()
+        public Vector4I()
 			: base(4)
 		{ }
-		public Vector4Int(int AX, int AY, int AZ, int AW)
+		public Vector4I(int AX, int AY, int AZ, int AW)
 			: base(new []{AX, AY, AZ, AW}, false)
 		{ }
 
 		[Pure]
-        public new Vector4Int Clone()
+        public new Vector4I Clone()
         {
-            return new Vector4Int(this.FElements[0], this.FElements[1], this.FElements[2], this.FElements[3]);
+            return new Vector4I(this.FElements[0], this.FElements[1], this.FElements[2], this.FElements[3]);
         }
 
-		#region IEquatable<Vector4Int>
-		public bool Equals(Vector4Int AOther)
+		#region IEquatable<Vector4I>
+		[Pure]
+		public bool Equals(Vector4I AOther)
 		{
 			if (AOther == null)
 				return false;
@@ -1530,8 +1627,8 @@ namespace FMath.Linear.Numeric
 		}
 		#endregion
 
-		#region IAssignable<Vector4Int>
-		public void Assign(Vector4Int AFrom)
+		#region IAssignable<Vector4I>
+		public void Assign(Vector4I AFrom)
 		{
 			if (AFrom == null)
 				throw new ArgumentNullException("AFrom");
@@ -1544,7 +1641,7 @@ namespace FMath.Linear.Numeric
 		#endregion
 
 		#region Mutating chainable operators
-        public Vector4Int Negate()
+        public Vector4I Negate()
         {
 			this.FElements[0] = -this.FElements[0];
 			this.FElements[1] = -this.FElements[1];
@@ -1552,7 +1649,7 @@ namespace FMath.Linear.Numeric
 			this.FElements[3] = -this.FElements[3];
             return this;
         }
-        public Vector4Int Add(Vector4Int ARight)
+        public Vector4I Add(Vector4I ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -1563,7 +1660,7 @@ namespace FMath.Linear.Numeric
 			this.FElements[3] += ARight.FElements[3];
             return this;
         }
-        public Vector4Int Scale(int ARight)
+        public Vector4I Scale(int ARight)
         {
 			this.FElements[0] *= ARight;
 			this.FElements[1] *= ARight;
@@ -1571,7 +1668,7 @@ namespace FMath.Linear.Numeric
 			this.FElements[3] *= ARight;
             return this;
         }
-        public Vector4Int Mask(Vector4Int ARight)
+        public Vector4I Mask(Vector4I ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -1585,14 +1682,25 @@ namespace FMath.Linear.Numeric
         #endregion
 
 		#region System.Object overrides
+		[Pure]
         public override bool Equals(object AOther)
         {
-            if (AOther is Vector4Int)
-                return this.Equals((Vector4Int)AOther);
+            if (AOther is Vector4I)
+                return this.Equals((Vector4I)AOther);
 
             return base.Equals(AOther);
         }
+		[Pure]
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
         #endregion
+
+		public int LengthSq
+		{
+			get { return Vector4I.ScalarProduct(this, this); }
+		}
 
 		public int X
 		{
@@ -1620,79 +1728,79 @@ namespace FMath.Linear.Numeric
 		}
 
 		#region Static operator overloads
-        public static bool operator ==(Vector4Int ALeft, Vector4Int ARight)
+        public static bool operator ==(Vector4I ALeft, Vector4I ARight)
         {
-            if (ALeft == null || ARight == null)
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
                 return false;
 
             return ALeft.Equals(ARight);
         }
-        public static bool operator !=(Vector4Int ALeft, Vector4Int ARight)
+        public static bool operator !=(Vector4I ALeft, Vector4I ARight)
         {
-            if (ALeft == null || ARight == null)
-                return false;
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
+                return true;
 
             return !ALeft.Equals(ARight);
         }
 
-        public static Vector4Int operator -(Vector4Int ALeft)
+        public static Vector4I operator -(Vector4I ALeft)
         {
-            return Vector4Int.Negate(ALeft);
+            return Vector4I.Negate(ALeft);
         }
-        public static Vector4Int operator +(Vector4Int ALeft, Vector4Int ARight)
+        public static Vector4I operator +(Vector4I ALeft, Vector4I ARight)
         {
-            return Vector4Int.Add(ALeft, ARight);
+            return Vector4I.Add(ALeft, ARight);
         }
-        public static Vector4Int operator -(Vector4Int ALeft, Vector4Int ARight)
+        public static Vector4I operator -(Vector4I ALeft, Vector4I ARight)
         {
-            return Vector4Int.Subtract(ALeft, ARight);
+            return Vector4I.Subtract(ALeft, ARight);
         }
-        public static Vector4Int operator *(Vector4Int ALeft, int ARight)
+        public static Vector4I operator *(Vector4I ALeft, int ARight)
         {
-            return Vector4Int.Scale(ALeft, ARight);
+            return Vector4I.Scale(ALeft, ARight);
         }
         #endregion
     }
 
-    public sealed class Vector4Flt :
+    public sealed class Vector4F :
 		DenseVector<float>,
-		IEquatable<Vector4Flt>,
-		IAssignable<Vector4Flt>
+		IEquatable<Vector4F>,
+		IAssignable<Vector4F>
 	{
 		#region Static factories
-        public static Vector4Flt Zero { get { return new Vector4Flt(0, 0, 0, 0); } }
-        public static Vector4Flt One { get { return new Vector4Flt(1, 1, 1, 1); } }
+        public static Vector4F Zero { get { return new Vector4F(0, 0, 0, 0); } }
+        public static Vector4F One { get { return new Vector4F(1, 1, 1, 1); } }
         #endregion
 
 		#region Pure static operators
         [Pure]
-        public static Vector4Flt Negate(Vector4Flt ALeft)
+        public static Vector4F Negate(Vector4F ALeft)
         {
             return ALeft.Clone().Negate();
         }
         [Pure]
-        public static Vector4Flt Add(Vector4Flt ALeft, Vector4Flt ARight)
+        public static Vector4F Add(Vector4F ALeft, Vector4F ARight)
         {
             return ALeft.Clone().Add(ARight);
         }
         [Pure]
-        public static Vector4Flt Subtract(Vector4Flt ALeft, Vector4Flt ARight)
+        public static Vector4F Subtract(Vector4F ALeft, Vector4F ARight)
         {
             return ARight.Clone().Negate().Add(ALeft);
         }
         [Pure]
-        public static Vector4Flt Scale(Vector4Flt ALeft, float ARight)
+        public static Vector4F Scale(Vector4F ALeft, float ARight)
         {
             return ALeft.Clone().Scale(ARight);
         }
         [Pure]
-        public static Vector4Flt Mask(Vector4Flt ALeft, Vector4Flt ARight)
+        public static Vector4F Mask(Vector4F ALeft, Vector4F ARight)
         {
             return ALeft.Clone().Mask(ARight);
         }
 
         [Pure]
-        public static float ScalarProduct(Vector4Flt ALeft, Vector4Flt ARight)
+        public static float ScalarProduct(Vector4F ALeft, Vector4F ARight)
         {
             return ALeft.FElements[0]*ARight.FElements[0]
 				 + ALeft.FElements[1]*ARight.FElements[1]
@@ -1701,21 +1809,22 @@ namespace FMath.Linear.Numeric
         }
         #endregion
 
-        public Vector4Flt()
+        public Vector4F()
 			: base(4)
 		{ }
-		public Vector4Flt(float AX, float AY, float AZ, float AW)
+		public Vector4F(float AX, float AY, float AZ, float AW)
 			: base(new []{AX, AY, AZ, AW}, false)
 		{ }
 
 		[Pure]
-        public new Vector4Flt Clone()
+        public new Vector4F Clone()
         {
-            return new Vector4Flt(this.FElements[0], this.FElements[1], this.FElements[2], this.FElements[3]);
+            return new Vector4F(this.FElements[0], this.FElements[1], this.FElements[2], this.FElements[3]);
         }
 
-		#region IEquatable<Vector4Flt>
-		public bool Equals(Vector4Flt AOther)
+		#region IEquatable<Vector4F>
+		[Pure]
+		public bool Equals(Vector4F AOther)
 		{
 			if (AOther == null)
 				return false;
@@ -1727,8 +1836,8 @@ namespace FMath.Linear.Numeric
 		}
 		#endregion
 
-		#region IAssignable<Vector4Flt>
-		public void Assign(Vector4Flt AFrom)
+		#region IAssignable<Vector4F>
+		public void Assign(Vector4F AFrom)
 		{
 			if (AFrom == null)
 				throw new ArgumentNullException("AFrom");
@@ -1741,7 +1850,7 @@ namespace FMath.Linear.Numeric
 		#endregion
 
 		#region Mutating chainable operators
-        public Vector4Flt Negate()
+        public Vector4F Negate()
         {
 			this.FElements[0] = -this.FElements[0];
 			this.FElements[1] = -this.FElements[1];
@@ -1749,7 +1858,7 @@ namespace FMath.Linear.Numeric
 			this.FElements[3] = -this.FElements[3];
             return this;
         }
-        public Vector4Flt Add(Vector4Flt ARight)
+        public Vector4F Add(Vector4F ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -1760,7 +1869,7 @@ namespace FMath.Linear.Numeric
 			this.FElements[3] += ARight.FElements[3];
             return this;
         }
-        public Vector4Flt Scale(float ARight)
+        public Vector4F Scale(float ARight)
         {
 			this.FElements[0] *= ARight;
 			this.FElements[1] *= ARight;
@@ -1768,7 +1877,7 @@ namespace FMath.Linear.Numeric
 			this.FElements[3] *= ARight;
             return this;
         }
-        public Vector4Flt Mask(Vector4Flt ARight)
+        public Vector4F Mask(Vector4F ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -1782,14 +1891,25 @@ namespace FMath.Linear.Numeric
         #endregion
 
 		#region System.Object overrides
+		[Pure]
         public override bool Equals(object AOther)
         {
-            if (AOther is Vector4Flt)
-                return this.Equals((Vector4Flt)AOther);
+            if (AOther is Vector4F)
+                return this.Equals((Vector4F)AOther);
 
             return base.Equals(AOther);
         }
+		[Pure]
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
         #endregion
+
+		public float LengthSq
+		{
+			get { return Vector4F.ScalarProduct(this, this); }
+		}
 
 		public float X
 		{
@@ -1817,79 +1937,79 @@ namespace FMath.Linear.Numeric
 		}
 
 		#region Static operator overloads
-        public static bool operator ==(Vector4Flt ALeft, Vector4Flt ARight)
+        public static bool operator ==(Vector4F ALeft, Vector4F ARight)
         {
-            if (ALeft == null || ARight == null)
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
                 return false;
 
             return ALeft.Equals(ARight);
         }
-        public static bool operator !=(Vector4Flt ALeft, Vector4Flt ARight)
+        public static bool operator !=(Vector4F ALeft, Vector4F ARight)
         {
-            if (ALeft == null || ARight == null)
-                return false;
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
+                return true;
 
             return !ALeft.Equals(ARight);
         }
 
-        public static Vector4Flt operator -(Vector4Flt ALeft)
+        public static Vector4F operator -(Vector4F ALeft)
         {
-            return Vector4Flt.Negate(ALeft);
+            return Vector4F.Negate(ALeft);
         }
-        public static Vector4Flt operator +(Vector4Flt ALeft, Vector4Flt ARight)
+        public static Vector4F operator +(Vector4F ALeft, Vector4F ARight)
         {
-            return Vector4Flt.Add(ALeft, ARight);
+            return Vector4F.Add(ALeft, ARight);
         }
-        public static Vector4Flt operator -(Vector4Flt ALeft, Vector4Flt ARight)
+        public static Vector4F operator -(Vector4F ALeft, Vector4F ARight)
         {
-            return Vector4Flt.Subtract(ALeft, ARight);
+            return Vector4F.Subtract(ALeft, ARight);
         }
-        public static Vector4Flt operator *(Vector4Flt ALeft, float ARight)
+        public static Vector4F operator *(Vector4F ALeft, float ARight)
         {
-            return Vector4Flt.Scale(ALeft, ARight);
+            return Vector4F.Scale(ALeft, ARight);
         }
         #endregion
     }
 
-    public sealed class Vector4Dbl :
+    public sealed class Vector4D :
 		DenseVector<double>,
-		IEquatable<Vector4Dbl>,
-		IAssignable<Vector4Dbl>
+		IEquatable<Vector4D>,
+		IAssignable<Vector4D>
 	{
 		#region Static factories
-        public static Vector4Dbl Zero { get { return new Vector4Dbl(0, 0, 0, 0); } }
-        public static Vector4Dbl One { get { return new Vector4Dbl(1, 1, 1, 1); } }
+        public static Vector4D Zero { get { return new Vector4D(0, 0, 0, 0); } }
+        public static Vector4D One { get { return new Vector4D(1, 1, 1, 1); } }
         #endregion
 
 		#region Pure static operators
         [Pure]
-        public static Vector4Dbl Negate(Vector4Dbl ALeft)
+        public static Vector4D Negate(Vector4D ALeft)
         {
             return ALeft.Clone().Negate();
         }
         [Pure]
-        public static Vector4Dbl Add(Vector4Dbl ALeft, Vector4Dbl ARight)
+        public static Vector4D Add(Vector4D ALeft, Vector4D ARight)
         {
             return ALeft.Clone().Add(ARight);
         }
         [Pure]
-        public static Vector4Dbl Subtract(Vector4Dbl ALeft, Vector4Dbl ARight)
+        public static Vector4D Subtract(Vector4D ALeft, Vector4D ARight)
         {
             return ARight.Clone().Negate().Add(ALeft);
         }
         [Pure]
-        public static Vector4Dbl Scale(Vector4Dbl ALeft, double ARight)
+        public static Vector4D Scale(Vector4D ALeft, double ARight)
         {
             return ALeft.Clone().Scale(ARight);
         }
         [Pure]
-        public static Vector4Dbl Mask(Vector4Dbl ALeft, Vector4Dbl ARight)
+        public static Vector4D Mask(Vector4D ALeft, Vector4D ARight)
         {
             return ALeft.Clone().Mask(ARight);
         }
 
         [Pure]
-        public static double ScalarProduct(Vector4Dbl ALeft, Vector4Dbl ARight)
+        public static double ScalarProduct(Vector4D ALeft, Vector4D ARight)
         {
             return ALeft.FElements[0]*ARight.FElements[0]
 				 + ALeft.FElements[1]*ARight.FElements[1]
@@ -1898,21 +2018,22 @@ namespace FMath.Linear.Numeric
         }
         #endregion
 
-        public Vector4Dbl()
+        public Vector4D()
 			: base(4)
 		{ }
-		public Vector4Dbl(double AX, double AY, double AZ, double AW)
+		public Vector4D(double AX, double AY, double AZ, double AW)
 			: base(new []{AX, AY, AZ, AW}, false)
 		{ }
 
 		[Pure]
-        public new Vector4Dbl Clone()
+        public new Vector4D Clone()
         {
-            return new Vector4Dbl(this.FElements[0], this.FElements[1], this.FElements[2], this.FElements[3]);
+            return new Vector4D(this.FElements[0], this.FElements[1], this.FElements[2], this.FElements[3]);
         }
 
-		#region IEquatable<Vector4Dbl>
-		public bool Equals(Vector4Dbl AOther)
+		#region IEquatable<Vector4D>
+		[Pure]
+		public bool Equals(Vector4D AOther)
 		{
 			if (AOther == null)
 				return false;
@@ -1924,8 +2045,8 @@ namespace FMath.Linear.Numeric
 		}
 		#endregion
 
-		#region IAssignable<Vector4Dbl>
-		public void Assign(Vector4Dbl AFrom)
+		#region IAssignable<Vector4D>
+		public void Assign(Vector4D AFrom)
 		{
 			if (AFrom == null)
 				throw new ArgumentNullException("AFrom");
@@ -1938,7 +2059,7 @@ namespace FMath.Linear.Numeric
 		#endregion
 
 		#region Mutating chainable operators
-        public Vector4Dbl Negate()
+        public Vector4D Negate()
         {
 			this.FElements[0] = -this.FElements[0];
 			this.FElements[1] = -this.FElements[1];
@@ -1946,7 +2067,7 @@ namespace FMath.Linear.Numeric
 			this.FElements[3] = -this.FElements[3];
             return this;
         }
-        public Vector4Dbl Add(Vector4Dbl ARight)
+        public Vector4D Add(Vector4D ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -1957,7 +2078,7 @@ namespace FMath.Linear.Numeric
 			this.FElements[3] += ARight.FElements[3];
             return this;
         }
-        public Vector4Dbl Scale(double ARight)
+        public Vector4D Scale(double ARight)
         {
 			this.FElements[0] *= ARight;
 			this.FElements[1] *= ARight;
@@ -1965,7 +2086,7 @@ namespace FMath.Linear.Numeric
 			this.FElements[3] *= ARight;
             return this;
         }
-        public Vector4Dbl Mask(Vector4Dbl ARight)
+        public Vector4D Mask(Vector4D ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -1979,14 +2100,25 @@ namespace FMath.Linear.Numeric
         #endregion
 
 		#region System.Object overrides
+		[Pure]
         public override bool Equals(object AOther)
         {
-            if (AOther is Vector4Dbl)
-                return this.Equals((Vector4Dbl)AOther);
+            if (AOther is Vector4D)
+                return this.Equals((Vector4D)AOther);
 
             return base.Equals(AOther);
         }
+		[Pure]
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
         #endregion
+
+		public double LengthSq
+		{
+			get { return Vector4D.ScalarProduct(this, this); }
+		}
 
 		public double X
 		{
@@ -2014,79 +2146,79 @@ namespace FMath.Linear.Numeric
 		}
 
 		#region Static operator overloads
-        public static bool operator ==(Vector4Dbl ALeft, Vector4Dbl ARight)
+        public static bool operator ==(Vector4D ALeft, Vector4D ARight)
         {
-            if (ALeft == null || ARight == null)
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
                 return false;
 
             return ALeft.Equals(ARight);
         }
-        public static bool operator !=(Vector4Dbl ALeft, Vector4Dbl ARight)
+        public static bool operator !=(Vector4D ALeft, Vector4D ARight)
         {
-            if (ALeft == null || ARight == null)
-                return false;
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
+                return true;
 
             return !ALeft.Equals(ARight);
         }
 
-        public static Vector4Dbl operator -(Vector4Dbl ALeft)
+        public static Vector4D operator -(Vector4D ALeft)
         {
-            return Vector4Dbl.Negate(ALeft);
+            return Vector4D.Negate(ALeft);
         }
-        public static Vector4Dbl operator +(Vector4Dbl ALeft, Vector4Dbl ARight)
+        public static Vector4D operator +(Vector4D ALeft, Vector4D ARight)
         {
-            return Vector4Dbl.Add(ALeft, ARight);
+            return Vector4D.Add(ALeft, ARight);
         }
-        public static Vector4Dbl operator -(Vector4Dbl ALeft, Vector4Dbl ARight)
+        public static Vector4D operator -(Vector4D ALeft, Vector4D ARight)
         {
-            return Vector4Dbl.Subtract(ALeft, ARight);
+            return Vector4D.Subtract(ALeft, ARight);
         }
-        public static Vector4Dbl operator *(Vector4Dbl ALeft, double ARight)
+        public static Vector4D operator *(Vector4D ALeft, double ARight)
         {
-            return Vector4Dbl.Scale(ALeft, ARight);
+            return Vector4D.Scale(ALeft, ARight);
         }
         #endregion
     }
 
-    public sealed class Vector4Dcm :
+    public sealed class Vector4M :
 		DenseVector<decimal>,
-		IEquatable<Vector4Dcm>,
-		IAssignable<Vector4Dcm>
+		IEquatable<Vector4M>,
+		IAssignable<Vector4M>
 	{
 		#region Static factories
-        public static Vector4Dcm Zero { get { return new Vector4Dcm(0, 0, 0, 0); } }
-        public static Vector4Dcm One { get { return new Vector4Dcm(1, 1, 1, 1); } }
+        public static Vector4M Zero { get { return new Vector4M(0, 0, 0, 0); } }
+        public static Vector4M One { get { return new Vector4M(1, 1, 1, 1); } }
         #endregion
 
 		#region Pure static operators
         [Pure]
-        public static Vector4Dcm Negate(Vector4Dcm ALeft)
+        public static Vector4M Negate(Vector4M ALeft)
         {
             return ALeft.Clone().Negate();
         }
         [Pure]
-        public static Vector4Dcm Add(Vector4Dcm ALeft, Vector4Dcm ARight)
+        public static Vector4M Add(Vector4M ALeft, Vector4M ARight)
         {
             return ALeft.Clone().Add(ARight);
         }
         [Pure]
-        public static Vector4Dcm Subtract(Vector4Dcm ALeft, Vector4Dcm ARight)
+        public static Vector4M Subtract(Vector4M ALeft, Vector4M ARight)
         {
             return ARight.Clone().Negate().Add(ALeft);
         }
         [Pure]
-        public static Vector4Dcm Scale(Vector4Dcm ALeft, decimal ARight)
+        public static Vector4M Scale(Vector4M ALeft, decimal ARight)
         {
             return ALeft.Clone().Scale(ARight);
         }
         [Pure]
-        public static Vector4Dcm Mask(Vector4Dcm ALeft, Vector4Dcm ARight)
+        public static Vector4M Mask(Vector4M ALeft, Vector4M ARight)
         {
             return ALeft.Clone().Mask(ARight);
         }
 
         [Pure]
-        public static decimal ScalarProduct(Vector4Dcm ALeft, Vector4Dcm ARight)
+        public static decimal ScalarProduct(Vector4M ALeft, Vector4M ARight)
         {
             return ALeft.FElements[0]*ARight.FElements[0]
 				 + ALeft.FElements[1]*ARight.FElements[1]
@@ -2095,21 +2227,22 @@ namespace FMath.Linear.Numeric
         }
         #endregion
 
-        public Vector4Dcm()
+        public Vector4M()
 			: base(4)
 		{ }
-		public Vector4Dcm(decimal AX, decimal AY, decimal AZ, decimal AW)
+		public Vector4M(decimal AX, decimal AY, decimal AZ, decimal AW)
 			: base(new []{AX, AY, AZ, AW}, false)
 		{ }
 
 		[Pure]
-        public new Vector4Dcm Clone()
+        public new Vector4M Clone()
         {
-            return new Vector4Dcm(this.FElements[0], this.FElements[1], this.FElements[2], this.FElements[3]);
+            return new Vector4M(this.FElements[0], this.FElements[1], this.FElements[2], this.FElements[3]);
         }
 
-		#region IEquatable<Vector4Dcm>
-		public bool Equals(Vector4Dcm AOther)
+		#region IEquatable<Vector4M>
+		[Pure]
+		public bool Equals(Vector4M AOther)
 		{
 			if (AOther == null)
 				return false;
@@ -2121,8 +2254,8 @@ namespace FMath.Linear.Numeric
 		}
 		#endregion
 
-		#region IAssignable<Vector4Dcm>
-		public void Assign(Vector4Dcm AFrom)
+		#region IAssignable<Vector4M>
+		public void Assign(Vector4M AFrom)
 		{
 			if (AFrom == null)
 				throw new ArgumentNullException("AFrom");
@@ -2135,7 +2268,7 @@ namespace FMath.Linear.Numeric
 		#endregion
 
 		#region Mutating chainable operators
-        public Vector4Dcm Negate()
+        public Vector4M Negate()
         {
 			this.FElements[0] = -this.FElements[0];
 			this.FElements[1] = -this.FElements[1];
@@ -2143,7 +2276,7 @@ namespace FMath.Linear.Numeric
 			this.FElements[3] = -this.FElements[3];
             return this;
         }
-        public Vector4Dcm Add(Vector4Dcm ARight)
+        public Vector4M Add(Vector4M ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -2154,7 +2287,7 @@ namespace FMath.Linear.Numeric
 			this.FElements[3] += ARight.FElements[3];
             return this;
         }
-        public Vector4Dcm Scale(decimal ARight)
+        public Vector4M Scale(decimal ARight)
         {
 			this.FElements[0] *= ARight;
 			this.FElements[1] *= ARight;
@@ -2162,7 +2295,7 @@ namespace FMath.Linear.Numeric
 			this.FElements[3] *= ARight;
             return this;
         }
-        public Vector4Dcm Mask(Vector4Dcm ARight)
+        public Vector4M Mask(Vector4M ARight)
         {
             if (ARight == null)
                 throw new ArgumentNullException("ARight");
@@ -2176,14 +2309,25 @@ namespace FMath.Linear.Numeric
         #endregion
 
 		#region System.Object overrides
+		[Pure]
         public override bool Equals(object AOther)
         {
-            if (AOther is Vector4Dcm)
-                return this.Equals((Vector4Dcm)AOther);
+            if (AOther is Vector4M)
+                return this.Equals((Vector4M)AOther);
 
             return base.Equals(AOther);
         }
+		[Pure]
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
         #endregion
+
+		public decimal LengthSq
+		{
+			get { return Vector4M.ScalarProduct(this, this); }
+		}
 
 		public decimal X
 		{
@@ -2211,36 +2355,36 @@ namespace FMath.Linear.Numeric
 		}
 
 		#region Static operator overloads
-        public static bool operator ==(Vector4Dcm ALeft, Vector4Dcm ARight)
+        public static bool operator ==(Vector4M ALeft, Vector4M ARight)
         {
-            if (ALeft == null || ARight == null)
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
                 return false;
 
             return ALeft.Equals(ARight);
         }
-        public static bool operator !=(Vector4Dcm ALeft, Vector4Dcm ARight)
+        public static bool operator !=(Vector4M ALeft, Vector4M ARight)
         {
-            if (ALeft == null || ARight == null)
-                return false;
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
+                return true;
 
             return !ALeft.Equals(ARight);
         }
 
-        public static Vector4Dcm operator -(Vector4Dcm ALeft)
+        public static Vector4M operator -(Vector4M ALeft)
         {
-            return Vector4Dcm.Negate(ALeft);
+            return Vector4M.Negate(ALeft);
         }
-        public static Vector4Dcm operator +(Vector4Dcm ALeft, Vector4Dcm ARight)
+        public static Vector4M operator +(Vector4M ALeft, Vector4M ARight)
         {
-            return Vector4Dcm.Add(ALeft, ARight);
+            return Vector4M.Add(ALeft, ARight);
         }
-        public static Vector4Dcm operator -(Vector4Dcm ALeft, Vector4Dcm ARight)
+        public static Vector4M operator -(Vector4M ALeft, Vector4M ARight)
         {
-            return Vector4Dcm.Subtract(ALeft, ARight);
+            return Vector4M.Subtract(ALeft, ARight);
         }
-        public static Vector4Dcm operator *(Vector4Dcm ALeft, decimal ARight)
+        public static Vector4M operator *(Vector4M ALeft, decimal ARight)
         {
-            return Vector4Dcm.Scale(ALeft, ARight);
+            return Vector4M.Scale(ALeft, ARight);
         }
         #endregion
     }

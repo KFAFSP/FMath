@@ -49,6 +49,9 @@ namespace FMath.Linear.Static
             if (AEquator == null)
                 throw new ArgumentNullException("AEquator");
 
+            if (object.ReferenceEquals(ALeft, ARight))
+                return true;
+
             if (ALeft.Size != ARight.Size)
                 return false;
 

@@ -13,8 +13,8 @@ namespace FMath.Linear.Numeric
         IFormattable
     {
         #region Static factories
-        public static AffineFltMatrix Zero { get { return new AffineFltMatrix(HomogeneousFltMatrix.Zero, Vector3Flt.Zero); } }
-        public static AffineFltMatrix Identity { get { return new AffineFltMatrix(HomogeneousFltMatrix.Identity, Vector3Flt.Zero); } }
+        public static AffineFltMatrix Zero { get { return new AffineFltMatrix(HomogeneousFltMatrix.Zero, Vector3F.Zero); } }
+        public static AffineFltMatrix Identity { get { return new AffineFltMatrix(HomogeneousFltMatrix.Identity, Vector3F.Zero); } }
         #endregion
 
         #region Pure static operators
@@ -29,7 +29,7 @@ namespace FMath.Linear.Numeric
             return new AffineFltMatrix(ALeft.FHomogeneous * ARight.FHomogeneous, ALeft.FHomogeneous * ARight.FAffine + ALeft.FAffine);
         }
         [Pure]
-        public static Vector3Flt Project(AffineFltMatrix ALeft, Vector3Flt ARight)
+        public static Vector3F Project(AffineFltMatrix ALeft, Vector3F ARight)
         {
             return HomogeneousFltMatrix.Project(ALeft.FHomogeneous, ARight).Add(ALeft.Affine);
         }
@@ -42,14 +42,14 @@ namespace FMath.Linear.Numeric
         #endregion
 
         private readonly HomogeneousFltMatrix FHomogeneous;
-        private readonly Vector3Flt FAffine;
+        private readonly Vector3F FAffine;
 
         public AffineFltMatrix()
         {
             this.FHomogeneous = HomogeneousFltMatrix.Zero;
-            this.FAffine = Vector3Flt.Zero;
+            this.FAffine = Vector3F.Zero;
         }
-        public AffineFltMatrix(HomogeneousFltMatrix AHomogeneous, Vector3Flt AAffine)
+        public AffineFltMatrix(HomogeneousFltMatrix AHomogeneous, Vector3F AAffine)
         {
             if (AHomogeneous == null)
                 throw new ArgumentNullException("AHomogeneous");
@@ -244,7 +244,7 @@ namespace FMath.Linear.Numeric
         {
             get { return this.FHomogeneous; }
         }
-        public Vector3Flt Affine
+        public Vector3F Affine
         {
             get { return this.FAffine; }
         }
@@ -252,15 +252,15 @@ namespace FMath.Linear.Numeric
         #region Static operator overloads
         public static bool operator ==(AffineFltMatrix ALeft, AffineFltMatrix ARight)
         {
-            if (ALeft == null || ARight == null)
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
                 return false;
 
             return ALeft.Equals(ARight);
         }
         public static bool operator !=(AffineFltMatrix ALeft, AffineFltMatrix ARight)
         {
-            if (ALeft == null || ARight == null)
-                return false;
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
+                return true;
 
             return !ALeft.Equals(ARight);
         }
@@ -269,7 +269,7 @@ namespace FMath.Linear.Numeric
         {
             return AffineFltMatrix.Project(ALeft, ARight);
         }
-        public static Vector3Flt operator *(AffineFltMatrix ALeft, Vector3Flt ARight)
+        public static Vector3F operator *(AffineFltMatrix ALeft, Vector3F ARight)
         {
             return AffineFltMatrix.Project(ALeft, ARight);
         }

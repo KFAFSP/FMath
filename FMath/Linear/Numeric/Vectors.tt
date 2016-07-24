@@ -16,29 +16,29 @@ string[] Vec4Names = new []{"X","Y","Z", "W"};
 #>
 namespace FMath.Linear.Numeric
 {
-<# EmitVectorN(2, "Int", "int", Vec2Names); #>
+<# EmitVectorN(2, "I", "int", Vec2Names); #>
 
-<# EmitVectorN(2, "Flt", "float", Vec2Names); #>
+<# EmitVectorN(2, "F", "float", Vec2Names); #>
 
-<# EmitVectorN(2, "Dbl", "double", Vec2Names); #>
+<# EmitVectorN(2, "D", "double", Vec2Names); #>
 
-<# EmitVectorN(2, "Dcm", "decimal", Vec2Names); #>
+<# EmitVectorN(2, "M", "decimal", Vec2Names); #>
 
-<# EmitVectorN(3, "Int", "int", Vec3Names); #>
+<# EmitVectorN(3, "I", "int", Vec3Names); #>
 
-<# EmitVectorN(3, "Flt", "float", Vec3Names); #>
+<# EmitVectorN(3, "F", "float", Vec3Names); #>
 
-<# EmitVectorN(3, "Dbl", "double", Vec3Names); #>
+<# EmitVectorN(3, "D", "double", Vec3Names); #>
 
-<# EmitVectorN(3, "Dcm", "decimal", Vec3Names); #>
+<# EmitVectorN(3, "M", "decimal", Vec3Names); #>
 
-<# EmitVectorN(4, "Int", "int", Vec4Names); #>
+<# EmitVectorN(4, "I", "int", Vec4Names); #>
 
-<# EmitVectorN(4, "Flt", "float", Vec4Names); #>
+<# EmitVectorN(4, "F", "float", Vec4Names); #>
 
-<# EmitVectorN(4, "Dbl", "double", Vec4Names); #>
+<# EmitVectorN(4, "D", "double", Vec4Names); #>
 
-<# EmitVectorN(4, "Dcm", "decimal", Vec4Names); #>
+<# EmitVectorN(4, "M", "decimal", Vec4Names); #>
 }<#+
 private void EmitScalarProduct(int N)
 {
@@ -251,6 +251,7 @@ private void EmitVectorN(int N, string SUFFIX, string TYPE, string[] NAMES)
         }
 
 		#region IEquatable<<#= VectorNx #>>
+		[Pure]
 		public bool Equals(<#= VectorNx #> AOther)
 		{
 			if (AOther == null)
@@ -300,6 +301,7 @@ private void EmitVectorN(int N, string SUFFIX, string TYPE, string[] NAMES)
         #endregion
 
 		#region System.Object overrides
+		[Pure]
         public override bool Equals(object AOther)
         {
             if (AOther is <#= VectorNx #>)
@@ -307,22 +309,32 @@ private void EmitVectorN(int N, string SUFFIX, string TYPE, string[] NAMES)
 
             return base.Equals(AOther);
         }
+		[Pure]
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
         #endregion
+
+		public <#= TYPE #> LengthSq
+		{
+			get { return <#= VectorNx #>.ScalarProduct(this, this); }
+		}
 
 <#+ EmitProperties(N, TYPE, NAMES); #>
 
 		#region Static operator overloads
         public static bool operator ==(<#= VectorNx #> ALeft, <#= VectorNx #> ARight)
         {
-            if (ALeft == null || ARight == null)
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
                 return false;
 
             return ALeft.Equals(ARight);
         }
         public static bool operator !=(<#= VectorNx #> ALeft, <#= VectorNx #> ARight)
         {
-            if (ALeft == null || ARight == null)
-                return false;
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
+                return true;
 
             return !ALeft.Equals(ARight);
         }

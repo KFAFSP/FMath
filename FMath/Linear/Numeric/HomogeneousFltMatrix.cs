@@ -43,13 +43,67 @@ namespace FMath.Linear.Numeric
                 fSin, fCos, 0.0f,
                 0.0f, 0.0f, 1.0f);
         }
-
-        public static HomogeneousFltMatrix Scale(Vector3Flt AScale)
+        public static HomogeneousFltMatrix RotateAxis(float AAngle, Vector3F AAxis)
         {
+            if (AAxis == null)
+                throw new ArgumentNullException("AAxis");
+
+            float fCos = (float)Math.Cos(AAngle);
+            float fSin = (float)Math.Sin(AAngle);
+            float fA = 1 - fCos;
+            float f1 = AAxis.X, f2 = AAxis.Y, f3 = AAxis.Z;
+
+            return HomogeneousFltMatrix.OrthogonalProjection(AAxis)
+                .Scale(fA)
+                .Add(new HomogeneousFltMatrix(
+                    fCos, -f3*fSin, f2*fSin,
+                    f3*fSin, fCos, -f1*fSin,
+                    -f2*fSin, f1*fSin, fCos));
+        }
+
+        public static HomogeneousFltMatrix Scale(Vector3F AScale)
+        {
+            if (AScale == null)
+                throw new ArgumentNullException("AScale");
+
             return new HomogeneousFltMatrix(
                 AScale.X, 0.0f, 0.0f,
                 0.0f, AScale.Y, 0.0f,
                 0.0f, 0.0f, AScale.Z);
+        }
+
+        public static HomogeneousFltMatrix OrthogonalProjection(Vector3F ALine)
+        {
+            if (ALine == null)
+                throw new ArgumentNullException("ALine");
+
+            float f1 = ALine.X, f2 = ALine.Y, f3 = ALine.Z;
+
+            return new HomogeneousFltMatrix(
+                f1 * f1, f1 * f2, f1 * f3,
+                f2 * f1, f2 * f2, f2 * f3,
+                f3 * f1, f3 * f2, f3 * f3);
+        }
+        public static HomogeneousFltMatrix OrthogonalProjection(Vector3F AFirst, Vector3F ASecond)
+        {
+            return HomogeneousFltMatrix.OrthogonalProjection(AFirst).Add(HomogeneousFltMatrix.OrthogonalProjection(ASecond));
+        }
+
+        public static HomogeneousFltMatrix Mirror(Vector3F ALine)
+        {
+            return HomogeneousFltMatrix.OrthogonalProjection(ALine).Add(HomogeneousFltMatrix.Identity.Negate());
+        }
+        public static HomogeneousFltMatrix Mirror(Vector3F AFirst, Vector3F ASecond)
+        {
+            return HomogeneousFltMatrix.OrthogonalProjection(AFirst, ASecond).Add(HomogeneousFltMatrix.Identity.Negate());
+        }
+
+        public static HomogeneousFltMatrix Parallelepiped(Vector3F AX, Vector3F AY, Vector3F AZ)
+        {
+            return new HomogeneousFltMatrix(
+                AX.X, AX.Y, AX.Z,
+                AY.X, AY.Y, AY.Z,
+                AZ.X, AZ.Y, AZ.Z);
         }
         #endregion
 
@@ -106,9 +160,9 @@ namespace FMath.Linear.Numeric
             return hfmMatrix;
         }
         [Pure]
-        public static Vector3Flt Project(HomogeneousFltMatrix ALeft, Vector3Flt ARight)
+        public static Vector3F Project(HomogeneousFltMatrix ALeft, Vector3F ARight)
         {
-            return new Vector3Flt(
+            return new Vector3F(
                 ALeft.FCells[0, 0] * ARight.X + ALeft.FCells[0, 1] * ARight.Y + ALeft.FCells[0, 2] * ARight.Z,
                 ALeft.FCells[1, 0] * ARight.X + ALeft.FCells[1, 1] * ARight.Y + ALeft.FCells[1, 2] * ARight.Z,
                 ALeft.FCells[2, 0] * ARight.X + ALeft.FCells[2, 1] * ARight.Y + ALeft.FCells[2, 2] * ARight.Z);
@@ -233,15 +287,15 @@ namespace FMath.Linear.Numeric
         #region Static operator overloads
         public static bool operator ==(HomogeneousFltMatrix ALeft, HomogeneousFltMatrix ARight)
         {
-            if (ALeft == null || ARight == null)
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
                 return false;
 
             return ALeft.Equals(ARight);
         }
         public static bool operator !=(HomogeneousFltMatrix ALeft, HomogeneousFltMatrix ARight)
         {
-            if (ALeft == null || ARight == null)
-                return false;
+            if (object.ReferenceEquals(ALeft, null) || object.ReferenceEquals(ARight, null))
+                return true;
 
             return !ALeft.Equals(ARight);
         }
@@ -271,7 +325,7 @@ namespace FMath.Linear.Numeric
         {
             return HomogeneousFltMatrix.Project(ALeft, ARight);
         }
-        public static Vector3Flt operator *(HomogeneousFltMatrix ALeft, Vector3Flt ARight)
+        public static Vector3F operator *(HomogeneousFltMatrix ALeft, Vector3F ARight)
         {
             return HomogeneousFltMatrix.Project(ALeft, ARight);
         }
