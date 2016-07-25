@@ -16,7 +16,7 @@ namespace FMath.Linear.Generic.Base
 
         protected internal abstract void DirectSet(int AIndex, TData AData);
 
-        #region IAssignable<IVector>        
+        #region IAssignable<IVector>
         public void Assign(IVector AFrom)
         {
             if (AFrom == null)

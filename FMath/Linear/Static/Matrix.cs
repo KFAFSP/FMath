@@ -12,6 +12,7 @@ namespace FMath.Linear.Static
     public static class Matrix
     {
         public const int C_HashSaltPrime = 499;
+
         [Pure]
         public static bool AreDefined(
             this IMatrix AMatrix,
@@ -340,6 +341,32 @@ namespace FMath.Linear.Static
                 throw new ArgumentNullException("AMapper");
 
             Matrix.Map((IMatrix)ASource, ATarget, AIn => AMapper((TData)AIn));
+        }
+
+        public static IMatrix<TOut> Map<TIn, TOut>(
+            this IMatrix<TIn> AIn,
+            Func<TIn, TOut> AMapper)
+        {
+            if (AIn == null)
+                throw new ArgumentNullException("AIn");
+            if (AMapper == null)
+                throw new ArgumentNullException("AMapper");
+
+            return new MatrixMappingProxy<TIn, TOut>(AIn, AMapper, null);
+        }
+        public static IMutableMatrix<TOut> Map<TIn, TOut>(
+            this IMutableMatrix<TIn> AIn,
+            Func<TIn, TOut> AForward,
+            Func<TOut, TIn> AReverse)
+        {
+            if (AIn == null)
+                throw new ArgumentNullException("AIn");
+            if (AForward == null)
+                throw new ArgumentNullException("AForward");
+            if (AReverse == null)
+                throw new ArgumentNullException("AReverse");
+
+            return new MatrixMappingProxy<TIn, TOut>(AIn, AForward, AReverse);
         }
         #endregion
 

@@ -12,6 +12,7 @@ namespace FMath.Linear.Static
     public static class Vector
     {
         public const int C_HashSaltPrime = 409;
+
         [Pure]
         public static bool IsDefined(
             this IVector AVector,
@@ -285,6 +286,32 @@ namespace FMath.Linear.Static
                 throw new ArgumentNullException("AMapper");
 
             Vector.Map((IVector)ASource, ATarget, AIn => AMapper((TData)AIn));
+        }
+
+        public static IVector<TOut> Map<TIn, TOut>(
+            this IVector<TIn> AIn,
+            Func<TIn, TOut> AMapper)
+        {
+            if (AIn == null)
+                throw new ArgumentNullException("AIn");
+            if (AMapper == null)
+                throw new ArgumentNullException("AMapper");
+
+            return new VectorMappingProxy<TIn, TOut>(AIn, AMapper, null);
+        }
+        public static IMutableVector<TOut> Map<TIn, TOut>(
+            this IMutableVector<TIn> AIn,
+            Func<TIn, TOut> AForward,
+            Func<TOut, TIn> AReverse)
+        {
+            if (AIn == null)
+                throw new ArgumentNullException("AIn");
+            if (AForward == null)
+                throw new ArgumentNullException("AForward");
+            if (AReverse == null)
+                throw new ArgumentNullException("AReverse");
+
+            return new VectorMappingProxy<TIn,TOut>(AIn, AForward, AReverse);
         }
         #endregion
 
