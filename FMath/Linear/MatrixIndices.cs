@@ -34,6 +34,7 @@ namespace FMath.Linear
         }
         #endregion
     }
+
     public struct MatrixIndices :
         IVector<int>,
         IEquatable<MatrixIndices>,
@@ -46,13 +47,14 @@ namespace FMath.Linear
         #endregion
 
         public readonly int M, N;
+
         public MatrixIndices(int AM, int AN)
         {
             this.M = AM;
             this.N = AN;
         }
 
-        #region ICloneable  
+        #region ICloneable
         [Pure]
         public object Clone()
         {

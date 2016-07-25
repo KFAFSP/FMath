@@ -48,7 +48,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="IStructure.cs" />
     <Compile Include="IAssignable.cs" />
-    <Compile Include="Linear\Factory.cs" />
+    <Compile Include="Linear\FactoryDelegate.cs" />
     <Compile Include="Linear\Generic\Base\MatrixBase.cs" />
     <Compile Include="Linear\Generic\Base\MutableMatrixBase.cs" />
     <Compile Include="Linear\Generic\Base\MutableVectorBase.cs" />
@@ -71,6 +71,7 @@
     <Compile Include="Linear\Generic\Mutable\SparseMatrix.cs" />
     <Compile Include="Linear\Generic\Mutable\SparseVector.cs" />
     <Compile Include="Linear\Generic\Proxy\MatrixCasterProxy.cs" />
+    <Compile Include="Linear\Generic\Proxy\MatrixColumnProxy.cs" />
     <Compile Include="Linear\Generic\Proxy\MatrixMappingProxy.cs" />
     <Compile Include="Linear\Generic\Proxy\VectorCasterProxy.cs" />
     <Compile Include="Linear\Generic\Proxy\VectorMappingProxy.cs" />
