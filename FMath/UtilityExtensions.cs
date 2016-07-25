@@ -2,7 +2,7 @@
 
 namespace FMath
 {
-    internal static class UtilityExtensions
+    public static class UtilityExtensions
     {
         public static bool Matches<TConstraint>(this object AValue)
         {
